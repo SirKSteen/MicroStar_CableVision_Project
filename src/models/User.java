@@ -1,6 +1,9 @@
 package models;
 
-
+/*This class will serve as the user domain object.
+ * it will map to the users table in the mysql database
+ * 
+ * */
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +14,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+
+import factories.HibernateConnectorSessionFactory;
 import utils.Role;
 
 
@@ -23,8 +32,8 @@ public class User {
 	 * 
 	*/	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "user_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY) //Automatically increments ID number based on previous record.
+	@Column(name = "user_id") //specify column name since variable name is different
 	private int userId;
 	
 	@Column(name = "first_name")
@@ -42,12 +51,10 @@ public class User {
 	 private Role role;
 	
 	
+	//constructors
+	
 	public User() {
-		this.firstName = "";
-		this.lastName = "";
-		this.email = "";
-		this.role = null;
-		this.password = "";
+		this("","","","",null); // initialize variables using primary constructor to promote code reuse 
 	}
 
 
@@ -68,9 +75,9 @@ public class User {
 		this.password = user.password;
 	}
 
-
+//getters and setters
 	public int getUserId() {
-		return userId;
+		return this.userId;
 	}
 
 
@@ -80,7 +87,7 @@ public class User {
 
 
 	public String getFirstName() {
-		return firstName;
+		return this.firstName;
 	}
 
 
@@ -90,7 +97,7 @@ public class User {
 
 
 	public String getLastName() {
-		return lastName;
+		return this.lastName;
 	}
 
 
@@ -110,7 +117,7 @@ public class User {
 
 
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 
 
@@ -120,7 +127,7 @@ public class User {
   
 	
 	public Role getRole() {
-		return role;
+		return this.role;
 	}
 
 
@@ -129,12 +136,12 @@ public class User {
 	}
 	
 
-
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
 				+ ", password=" + password + ", role=" + role + "]";
 	}
+	
 	
 	
 	
