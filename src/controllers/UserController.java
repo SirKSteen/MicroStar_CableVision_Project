@@ -15,7 +15,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import factories.HibernateConnectorSessionFactory;
 import factories.TraditionalDatabaseConnectorFactory;
 import models.User;
-import utils.InvalidPasswordException;
+import utils.CustomizedException;
 import utils.Role;
 
 public class UserController {
@@ -121,7 +121,7 @@ public class UserController {
 		       user.setPassword(password);
 		       switch (role.toLowerCase()) {
 			    case "customer": 
-			//	user.setRole(Role.CUSTOMER);
+				user.setRole(Role.CUSTOMER);
 				break;
 				case "representative":
 					user.setRole(Role.REPRESENTATIVE);
@@ -266,13 +266,13 @@ public class UserController {
 	
 	//Method to test if a plain text password matches a previously hashed ones
 	//using BCrypt
-	public boolean validatePassword(String testPassword,String encrypted) throws InvalidPasswordException {
+	public boolean validatePassword(String testPassword,String encrypted) throws CustomizedException {
 
 		if (BCrypt.checkpw(testPassword, encrypted)) {	
 	        return true;
 		}
 		else {
-			throw new InvalidPasswordException("Password invalid.");
+			throw new CustomizedException("Password invalid.");
 		}
 		        
 	}
