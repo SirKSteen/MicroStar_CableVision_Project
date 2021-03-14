@@ -1,21 +1,16 @@
 package driver;
 
-
-
-import controllers.UserController;
-import models.User;
-import utils.Role;
+import controllers.AuthController;
 
 public class Driver {
 
 	public static void main(String[] args) {
 		
-		User user = new User("","","","",Role.REPRESENTATIVE);
-		UserController controller = new UserController();
+		AuthController ac = new AuthController();
 		
-		controller.addUser(user);
-
-   
+		boolean t = ac.updatePassword(1700, "secrets","secret");
+		
+		System.out.println(t);
 	}
 
 }

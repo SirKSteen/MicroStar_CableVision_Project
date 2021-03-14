@@ -28,6 +28,7 @@ This repository aims to complete all Milestones stated in the MicroStar Cable Vi
 6. Download connector/j from <https://dev.mysql.com/downloads/connector/j/?os=26>
 7. Add downloaded hibernate jar files to Hibernate user library in the project folder
 8. Open hibernate.cfg.xml located in the root folder of the project. Add your database username and password.
+9. Download JBCrypt jar file from <https://drive.google.com/file/d/1ilyaAU3kIjMMCB63VEpYUBNuKOBa8SnI/view?usp=sharing>. Add this file to the class path of the project.
 
 ### 3. Start Project
 
