@@ -1,6 +1,6 @@
 package controllers;
 
-import utils.InvalidPasswordException;
+import utils.CustomizedException;
 import models.User;
 /*This class will isolate the logic for authentication and updating password.*/
 public class AuthController {
@@ -23,7 +23,7 @@ public class AuthController {
 	    		this.userController.validatePassword(password, this.user.getPassword());
 				loggedIn = true;//user logged in successfully
 				System.out.println("user logged in");
-			} catch (InvalidPasswordException e) {
+			} catch (CustomizedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				
@@ -49,7 +49,7 @@ public class AuthController {
 					passwordUpdated=true;
 					//update user in database
 					this.userController.updateUser(this.user);
-				} catch (InvalidPasswordException e) {
+				} catch (CustomizedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}

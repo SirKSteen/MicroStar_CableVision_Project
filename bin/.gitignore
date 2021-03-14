@@ -1,3 +1,5 @@
 /driver/
 /controllers/
 /models/
+/factories/
+/utils/
