@@ -13,7 +13,7 @@ public class TraditionalDatabaseConnectorFactory {
 		if(connection == null) {
 			
 			try {
-				connection = DriverManager.getConnection(connectionString,"root","1234567890");
+				connection = DriverManager.getConnection(connectionString,"root","");
 			} catch (SQLException e) {
 				throw e;
 			}
