@@ -264,7 +264,7 @@ public class UserController {
 		return encrypted;
 	}
 	
-	//Method to test if a plain text password matches the hash when converted
+	//Method to test if a plain text password matches a previously hashed ones
 	//using BCrypt
 	public boolean validatePassword(String testPassword,String encrypted) throws InvalidPasswordException {
 
