@@ -18,6 +18,7 @@
         
         <!-- Add annotated classes here -->
         <mapping class="models.User"/>
+        <mapping class="models.Complaints"/>
     </session-factory>    
     
 </hibernate-configuration>  

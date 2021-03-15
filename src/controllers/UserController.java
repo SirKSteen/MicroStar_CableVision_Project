@@ -126,11 +126,7 @@ public class UserController {
 		       
 		       switch (role.toLowerCase()) {
 			    case "customer": 
-<<<<<<< HEAD
 			    	user.setRole(Role.CUSTOMER);
-=======
-				user.setRole(Role.CUSTOMER);
->>>>>>> 1bfe2a33c26fb30aa64a3915597c97ce3d0515f7
 				break;
 				case "representative":
 					user.setRole(Role.REPRESENTATIVE);
@@ -299,15 +295,12 @@ public class UserController {
 		return encrypted;
 	}
 	
-<<<<<<< HEAD
+
 	
 	
 	
 	
 	//Method to test if a plain text password matches the hash when converted
-=======
-	//Method to test if a plain text password matches a previously hashed ones
->>>>>>> 1bfe2a33c26fb30aa64a3915597c97ce3d0515f7
 	//using BCrypt
 	public boolean validatePassword(String testPassword,String encrypted) throws CustomizedException {
 
