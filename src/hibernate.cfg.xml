@@ -19,5 +19,4 @@
         <!-- Add annotated classes here -->
         <mapping class="models.User"/>
     </session-factory>    
-    
 </hibernate-configuration>  

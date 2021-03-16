@@ -1,6 +1,7 @@
 package controllers;
 
 import utils.CustomizedException;
+
 import models.User;
 /*This class will isolate the logic for authentication and updating password.*/
 public class AuthController {
@@ -35,7 +36,7 @@ public class AuthController {
 	    return loggedIn;
 	}
 	
-	public boolean updatePassword(int userId,String oldPassword,String newPassword) {
+	public boolean updatePassword(int userId,String oldPassword,String newPassword) throws CustomizedException {
 		boolean passwordUpdated = false;
 		 this.user = this.userController.findById(userId);
 		 if(this.user != null) {
@@ -51,12 +52,27 @@ public class AuthController {
 					this.userController.updateUser(this.user);
 				} catch (CustomizedException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					throw new CustomizedException(e.getMessage());
 				}
 	
 		    }else {
 		    	System.out.println("user not found");
 		    }
 		return passwordUpdated;
+	}
+	
+	public int register(User user) throws CustomizedException {
+		
+		int userId = -1;
+		try {
+			
+			userId = this.userController.createUser(user);
+		} catch (CustomizedException e) {
+			// TODO Auto-generated catch block
+			throw new CustomizedException(e.getMessage());
+		}
+		
+		
+		return userId;
 	}
 }

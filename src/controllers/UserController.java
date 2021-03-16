@@ -16,6 +16,7 @@ import factories.HibernateConnectorSessionFactory;
 import factories.TraditionalDatabaseConnectorFactory;
 import models.User;
 import utils.CustomizedException;
+import utils.EmailValidator;
 import utils.Role;
 
 public class UserController {
@@ -45,7 +46,7 @@ public class UserController {
 
 	/* Method to add a user.
 	 *add user using hibernate */
-	public int createUser(User user) {
+	public int createUser(User user) throws CustomizedException {
 		 int userId = -1;
 	   try{
 		   
@@ -55,25 +56,34 @@ public class UserController {
 		   //open a session to carry out transactions. a session is needed for every transaction
 		   this.session = this.sessionFactory.openSession();
 		  
+		   
+		   String hashedPassword = this.generatePasswordHash(user.getPassword());
+		   user.setPassword(hashedPassword);
+		   
+		   //validate email address
+		   EmailValidator.isValid(user.getEmail());
+		   
+		   //check if user already created
+		   findByEmail(user.getEmail());
+		   
 		   //create transaction
 		   
 		   this.transaction = this.session.beginTransaction();
 		   /*can save as much objects here.
 		    * cast the returned valued to int since we are storing userId as int.*/
-		   String hashedPassword = this.generatePasswordHash(user.getPassword());
-		   user.setPassword(hashedPassword);
+		   
 		    userId = (int) this.session.save(user);
 		  
 		  this.transaction.commit();
-		   System.out.println("transaction complete ");
+
 	    }catch (HibernateException e) {
 	       if (this.transaction!=null) {
 	    	   this.transaction.rollback();
 		       e.printStackTrace(); 
 		       System.out.println("transaction incomplete ");
+		       throw new CustomizedException(e.getMessage());
+		     
 	       } 
-	    }catch (Exception exception){
-	    	System.out.println(exception.getMessage());
 	    }finally {
 	    	
 	    	if(this.session != null) {
@@ -97,7 +107,7 @@ public class UserController {
 			this.statement = this.connect.createStatement();
 			
 			//create sql query
-		    this.sqlQuery = "SELECT user_id, first_name, last_name, email, user_role, password FROM users";
+		    this.sqlQuery = "SELECT * FROM users";
 		    //execute sql query on statement and a ResultSet is returned
 		    ResultSet rs = this.statement.executeQuery(this.sqlQuery);
 
@@ -155,7 +165,7 @@ public class UserController {
 			this.connect = TraditionalDatabaseConnectorFactory.getDatabaseConnection();
 			this.statement = this.connect.createStatement();
 			//create sql query
-		    this.sqlQuery = "SELECT user_id, first_name, last_name, email, user_role, password FROM users WHERE user_id = "+userId;
+		    this.sqlQuery = "SELECT * FROM users WHERE user_id = "+userId;
 		    ResultSet rs = this.statement.executeQuery(this.sqlQuery);
 		    
 		  //Read result values and create user objects
@@ -197,6 +207,31 @@ public class UserController {
 		}
 		
 		return user;
+	}
+	
+	/* Method to  READ one user. Returns a single user. */
+	public boolean findByEmail(String email) throws CustomizedException {
+		try {
+			
+			//retrieve users using traditional database connectivity
+			this.connect = TraditionalDatabaseConnectorFactory.getDatabaseConnection();
+			this.statement = this.connect.createStatement();
+			//create sql query
+		    this.sqlQuery = "SELECT * FROM users WHERE email = "+"'"+email+"'";
+		    ResultSet rs = this.statement.executeQuery(this.sqlQuery);
+		    
+		  //Read result values and create user objects
+		   if(rs.next()){
+		       //user found. throw user found exception
+		       throw new CustomizedException("User already exists.");
+		    }
+		} catch (SQLException e) {
+			// TODO manage and log exceptions
+			e.printStackTrace();
+			 throw new CustomizedException(e.getMessage());
+		}
+		
+		return true;
 	}
 	
 	
