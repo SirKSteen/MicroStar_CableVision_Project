@@ -5,12 +5,12 @@ import java.util.ArrayList;
 
 
 import controllers.AuthController;
-import controllers.ComplaintsController;
+import controllers.ComplaintController;
 import controllers.UserController;
-import models.Complaints;
+import models.Complaint;
 import models.User;
-import utils.ComplaintsCategory;
-import utils.ComplaintsType;
+import utils.ComplaintCategory;
+import utils.ComplaintType;
 import utils.CustomizedException;
 import utils.Role;
 
@@ -91,59 +91,59 @@ public class Driver {
 //		}
 	
 		
-		ComplaintsController cc = new ComplaintsController();
+		ComplaintController cc = new ComplaintController();
 		
 		java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
 		
-		Complaints c1 = new Complaints(
+		Complaint c1 = new Complaint(
 				1724,
 				1720, 
-				ComplaintsCategory.MODERATE,
+				ComplaintCategory.MODERATE,
 				"This is a sample complaint.",
 				sqlDate,
-				ComplaintsType.BROADBAND
+				ComplaintType.BROADBAND
 				);
 	
-		Complaints c2 = new Complaints(
+		Complaint c2 = new Complaint(
 				1728,
 				1721, 
-				ComplaintsCategory.SEVERE,
+				ComplaintCategory.SEVERE,
 				"This is another sample complaint.",
 				sqlDate,
-				ComplaintsType.CABLE
+				ComplaintType.CABLE
 				);
 	
 		
 //		cc.addComplaint(c1);
 //		cc.addComplaint(c2);
 		
-		ArrayList <Complaints> complaintsList = new ArrayList<>();
+		ArrayList <Complaint> complaintsList = new ArrayList<>();
 		complaintsList= cc.getAllComplaints();
 		
 		System.out.println(complaintsList);
 		
-		Complaints c10 = new Complaints();
+		Complaint c10 = new Complaint();
 		c10 = cc.findById(13);
 		System.out.println("\nComplaint Search results: "+c10);
 		
 		
-		Complaints c3 = new Complaints(
+		Complaint c3 = new Complaint(
 				1728,
 				1727, 
-				ComplaintsCategory.MODERATE,
+				ComplaintCategory.MODERATE,
 				"This is yet another sample complaint.",
 				sqlDate,
-				ComplaintsType.CABLE
+				ComplaintType.CABLE
 				);
 		
 		
-		Complaints c4 = new Complaints(
+		Complaint c4 = new Complaint(
 				1724,
 				1723, 
-				ComplaintsCategory.MODERATE,
+				ComplaintCategory.MODERATE,
 				"This is yet another another sample complaint.",
 				sqlDate,
-				ComplaintsType.BROADBAND
+				ComplaintType.BROADBAND
 				);
 		
 		
@@ -158,16 +158,16 @@ public class Driver {
 //		System.out.println("\nUpdate Complaint: \n"+complaintUpdate);
 	
 		
-		Complaints c5 = new Complaints(
+		Complaint c5 = new Complaint(
 				1728,
 				1721, 
-				ComplaintsCategory.SEVERE,
+				ComplaintCategory.SEVERE,
 				"This is going to be another sample complaint.",
 				sqlDate,
-				ComplaintsType.CABLE
+				ComplaintType.CABLE
 				);
 //		cc.addComplaint(c5);
-		cc.deleteComplaint(15);
+		cc.deleteComplaint(16);
 		
 		
 	}

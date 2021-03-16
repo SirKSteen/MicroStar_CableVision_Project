@@ -11,8 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import utils.ComplaintsCategory;
-import utils.ComplaintsType;
+import utils.ComplaintCategory;
+import utils.ComplaintType;
+
+
 
 /*This class will serve as the complaints domain object.
  * it will map to the complaints table in the mysql database
@@ -21,7 +23,7 @@ import utils.ComplaintsType;
 
 @Entity
 @Table(name = "complaints") //reference the user table in database. 
-public class Complaints {
+public class Complaint {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +38,7 @@ public class Complaints {
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "complaint_category")
-	private ComplaintsCategory category;
+	private ComplaintCategory category;
 	
 	@Column(name = "complaint")
 	private String complaint;
@@ -46,10 +48,10 @@ public class Complaints {
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "complaint_type")
-	private ComplaintsType complaintType;
+	private ComplaintType complaintType;
 
 	
-	public Complaints() {
+	public Complaint() {
 		this.custID = 0;
 		this.empID = 0;
 		this.category = null;
@@ -58,8 +60,8 @@ public class Complaints {
 		this.complaintType = null;
 	}
 	
-	public Complaints(int custID, int empID, ComplaintsCategory category, String complaint, Date complaintDate,
-			ComplaintsType complaintType) {
+	public Complaint(int custID, int empID, ComplaintCategory category, String complaint, Date complaintDate,
+			ComplaintType complaintType) {
 		this.custID = custID;
 		this.empID = empID;
 		this.category = category;
@@ -69,7 +71,7 @@ public class Complaints {
 	}
 	
 	
-	public Complaints(final Complaints c ) {
+	public Complaint(final Complaint c ) {
 		this.complaintID = c.complaintID;
 		this.custID = c.custID;
 		this.empID = c.empID;
@@ -103,11 +105,11 @@ public class Complaints {
 		this.empID = empID;
 	}
 
-	public ComplaintsCategory getCategory() {
+	public ComplaintCategory getCategory() {
 		return category;
 	}
 
-	public void setCategory(ComplaintsCategory category) {
+	public void setCategory(ComplaintCategory category) {
 		this.category = category;
 	}
 
@@ -127,11 +129,11 @@ public class Complaints {
 		this.complaintDate = complaintDate;
 	}
 
-	public ComplaintsType getComplaintType() {
+	public ComplaintType getComplaintType() {
 		return complaintType;
 	}
 
-	public void setComplaintType(ComplaintsType complaintType) {
+	public void setComplaintType(ComplaintType complaintType) {
 		this.complaintType = complaintType;
 	}
 

@@ -15,13 +15,13 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import factories.HibernateConnectorSessionFactory;
 import factories.TraditionalDatabaseConnectorFactory;
-import models.Complaints;
-import utils.ComplaintsCategory;
-import utils.ComplaintsType;
+import models.Complaint;
+import utils.ComplaintCategory;
+import utils.ComplaintType;
 import utils.CustomizedException;
 import utils.Role;
 
-public class ComplaintsController {
+public class ComplaintController {
 
 	//hibernate session config
 	private SessionFactory sessionFactory;
@@ -34,7 +34,7 @@ public class ComplaintsController {
 	private String sqlQuery;
 	
 	
-	public ComplaintsController() {
+	public ComplaintController() {
 		this.sessionFactory = null;
 		this.transaction = null;
 		this.session = null;
@@ -45,7 +45,7 @@ public class ComplaintsController {
 	}
 
 //	Method to ADD complaints
-	public int addComplaint(Complaints complaint) {
+	public int addComplaint(Complaint complaint) {
 		
 		 int complaintId = -1;
 		   try{
@@ -87,8 +87,8 @@ public class ComplaintsController {
 
 	
 //	Method to  READ all the complaints 
-	public ArrayList<Complaints> getAllComplaints() {
-		ArrayList<Complaints> complaintsList= new ArrayList<>();
+	public ArrayList<Complaint> getAllComplaints() {
+		ArrayList<Complaint> complaintsList= new ArrayList<>();
 		
 	    try {
 	    	//get instance of single database connection
@@ -115,20 +115,20 @@ public class ComplaintsController {
 		    	Date complaintDate = rs.getDate("complaint_date");
 		    	String complaintType = rs.getString("complaint_type");
 		    	
-		    	Complaints complaint = new Complaints();
+		    	Complaint complaint = new Complaint();
 		    	complaint.setComplaintID(complaintID);
 		    	complaint.setCustID(custID);
 		    	complaint.setEmpID(empID);
 		    	
 		       switch (complaintCat.toLowerCase()) {
 			    case "mild": 
-			    	complaint.setCategory(ComplaintsCategory.MILD);
+			    	complaint.setCategory(ComplaintCategory.MILD);
 			    	break;
 			    case "moderate": 
-			    	complaint.setCategory(ComplaintsCategory.MODERATE);
+			    	complaint.setCategory(ComplaintCategory.MODERATE);
 			    	break;
 			    case "severe": 
-			    	complaint.setCategory(ComplaintsCategory.SEVERE);
+			    	complaint.setCategory(ComplaintCategory.SEVERE);
 			    	break;
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + complaintCat);
@@ -139,10 +139,10 @@ public class ComplaintsController {
 		       
 		       switch (complaintType.toLowerCase()) {
 			    case "broadband": 
-			    	complaint.setComplaintType(ComplaintsType.BROADBAND);
+			    	complaint.setComplaintType(ComplaintType.BROADBAND);
 				break;
 				case "cable":
-					complaint.setComplaintType(ComplaintsType.CABLE);
+					complaint.setComplaintType(ComplaintType.CABLE);
 					break;
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + complaintType);
@@ -165,9 +165,9 @@ public class ComplaintsController {
 	
 
 	/* Method to  READ one complaint. Returns a single complaint. */
-	public Complaints findById(int complaintID) {
+	public Complaint findById(int complaintID) {
 		
-		Complaints complaint = null;
+		Complaint complaint = null;
 		
 		try {
 			
@@ -192,7 +192,7 @@ public class ComplaintsController {
 		    	
 		       
 		       //create complaints objects using data retrieved from columns.
-		    	complaint = new Complaints();
+		    	complaint = new Complaint();
 		    	
 		    	complaint.setComplaintID(complaintID1);
 		    	complaint.setCustID(custID);
@@ -200,13 +200,13 @@ public class ComplaintsController {
 		    	
 		       switch (complaintCat.toLowerCase()) {
 			    case "mild": 
-			    	complaint.setCategory(ComplaintsCategory.MILD);
+			    	complaint.setCategory(ComplaintCategory.MILD);
 			    	break;
 			    case "moderate": 
-			    	complaint.setCategory(ComplaintsCategory.MODERATE);
+			    	complaint.setCategory(ComplaintCategory.MODERATE);
 			    	break;
 			    case "severe": 
-			    	complaint.setCategory(ComplaintsCategory.SEVERE);
+			    	complaint.setCategory(ComplaintCategory.SEVERE);
 			    	break;
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + complaintCat);
@@ -217,10 +217,10 @@ public class ComplaintsController {
 		       
 		       switch (complaintType.toLowerCase()) {
 			    case "broadband": 
-			    	complaint.setComplaintType(ComplaintsType.BROADBAND);
+			    	complaint.setComplaintType(ComplaintType.BROADBAND);
 				break;
 				case "cable":
-					complaint.setComplaintType(ComplaintsType.CABLE);
+					complaint.setComplaintType(ComplaintType.CABLE);
 					break;
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + complaintType);
@@ -240,8 +240,8 @@ public class ComplaintsController {
 
 	
 	/*Method to UPDATE a complaint*/
-	public Complaints updateComplaints(Complaints updatedComplaint) {
-		Complaints complaint = null;
+	public Complaint updateComplaints(Complaint updatedComplaint) {
+		Complaint complaint = null;
 	
 		try {
 			this.sessionFactory = HibernateConnectorSessionFactory.getHibernateSessionFactory();
@@ -250,7 +250,7 @@ public class ComplaintsController {
 			
 			//gets the Stock object from the database. i.e it tries to retrieve the complaint
 			//with the matching ID and create an object from the values
-			complaint = (Complaints)this.session.get(Complaints.class, 
+			complaint = (Complaint)this.session.get(Complaint.class, 
 									updatedComplaint.getComplaintID()); 
 			complaint.setCustID(updatedComplaint.getCustID());
 			complaint.setEmpID(updatedComplaint.getEmpID());

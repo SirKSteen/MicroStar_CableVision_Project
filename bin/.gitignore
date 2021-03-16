@@ -1,5 +1,4 @@
 /controllers/
 /driver/
-/utils/
 /models/
-/hibernate.cfg.xml
+/utils/
