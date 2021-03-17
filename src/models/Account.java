@@ -39,15 +39,13 @@ public class Account {
 	
 	public Account() {
 		
-		//this.acct_id = 0;
 		this.payment_status = null;
 		this.amt_due = 0;
 		this.user = new User();
 	}
 	
-	public Account(PaymentStatus payment_status, float amt_due) {
+	public Account(PaymentStatus payment_status, float amt_due, User user) {
 	
-		//this.acct_id = acct_id;
 		this.payment_status = payment_status;
 		this.amt_due = amt_due;
 		this.user = user;
@@ -55,7 +53,6 @@ public class Account {
 	
 	public Account(Account a) {
 		
-	//	this.acct_id = a.acct_id;
 		this.payment_status = a.payment_status;
 		this.amt_due = a.amt_due;
 		this.user = a.user;

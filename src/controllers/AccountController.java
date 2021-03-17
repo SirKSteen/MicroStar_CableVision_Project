@@ -86,7 +86,7 @@ public class AccountController {
 		
 	}
 	
-	public ArrayList<Account> getAllAcoounts(){
+	public ArrayList<Account> getAllAccounts(){
 		
 		ArrayList<Account> accountsList = new ArrayList<Account>();
 		
