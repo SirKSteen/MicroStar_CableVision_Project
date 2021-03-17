@@ -16,9 +16,9 @@ public class Driver {
 		AuthController ac = new AuthController();
 		
 		
-		ArrayList<User> userList = new ArrayList<User>();
+	
 		
-		userList.add(new User("John", "Brown", "eih.gmail.com", "73802", Role.CUSTOMER));
+		new User("John", "Brown", "eih.gmail.com", "73802", Role.CUSTOMER);
 		
 		ArrayList<Account> accountsList = new ArrayList<Account>();
 		
