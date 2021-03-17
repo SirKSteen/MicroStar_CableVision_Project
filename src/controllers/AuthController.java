@@ -1,7 +1,7 @@
 package controllers;
 
 import utils.CustomizedException;
-
+import utils.Role;
 import models.User;
 /*This class will isolate the logic for authentication and updating password.*/
 public class AuthController {
@@ -14,7 +14,7 @@ public class AuthController {
 		this.user = new User();
 	}
 	
-	public boolean login(int userId,String password) throws CustomizedException {
+	public boolean login(int userId,String password, Role role) throws CustomizedException {
 		
 	    this.user = this.userController.findById(userId);
 	    boolean loggedIn = false;
@@ -22,8 +22,12 @@ public class AuthController {
 	    	
 	    	try {
 	    		this.userController.validatePassword(password, this.user.getPassword());
-				loggedIn = true;//user logged in successfully
-				System.out.println("user logged in");
+	    		
+	    		if(this.user.getRole() == role) {
+	    			loggedIn = true;//user logged in successfully
+	    		}else {
+	    			throw new CustomizedException("User is not registered as "+role);
+	    		}
 			} catch (CustomizedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -58,6 +62,7 @@ public class AuthController {
 	
 		    }else {
 		    	System.out.println("user not found");
+		    	throw new CustomizedException("User not found");
 		    }
 		return passwordUpdated;
 	}

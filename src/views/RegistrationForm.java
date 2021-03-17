@@ -49,6 +49,7 @@ public class RegistrationForm extends JFrame implements ActionListener {
 	public RegistrationForm()
 	    {
 		
+		super();
 		//labels
 		this.roles = new String[] {"Customer","Representative","Technician"};
 		this.firstNameLabel=new JLabel("FIRST NAME");
@@ -68,7 +69,6 @@ public class RegistrationForm extends JFrame implements ActionListener {
 	    this.roleComboBox.setSelectedIndex(0);
 	    this.registerButton=new JButton("REGISTER");
 	    this.resetButton=new JButton("RESET");
-	    new UserController();
 	    this.authController = new AuthController();
 	      
 	    }
