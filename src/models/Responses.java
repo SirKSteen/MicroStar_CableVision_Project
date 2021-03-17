@@ -25,7 +25,7 @@ import java.util.Date;
 
 
 @Entity
-@Table(name = "Responces") //reference the user table in database. 
+@Table(name = "Responses") //reference the user table in database. 
 public class Responses {
 	
 	/*use annotations to specify id column and set it to auto generate ID's. 
@@ -34,17 +34,18 @@ public class Responses {
 	*/	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //Automatically increments ID number based on previous record.
-	@Column(name = "responces_id") //specify column name since variable name is different
-	private int responces_id;
+	@Column(name = "responses_id") //specify column name since variable name is different
+	private int responses_id;
 	
-	@Column(name = "complaint_id")
-	private int complaint_id;
+	 @ManyToOne
+	 @JoinColumn(name = "complaint_id", referencedColumnName = "complaint_id")
+	private Complaints complaint_id;
 	
-	@Column(name = "responce_date")
-	private Date responce_date;
+	@Column(name = "response_date")
+	private Date response_date;
 	
-	@Column(name = "responce")
-	private String responce;
+	@Column(name = "response")
+	private String response;
 	
 	
 	
@@ -53,37 +54,37 @@ public class Responses {
 	
 
 
-	public Responses(int responces_id, int complaint_id, Date responce_date, String responce) {
-		this.responces_id = responces_id;
+	public Responses(int responses_id, Complaints complaint_id, Date response_date, String response) {
+		this.responses_id = responses_id;
 		this.complaint_id = complaint_id;
-		this.responce_date = responce_date;
-		this.responce = responce;
+		this.response_date = response_date;
+		this.response = response;
 		
 	}
 	
-	public Responses(final Responses responces) {
-		this.responces_id = responces.responces_id;
-		this.complaint_id = responces.complaint_id;
-		this.responce_date = responces.responce_date;
-		this.responce = responces.responce;
+	public Responses(final Responses responses) {
+		this.responses_id = responses.responses_id;
+		this.complaint_id = responses.complaint_id;
+		this.response_date = responses.response_date;
+		this.response = responses.response;
 	}
 
 //getters and setters
 
 	public Responses() {
-		this(0,0,null,""); // initialize variables using primary constructor to promote code reuse 
+		this(0,null,null,""); // initialize variables using primary constructor to promote code reuse 
 	}
 
 
 	
 
 	public int getResponces_id() {
-		return responces_id;
+		return responses_id;
 	}
 
 
-	public void setResponces_id(int responces_id) {
-		this.responces_id = responces_id;
+	public void setResponces_id(int responses_id) {
+		this.responses_id = responses_id;
 	}
 
 
@@ -98,28 +99,28 @@ public class Responses {
 
 
 	public Date getResponce_date() {
-		return responce_date;
+		return response_date;
 	}
 
 
-	public void setResponce_date(Date responce_date) {
-		this.responce_date = responce_date;
+	public void setResponce_date(Date response_date) {
+		this.response_date = response_date;
 	}
 
 
 	public String getResponce() {
-		return responce;
+		return response;
 	}
 
 
-	public void setResponce(String responce) {
-		this.responce = responce;
+	public void setResponce(String response) {
+		this.response = response;
 	}
 
 	@Override
 	public String toString() {
-		return "responces [responces_id=" + responces_id + ", complaint_id=" + complaint_id + ", responce_date="
-				+ responce_date + ", responce=" + responce + "]";
+		return "Responses [responses_id=" + responses_id + ", complaint_id=" + complaint_id + ", response_date="
+				+ response_date + ", response=" + response + "]";
 	}
 
 	
