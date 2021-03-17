@@ -54,8 +54,8 @@ public class Responses {
 	
 
 
-	public Responses(int responses_id, Complaints complaint_id, Date response_date, String response) {
-		this.responses_id = responses_id;
+	public Responses( Complaints complaint_id, Date response_date, String response) {
+		
 		this.complaint_id = complaint_id;
 		this.response_date = response_date;
 		this.response = response;
@@ -63,7 +63,7 @@ public class Responses {
 	}
 	
 	public Responses(final Responses responses) {
-		this.responses_id = responses.responses_id;
+		
 		this.complaint_id = responses.complaint_id;
 		this.response_date = responses.response_date;
 		this.response = responses.response;
@@ -78,12 +78,12 @@ public class Responses {
 
 	
 
-	public int getResponces_id() {
+	public int getResponses_id() {
 		return responses_id;
 	}
 
 
-	public void setResponces_id(int responses_id) {
+	public void setResponses_id(int responses_id) {
 		this.responses_id = responses_id;
 	}
 
@@ -98,22 +98,22 @@ public class Responses {
 	}
 
 
-	public Date getResponce_date() {
+	public Date getResponse_date() {
 		return response_date;
 	}
 
 
-	public void setResponce_date(Date response_date) {
+	public void setResponse_date(Date response_date) {
 		this.response_date = response_date;
 	}
 
 
-	public String getResponce() {
+	public String getResponse() {
 		return response;
 	}
 
 
-	public void setResponce(String response) {
+	public void setResponse(String response) {
 		this.response = response;
 	}
 
