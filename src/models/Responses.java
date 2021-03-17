@@ -26,7 +26,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "Responces") //reference the user table in database. 
-public class responces {
+public class Responses {
 	
 	/*use annotations to specify id column and set it to auto generate ID's. 
 	 * we don't have to worry about keeping track of ID's for new users.
@@ -53,7 +53,7 @@ public class responces {
 	
 
 
-	public responces(int responces_id, int complaint_id, Date responce_date, String responce) {
+	public Responses(int responces_id, int complaint_id, Date responce_date, String responce) {
 		this.responces_id = responces_id;
 		this.complaint_id = complaint_id;
 		this.responce_date = responce_date;
@@ -61,7 +61,7 @@ public class responces {
 		
 	}
 	
-	public responces(final responces responces) {
+	public Responses(final Responses responces) {
 		this.responces_id = responces.responces_id;
 		this.complaint_id = responces.complaint_id;
 		this.responce_date = responces.responce_date;
@@ -70,7 +70,7 @@ public class responces {
 
 //getters and setters
 
-	public responces() {
+	public Responses() {
 		this(0,0,null,""); // initialize variables using primary constructor to promote code reuse 
 	}
 
