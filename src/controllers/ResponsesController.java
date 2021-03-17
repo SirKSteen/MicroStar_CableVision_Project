@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 
 import factories.HibernateConnectorSessionFactory;
 import models.Responses;
+import utils.ControllerException;
 
 public class ResponsesController {
 
@@ -34,7 +35,7 @@ public class ResponsesController {
 	
 
 
-	public void addResponse(Responses response) {
+	public void addResponse(Responses response) throws ControllerException {
 		
 	   try{
 		   //add user using hibernate
