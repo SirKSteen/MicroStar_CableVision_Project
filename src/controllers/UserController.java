@@ -96,7 +96,7 @@ public class UserController {
 	}
 	
 	/* Method to  READ all the users */
-	public ArrayList<User> getAllUsers() {
+	public ArrayList<User> getAllUsers() throws CustomizedException {
 		ArrayList<User> userList = new ArrayList<User>();
 		
 	    try {
@@ -149,13 +149,14 @@ public class UserController {
 		} catch (SQLException e) {
 			// TODO manage and log exceptions
 			e.printStackTrace();
+			throw new CustomizedException(e.getMessage());
 		}
 	    
 	    return userList;
 	}
 	
 	/* Method to  READ one user. Returns a single user. */
-	public User findById(int userId) {
+	public User findById(int userId) throws CustomizedException {
 		
 		User user = null;
 		
@@ -204,6 +205,7 @@ public class UserController {
 		} catch (SQLException e) {
 			// TODO manage and log exceptions
 			e.printStackTrace();
+			throw new CustomizedException(e.getMessage());
 		}
 		
 		return user;
@@ -236,7 +238,7 @@ public class UserController {
 	
 	
 	/*Method to UPDATE a user*/
-	public User updateUser(User updatedUser) {
+	public User updateUser(User updatedUser) throws CustomizedException {
 		User user = null;
 	
 		try {
@@ -263,6 +265,8 @@ public class UserController {
 				this.transaction.rollback();
 				System.out.println("rollback complete");
 			}
+			
+			throw new CustomizedException(e.getMessage());
 		}
 		  catch (Exception e) {
 			// TODO: handle exception
@@ -272,7 +276,7 @@ public class UserController {
 		return user;
 	}
 	/*Method to delete user*/
-	public int deleteUser(int userId) {
+	public int deleteUser(int userId) throws CustomizedException {
 		int result = -1;
 		//delete user using traditional connectivity
 		try {
@@ -282,10 +286,18 @@ public class UserController {
 	                   "WHERE user_id ="+userId);
 		
 		System.out.println(result + " row(s) affected. delete successfull");
+		if(result > 0) {
+			throw new CustomizedException("User deleted.");
+		}else if(result == 0) {
+			throw new CustomizedException("No user with given ID found");
+		}
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw new CustomizedException(e.getMessage());
+		}catch (CustomizedException ce) {
+			throw new CustomizedException(ce.getMessage());
 		}
 		
 		return result;

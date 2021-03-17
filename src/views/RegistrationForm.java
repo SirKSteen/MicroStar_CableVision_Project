@@ -28,25 +28,22 @@ public class RegistrationForm extends JFrame implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	//local variables
-	//Creating objects
-	String [] roles;
-    JLabel firstNameLabel;
-    JLabel lastNameLabel;
-    JLabel emailLabel;
-    JLabel passwordLabel;
-    JLabel confirmPasswordLabel;
-    JLabel roleLabel;
-    JTextField firstNameTextField;
-    JTextField lastNameTextField;
-    JComboBox<String> roleComboBox;
-    JPasswordField passwordField;
-    JPasswordField confirmPasswordField;
-    JTextField emailTextField;
-    JButton registerButton;
-    JButton resetButton;
-    JLabel progressLabel;
-    UserController userController;
-    AuthController authController;
+	private String [] roles;
+    private JLabel firstNameLabel;
+    private JLabel lastNameLabel;
+    private JLabel emailLabel;
+    private JLabel passwordLabel;
+    private JLabel confirmPasswordLabel;
+    private JLabel roleLabel;
+    private JTextField firstNameTextField;
+    private JTextField lastNameTextField;
+    private JComboBox<String> roleComboBox;
+    private JPasswordField passwordField;
+    private JPasswordField confirmPasswordField;
+    private JTextField emailTextField;
+    private JButton registerButton;
+    private JButton resetButton;
+    private AuthController authController;
     
     
 	public RegistrationForm()
@@ -61,8 +58,6 @@ public class RegistrationForm extends JFrame implements ActionListener {
 	    this.confirmPasswordLabel=new JLabel("CONFIRM PASSWORD");
 	    this.roleLabel = new JLabel("Role");
 	    
-	    this.progressLabel = new JLabel("Adding User");
-	    
 	    //input fields
 	    this.firstNameTextField=new JTextField();
 	    this.lastNameTextField=new JTextField();
@@ -73,14 +68,14 @@ public class RegistrationForm extends JFrame implements ActionListener {
 	    this.roleComboBox.setSelectedIndex(0);
 	    this.registerButton=new JButton("REGISTER");
 	    this.resetButton=new JButton("RESET");
-	    this.userController = new UserController();
+	    new UserController();
 	    this.authController = new AuthController();
 	      
 	    }
 	
     public void createWindow()
     {
-       //Setting properties of JFrame
+       //Setting properties of JFrame; i.e this frame
         this.setTitle("Registration Form");
         this.setBounds(550,100,400,550);
         this.getContentPane().setBackground(Color.white);
@@ -125,8 +120,7 @@ public class RegistrationForm extends JFrame implements ActionListener {
         this.confirmPasswordField.setBounds(180,243,165,23);
         this.roleComboBox.setBounds(180,293,165,23);
         this.registerButton.setBounds(70,400,100,35);
-        this.resetButton.setBounds(220,400,100,35);
-        this.progressLabel.setBounds(160,350, 100, 25);
+        this.resetButton.setBounds(220,400,100,35);     
         
     }
     
@@ -157,8 +151,8 @@ public class RegistrationForm extends JFrame implements ActionListener {
     	this.registerButton.addActionListener(this);
     	this.resetButton.addActionListener(this);
     	
-    	this.add(this.progressLabel);
-    	this.progressLabel.setVisible(false);
+
+    
     }
 	
     
@@ -169,7 +163,6 @@ public class RegistrationForm extends JFrame implements ActionListener {
     	this.passwordField.setText("");
     	this.confirmPasswordField.setText("");
     	this.roleComboBox.setSelectedIndex(0);
-    	this.progressLabel.setVisible(false);
     }
 	
 	

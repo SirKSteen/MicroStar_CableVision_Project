@@ -14,7 +14,7 @@ public class AuthController {
 		this.user = new User();
 	}
 	
-	public boolean login(int userId,String password) {
+	public boolean login(int userId,String password) throws CustomizedException {
 		
 	    this.user = this.userController.findById(userId);
 	    boolean loggedIn = false;
@@ -27,6 +27,7 @@ public class AuthController {
 			} catch (CustomizedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				throw new CustomizedException(e.getMessage());
 				
 			}
 	    }else {
