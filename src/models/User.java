@@ -40,6 +40,8 @@ public class User {
 	
 	private String password;
 	
+	
+	
 	@Enumerated(EnumType.STRING) // map to enumerated role in database
 	@Column(name = "user_role")
 	 private Role role;
