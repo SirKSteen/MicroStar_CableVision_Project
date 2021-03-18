@@ -18,9 +18,7 @@ package loggers;
 
 
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-//import org.apache.logging.log4j.core.config.properties.*;
-import java.util.logging.*; 
+import org.apache.logging.log4j.Logger; 
  
 public class Log4jJDBCExample 
 {
@@ -32,7 +30,7 @@ public class Log4jJDBCExample
         LOG.debug("Debug Message Logged"); 
         LOG.fatal("Sample fatal message");
         LOG.info("Info Message Logged");
-        LOG.error("Error Message Logged", new NullPointerException("NullError"));
+        LOG.error("Error Message Logged");
         LOG.warn("Test Warn message");
     }
 }

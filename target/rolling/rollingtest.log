@@ -1,0 +1,5 @@
+2021-03-17 21:56:36,975 DEBUG l.Log4jJDBCExample [main] Debug Message Logged
+2021-03-17 21:56:36,987 FATAL l.Log4jJDBCExample [main] Sample fatal message
+2021-03-17 21:56:36,988 INFO l.Log4jJDBCExample [main] Info Message Logged
+2021-03-17 21:56:36,988 ERROR l.Log4jJDBCExample [main] Error Message Logged
+2021-03-17 21:56:36,988 WARN l.Log4jJDBCExample [main] Test Warn message

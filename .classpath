@@ -6,11 +6,12 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/AP files/Files/apache-log4j-2.14.1-bin/apache-log4j-2.14.1-bin/log4j-api-2.14.1.jar"/>
-	<classpathentry kind="lib" path="C:/AP files/Files/apache-log4j-2.14.1-bin/apache-log4j-2.14.1-bin/log4j-core-2.14.1.jar"/>
-	<classpathentry kind="lib" path="C:/AP files/Files/jbcrypt.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/hibernate"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Hibernate"/>
+	<classpathentry kind="lib" path="E:/User/Patrick/Java/jbcrypt-demo-master/lib/jbcrypt.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/apache-log4j-2.13.3-bin/log4j-api-2.13.3.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/apache-log4j-2.13.3-bin/log4j-core-2.13.3.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/apache-log4j-2.13.3-bin/log4j-jdbc-dbcp2-2.13.3.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/MySQL/Connector J 8.0/mysql-connector-java-8.0.23.jar"/>
 	<classpathentry kind="lib" path="properties"/>
-	<classpathentry kind="lib" path="C:/AP files/Files/apache-log4j-2.14.1-bin/apache-log4j-2.14.1-bin/log4j-jdbc-dbcp2-2.14.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
