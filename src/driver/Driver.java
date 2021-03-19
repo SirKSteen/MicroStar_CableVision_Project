@@ -14,9 +14,14 @@ public class Driver {
 		
 		boolean t = ac.updatePassword(1700, "secrets","secret");
 		
-		//LOG.error(t);
+		
 		 //LOG.debug("Debug Message Logged"); 
-		 LOG.trace(null, 0,"Error occured"); 
+		LOG.debug("Debug Message Logged"); 
+        LOG.fatal("Sample fatal message");
+        LOG.info("Info Message Logged");
+        LOG.error("Error Message Logged");
+        LOG.warn("Test Warn message");
+        LOG.trace("TRACE MESSAGE");
 	}
 
 }
