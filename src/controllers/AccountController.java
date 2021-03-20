@@ -15,7 +15,6 @@ import factories.HibernateConnectorSessionFactory;
 import factories.TraditionalDatabaseConnectorFactory;
 import models.Account;
 import models.User;
-import utils.CustomizedException;
 import utils.PaymentStatus;
 import utils.Role;
 
@@ -316,7 +315,7 @@ public class AccountController {
 				
 				result = this.statement.executeUpdate("DELETE FROM Accounts WHERE acct_id ="+acct_id);
 				
-				System.out.println(result + "row(s) affected. Delete Successful");
+				System.out.println(result + " row(s) affected. Delete Successful");
 				
 			}catch (SQLException e) {
 				e.printStackTrace();

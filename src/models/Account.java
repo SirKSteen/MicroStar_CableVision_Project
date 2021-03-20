@@ -28,7 +28,7 @@ public class Account {
 	
 	private float amt_due;
 	
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="user_id")
 	private User user_id;
 	
@@ -36,7 +36,6 @@ public class Account {
 	
 	public Account() {
 		
-		//this.acct_id = 0;
 		this.payment_status = null;
 		this.amt_due = 0;
 		this.user_id = new User();
@@ -52,7 +51,7 @@ public class Account {
 	public Account(Account a) {
 		
 		this.acct_id = a.acct_id;
-		this.payment_status = a.payment_status;
+        this.payment_status = a.payment_status;
 		this.amt_due = a.amt_due;
 		this.user_id = a.user_id;
 	}
@@ -82,9 +81,7 @@ public class Account {
 	public void setAmt_due(float amt_due) {
 		this.amt_due = amt_due;
 	}
-	
-	@OneToOne
-	@JoinColumn(name="user_id")
+
 	public User getUser() {
 		return user_id;
 	}
