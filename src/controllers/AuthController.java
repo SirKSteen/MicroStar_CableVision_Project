@@ -1,10 +1,15 @@
 package controllers;
 
 import utils.CustomizedException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import driver.Driver;
 import models.User;
 /*This class will isolate the logic for authentication and updating password.*/
 public class AuthController {
-
+	private static final Logger LOG = LogManager.getLogger(AuthController.class.getName());
 	private UserController userController;
 	private User user;
 	
@@ -52,6 +57,7 @@ public class AuthController {
 				} catch (CustomizedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					LOG.fatal(e.getMessage());
 				}
 	
 		    }else {

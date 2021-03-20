@@ -14,7 +14,7 @@
         <!-- setting this property is not necessary as it is automatically registered--> 
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>   
         <property name="connection.pool_size">1</property> 
-        <property name="show_sql">true</property>
+        <property name="show_sql">false</property>
         
         <!-- Add annotated classes here -->
         <mapping class="models.User"/>
@@ -24,3 +24,4 @@
 
     </session-factory>    
 </hibernate-configuration>  
+
