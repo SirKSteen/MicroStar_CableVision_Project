@@ -85,6 +85,10 @@ public class UserController {
 	   return userId;
 	}
 	
+	
+	
+	
+	
 	/* Method to  READ all the users */
 	public ArrayList<User> getAllUsers() {
 		ArrayList<User> userList = new ArrayList<User>();
@@ -119,9 +123,10 @@ public class UserController {
 		       user.setLastName(lastName);
 		       user.setEmail(email);
 		       user.setPassword(password);
+		       
 		       switch (role.toLowerCase()) {
 			    case "customer": 
-				user.setRole(Role.CUSTOMER);
+			    	user.setRole(Role.CUSTOMER);
 				break;
 				case "representative":
 					user.setRole(Role.REPRESENTATIVE);
@@ -143,6 +148,7 @@ public class UserController {
 	    
 	    return userList;
 	}
+	
 	
 	/* Method to  READ one user. Returns a single user. */
 	public User findById(int userId) {
@@ -199,7 +205,6 @@ public class UserController {
 		return user;
 	}
 	
-	
 	/*Method to UPDATE a user*/
 	public User updateUser(User updatedUser) {
 		User user = null;
@@ -236,6 +241,8 @@ public class UserController {
 		
 		return user;
 	}
+	
+	
 	/*Method to delete user*/
 	public int deleteUser(int userId) {
 		int result = -1;
@@ -246,7 +253,7 @@ public class UserController {
 		  result = this.statement.executeUpdate("DELETE FROM users " +
 	                   "WHERE user_id ="+userId);
 		
-		System.out.println(result + " row(s) affected. delete successfull");
+		System.out.println(result + " row(s) affected. delete successful");
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -256,6 +263,9 @@ public class UserController {
 		return result;
 	}
 	
+	
+	
+	
 	//helper function to generate password hash in database before storing.
 	//no raw text passwords will be stored.
 	public String generatePasswordHash(String password) {
@@ -264,7 +274,8 @@ public class UserController {
 		return encrypted;
 	}
 	
-	//Method to test if a plain text password matches a previously hashed ones
+	
+	//Method to test if a plain text password matches the hash when converted
 	//using BCrypt
 	public boolean validatePassword(String testPassword,String encrypted) throws CustomizedException {
 

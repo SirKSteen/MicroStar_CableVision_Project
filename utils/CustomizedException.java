@@ -1,4 +1,3 @@
-
 package utils;
 
 public class CustomizedException extends Exception {
