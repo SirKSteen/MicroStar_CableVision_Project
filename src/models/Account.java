@@ -17,23 +17,20 @@ import utils.PaymentStatus;
 
 @Entity
 @Table(name = "Accounts") //reference to the accounts table in the database
-
 public class Account {
-	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //Automatically increments ID number based on previous record.
-	
 	private int acct_id;
-	
 	
 	@Enumerated(EnumType.STRING)  // map to enumerated role in database
 	private PaymentStatus payment_status;
 	
-	
 	private float amt_due;
 	
-	private User user;
+	@OneToOne
+	@JoinColumn(name="user_id")
+	private User user_id;
 	
 	//Constructors 
 	
@@ -42,23 +39,22 @@ public class Account {
 		//this.acct_id = 0;
 		this.payment_status = null;
 		this.amt_due = 0;
-		this.user = new User();
+		this.user_id = new User();
 	}
 	
-	public Account(PaymentStatus payment_status, float amt_due) {
+	public Account(PaymentStatus payment_status, float amt_due, User user) {
 	
-		//this.acct_id = acct_id;
 		this.payment_status = payment_status;
 		this.amt_due = amt_due;
-		this.user = user;
+		this.user_id = user;
 	}
 	
 	public Account(Account a) {
 		
-	//	this.acct_id = a.acct_id;
+		this.acct_id = a.acct_id;
 		this.payment_status = a.payment_status;
 		this.amt_due = a.amt_due;
-		this.user = a.user;
+		this.user_id = a.user_id;
 	}
 
 	
@@ -87,22 +83,20 @@ public class Account {
 		this.amt_due = amt_due;
 	}
 	
-	
-	@OneToOne (cascade = CascadeType.ALL) //JPA annotations in other to implement a unidirectional one-to-one association on a foreign key
-	@JoinColumn (name = "user_id")
-	
+	@OneToOne
+	@JoinColumn(name="user_id")
 	public User getUser() {
-		return user;
+		return user_id;
 	}
 	
 	public void setUser(User user) {
-		this.user = user;
+		this.user_id = user;
 	}
 
 	@Override
 	public String toString() {
 		return "Accounts [acct_id=" + acct_id + ", payment_status=" + payment_status + ", amt_due=" + amt_due
-				+ ", user=" + user + "]";
+				+ ", user=" + user_id + "]";
 	}
 	
 

@@ -14,8 +14,10 @@ import org.hibernate.Transaction;
 import factories.HibernateConnectorSessionFactory;
 import factories.TraditionalDatabaseConnectorFactory;
 import models.Account;
+import models.User;
 import utils.CustomizedException;
 import utils.PaymentStatus;
+import utils.Role;
 
 public class AccountController {
 	
@@ -44,7 +46,7 @@ public class AccountController {
 	 * Method to add an account using hibernate
 	 */
 	
-	public int createAccount(Account accounts) {
+	public int createAccount(Account account) {
 		
 		int acct_id = -1; 
 		
@@ -62,7 +64,7 @@ public class AccountController {
 		
 		this.transaction = this.session.beginTransaction();
 		 
-		acct_id = (int) this.session.save(accounts);
+		acct_id = (int) this.session.save(account);
 		
 		this.transaction.commit();
 		
@@ -86,7 +88,7 @@ public class AccountController {
 		
 	}
 	
-	public ArrayList<Account> getAllAcoounts(){
+	public ArrayList<Account> getAllAccounts(){
 		
 		ArrayList<Account> accountsList = new ArrayList<Account>();
 		
@@ -99,8 +101,7 @@ public class AccountController {
 			this.statement = this.connect.createStatement();
 			
 			//create sql query
-			this.sqlQuery = "SELECT acct_id, payment_status, amt_due, user FROM Accounts";
-			
+			this.sqlQuery = "SELECT * FROM Accounts INNER JOIN Users ON Accounts.user_id=Users.user_id";					
 			//execute sql query on statement and a ResultSet is returned
 			
 			ResultSet rs = this.statement.executeQuery(this.sqlQuery);
@@ -108,44 +109,69 @@ public class AccountController {
 			//move cursor to beginning of row if it exists 
 			while(rs.next()) {
 				
-				//retrieve by column name
+				//retrieve by column name 
 				int id = rs.getInt("acct_id");
 				String paymentStatus = rs.getString("payment_status");
 				float amountDue = rs.getFloat("amt_due");
-				String user = rs.getString("user");
+				int userId = rs.getInt("user_id");
+				String firstName= rs.getString("first_name");
+				String lastName= rs.getString("last_name");
+				String email = rs.getString("email");
+				String role = rs.getString("user_role");
+				String password = rs.getString("password");
 			
-			
+				
+				
 			//create user objects using data retrieved from columns
+		
+				 User user = new User();
+				  
+			       user.setUserId(userId);
+			       user.setFirstName(firstName);
+			       user.setLastName(lastName);
+			       user.setEmail(email);
+			       user.setPassword(password);
+			       switch (role.toLowerCase()) {
+				    case "customer": 
+					user.setRole(Role.CUSTOMER);
+					break;
+					case "representative":
+						user.setRole(Role.REPRESENTATIVE);
+						break;
+					case "technician":
+						user.setRole(Role.TECHNICIAN);
+						break;
+				default:
+					throw new IllegalArgumentException("Unexpected value: " + role);
+				}
 			
-			Account accounts = new Account();
-			
-			accounts.setAcct_id(id);
-			//accounts.setPayment_status(paymentStatus);
-			accounts.setAmt_due(amountDue);
-			accounts.setUser(accounts.getUser());
+			Account account = new Account();
+			account.setAcct_id(id);
+			account.setAmt_due(amountDue);
+			account.setUser(user);
 			
 			switch (paymentStatus.toLowerCase()) {
 			
 			case "cancelled":
-				accounts.setPayment_status(PaymentStatus.CANCELLED);
+				account.setPayment_status(PaymentStatus.CANCELLED);
 				break;
 			case "complete":
-				accounts.setPayment_status(PaymentStatus.COMPLETE);
+				account.setPayment_status(PaymentStatus.COMPLETE);
 				break;
 			case "pending":
-				accounts.setPayment_status(PaymentStatus.PENDING);
+				account.setPayment_status(PaymentStatus.PENDING);
 				break;
 			case "rejected":
-				accounts.setPayment_status(PaymentStatus.REJECTED);
+				account.setPayment_status(PaymentStatus.REJECTED);
 				break;
 			case "success":
-				accounts.setPayment_status(PaymentStatus.SUCCESS);
+				account.setPayment_status(PaymentStatus.SUCCESS);
 				break;
 			default:
 				throw new IllegalArgumentException("Unexpected value:" + paymentStatus);
 			}
 			
-			accountsList.add(accounts);
+			accountsList.add(account);
 			}
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -157,7 +183,7 @@ public class AccountController {
 	//Method to READ one Account. Returns a single acct
 	public Account findById(int acct_id) {
 		
-		Account accounts = null;
+		Account account = null;
 		
 		try {
 			
@@ -165,7 +191,7 @@ public class AccountController {
 			this.statement = this.connect.createStatement();
 			
 			//create sql query
-			this.sqlQuery = "SELECT acct_id, payment_status, amt_due, user FROM Accounts";
+			this.sqlQuery = "SELECT * FROM `micro_star`.`accounts` INNER JOIN `micro_star`.`users` ON `micro_star`.`accounts`.user_id=`micro_star`.`users`.user_id WHERE Accounts.acct_id="+acct_id;
 			ResultSet rs = this.statement.executeQuery(this.sqlQuery);
 			
 			//read result values and create user objects
@@ -176,33 +202,57 @@ public class AccountController {
 				int id = rs.getInt("acct_id");
 				String paymentStatus = rs.getString("payment_status");
 				float amountDue = rs.getFloat("amt_due");
-				String user = rs.getString("user");
+				int userId = rs.getInt("user_id");
+				String firstName= rs.getString("first_name");
+				String lastName= rs.getString("last_name");
+				String email = rs.getString("email");
+				String role = rs.getString("user_role");
+				String password = rs.getString("password");
 				
 				//create user objects using data retrieved from columns
+				User user = new User();
+				  
+			       user.setUserId(userId);
+			       user.setFirstName(firstName);
+			       user.setLastName(lastName);
+			       user.setEmail(email);
+			       user.setPassword(password);
+			       switch (role.toLowerCase()) {
+				    case "customer": 
+					user.setRole(Role.CUSTOMER);
+					break;
+					case "representative":
+						user.setRole(Role.REPRESENTATIVE);
+						break;
+					case "technician":
+						user.setRole(Role.TECHNICIAN);
+						break;
+				default:
+					throw new IllegalArgumentException("Unexpected value: " + role);
+				}
 				
-				accounts = new Account();
+				account = new Account();
 				
-				accounts.setAcct_id(id);
-				//accounts.setPayment_status(paymentStatus);
-				accounts.setAmt_due(amountDue);
-				accounts.setUser(accounts.getUser());
+				account.setAcct_id(id);
+				account.setAmt_due(amountDue);
+				account.setUser(user);
 				
 				switch (paymentStatus.toLowerCase()) {
 				
 				case "cancelled":
-					accounts.setPayment_status(PaymentStatus.CANCELLED);
+					account.setPayment_status(PaymentStatus.CANCELLED);
 					break;
 				case "complete":
-					accounts.setPayment_status(PaymentStatus.COMPLETE);
+					account.setPayment_status(PaymentStatus.COMPLETE);
 					break;
 				case "pending":
-					accounts.setPayment_status(PaymentStatus.PENDING);
+					account.setPayment_status(PaymentStatus.PENDING);
 					break;
 				case "rejected":
-					accounts.setPayment_status(PaymentStatus.REJECTED);
+					account.setPayment_status(PaymentStatus.REJECTED);
 					break;
 				case "success":
-					accounts.setPayment_status(PaymentStatus.SUCCESS);
+					account.setPayment_status(PaymentStatus.SUCCESS);
 					break;
 				default:
 					throw new IllegalArgumentException("Unexpected value:" + paymentStatus);
@@ -214,13 +264,13 @@ public class AccountController {
 			e.printStackTrace();
 			
 		}
-		return accounts;
+		return account;
 	}
 				
 		//Method to UPDATE a user		
-		public Account updateAccounts(Account updatedAccounts) {
+		public Account updateAccount(Account updatedAccount) {
 			
-			Account accounts = null;
+			Account account = null;
 			
 			try {
 				this.sessionFactory = HibernateConnectorSessionFactory.getHibernateSessionFactory();
@@ -230,16 +280,16 @@ public class AccountController {
 				//gets the Stock object from the database i.e. it tries to retrieve the accounts info
 				//with the matching ID and create an object from the values
 				
-				accounts = (Account)this.session.get(Account.class, updatedAccounts.getAcct_id());
+				account = (Account)this.session.get(Account.class, updatedAccount.getAcct_id());
 				
-				accounts.setAcct_id(updatedAccounts.getAcct_id());
-				accounts.setPayment_status(updatedAccounts.getPayment_status());
-				accounts.setAmt_due(updatedAccounts.getAmt_due());
-				accounts.setUser(updatedAccounts.getUser());
+				account.setAcct_id(updatedAccount.getAcct_id());
+				account.setPayment_status(updatedAccount.getPayment_status());
+				account.setAmt_due(updatedAccount.getAmt_due());
+				account.setUser(updatedAccount.getUser());
 				
 				//complete transaction
 				this.transaction.commit();
-				System.out.println("user updated");
+				System.out.println("account updated");
 			}catch (HibernateException e) {
 				System.out.println(e);
 				if(this.transaction != null) {
@@ -250,7 +300,7 @@ public class AccountController {
 			catch (Exception e) {
 				System.out.println(e);
 		}
-		return accounts;	
+		return account;	
 	}
 	
 		//Method to delete an account
@@ -264,7 +314,7 @@ public class AccountController {
 				this.connect = TraditionalDatabaseConnectorFactory.getDatabaseConnection();
 				this.statement = this.connect.createStatement();
 				
-				result = this.statement.executeUpdate("DELETE FROM Accounts" + "Where acct_id =" +acct_id);
+				result = this.statement.executeUpdate("DELETE FROM Accounts WHERE acct_id ="+acct_id);
 				
 				System.out.println(result + "row(s) affected. Delete Successful");
 				

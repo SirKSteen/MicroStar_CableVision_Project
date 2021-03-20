@@ -12,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import utils.Role;
@@ -39,8 +40,7 @@ public class User {
 	private String email;
 	
 	private String password;
-	
-	
+	 
 	
 	@Enumerated(EnumType.STRING) // map to enumerated role in database
 	@Column(name = "user_role")
@@ -131,6 +131,8 @@ public class User {
 		this.role = role;
 	}
 	
+	
+
 
 	@Override
 	public String toString() {
