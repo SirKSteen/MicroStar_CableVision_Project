@@ -8,10 +8,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import factories.HibernateConnectorSessionFactory;
-import models.Responses;
-import utils.ControllerException;
+import models.Response;
+import utils.CustomizedException;
 
-public class ResponsesController {
+public class ResponseController {
 
 	//hibernate session config
     private HibernateConnectorSessionFactory hibernateSessionFactory;
@@ -24,7 +24,7 @@ public class ResponsesController {
 	
 	
 	
-	public ResponsesController() {
+	public ResponseController() {
 		this.sessionFactory = null;
 		this.transaction = null;
 		this.session = null;
@@ -35,7 +35,7 @@ public class ResponsesController {
 	
 
 
-	public void addResponse(Responses response) throws ControllerException {
+	public void addResponse(Response response) throws CustomizedException {
 		
 	   try{
 		   //add user using hibernate
@@ -54,6 +54,8 @@ public class ResponsesController {
 	       if (transaction!=null) transaction.rollback(); this.session.getTransaction().rollback();
 	       e.printStackTrace(); 
 	       System.out.println("transaction incomplete ");
+	       throw new CustomizedException(e.getMessage());
+	      
 	    }catch (Exception exception){
 	    	System.out.println(exception.getMessage());
 	    }finally {
