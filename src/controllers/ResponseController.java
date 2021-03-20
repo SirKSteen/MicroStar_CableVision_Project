@@ -16,7 +16,11 @@ import org.hibernate.Transaction;
 
 import factories.HibernateConnectorSessionFactory;
 import factories.TraditionalDatabaseConnectorFactory;
+import models.Complaint;
 import models.Response;
+import utils.ComplaintCategory;
+import utils.ComplaintType;
+import utils.CustomizedException;
 
 public class ResponseController {
 
@@ -90,8 +94,7 @@ public class ResponseController {
 			this.statement = this.connect.createStatement();
 			
 			//create sql query
-			this.sqlQuery = "SELECT response_id, complaint_id, "
-					+ "response_date, response FROM responses";
+			this.sqlQuery = "SELECT * FROM responses JOIN Complaints ON responses.complaint_id=Complaints.complaint_id";
 			
 		    //execute sql query on statement and a ResultSet is returned
 		    ResultSet rs = this.statement.executeQuery(this.sqlQuery);
@@ -103,10 +106,130 @@ public class ResponseController {
 		    	int complaintID = rs.getInt("complaint_id");
 		    	Date responseDate = rs.getDate("response_date");
 		    	String responseInfo = rs.getString("response");	
+		    	int custID = rs.getInt("cust_id");
+		    	int empID= rs.getInt("emp_id");
+		    	String complaintCat = rs.getString("complaint_category"); 
+		    	String complaintInfo = rs.getString("complaint");
+		    	Date complaintDate = rs.getDate("complaint_date");
+		    	String complaintType = rs.getString("complaint_type");
+		    	
+		    	Complaint complaint = new Complaint();
+		    	complaint.setComplaintID(complaintID);
+		    	complaint.setCustID(custID);
+		    	complaint.setEmpID(empID);
+		    	
+		       switch (complaintCat.toLowerCase()) {
+			    case "mild": 
+			    	complaint.setCategory(ComplaintCategory.MILD);
+			    	break;
+			    case "moderate": 
+			    	complaint.setCategory(ComplaintCategory.MODERATE);
+			    	break;
+			    case "severe": 
+			    	complaint.setCategory(ComplaintCategory.SEVERE);
+			    	break;
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + complaintCat);
+			}
+		       complaint.setComplaint(complaintInfo);
+		       complaint.setComplaintDate(complaintDate);
+		       
+		       switch (complaintType.toLowerCase()) {
+			    case "broadband": 
+			    	complaint.setComplaintType(ComplaintType.BROADBAND);
+				break;
+				case "cable":
+					complaint.setComplaintType(ComplaintType.CABLE);
+					break;
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + complaintType);
+			}
 		    	
 		    	Response response = new Response();
 		    	response.setResponse_id(responseID);
-		    	response.setComplaint_id(complaintID);
+		    	response.setComplaint_id(complaint);
+		    	response.setResponse_date(responseDate);
+		    	response.setResponse(responseInfo);
+		    	
+		       //populate complaintsList to be returned
+		       responsesList.add(response);
+		       
+		    }
+		} catch (SQLException e) {
+			// TODO manage and log exceptions
+			e.printStackTrace();
+		}
+	    
+	    return responsesList;
+	}
+	
+	
+//	Method to  READ all the responses
+	public ArrayList<Response> getResponsesPerComplaint(int complaintId) throws CustomizedException {
+		ArrayList<Response> responsesList= new ArrayList<>();
+		
+	    try {
+	    	//get instance of single database connection
+	    	this.connect = TraditionalDatabaseConnectorFactory.getDatabaseConnection();
+	    	
+	    	//initialize statement that will be used to execute sql query
+			this.statement = this.connect.createStatement();
+			
+			//create sql query
+			this.sqlQuery = "SELECT * FROM `micro_star`.`responses` INNER JOIN `micro_star`.`complaints` ON `micro_star`.`responses`.complaint_id=`micro_star`.`complaints`.complaint_id WHERE Responses.response_id="+complaintId;   
+			
+		    //execute sql query on statement and a ResultSet is returned
+		    ResultSet rs = this.statement.executeQuery(this.sqlQuery);
+
+		    //move cursor to beginning of row if it exists
+		    while(rs.next()){
+		    	
+		    	int responseID = rs.getInt("response_id");
+		    	int complaintID = rs.getInt("complaint_id");
+		    	Date responseDate = rs.getDate("response_date");
+		    	String responseInfo = rs.getString("response");	
+		    	int custID = rs.getInt("cust_id");
+		    	int empID= rs.getInt("emp_id");
+		    	String complaintCat = rs.getString("complaint_category"); 
+		    	String complaintInfo = rs.getString("complaint");
+		    	Date complaintDate = rs.getDate("complaint_date");
+		    	String complaintType = rs.getString("complaint_type");
+		    	
+		    	Complaint complaint = new Complaint();
+		    	complaint.setComplaintID(complaintID);
+		    	complaint.setCustID(custID);
+		    	complaint.setEmpID(empID);
+		    	
+		       switch (complaintCat.toLowerCase()) {
+			    case "mild": 
+			    	complaint.setCategory(ComplaintCategory.MILD);
+			    	break;
+			    case "moderate": 
+			    	complaint.setCategory(ComplaintCategory.MODERATE);
+			    	break;
+			    case "severe": 
+			    	complaint.setCategory(ComplaintCategory.SEVERE);
+			    	break;
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + complaintCat);
+			}
+		       complaint.setComplaint(complaintInfo);
+		       complaint.setComplaintDate(complaintDate);
+		       
+		       switch (complaintType.toLowerCase()) {
+			    case "broadband": 
+			    	complaint.setComplaintType(ComplaintType.BROADBAND);
+				break;
+				case "cable":
+					complaint.setComplaintType(ComplaintType.CABLE);
+					break;
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + complaintType);
+			}
+		    	
+		    	Response response = new Response();
+		    	response.setResponse_id(responseID);
+		    	response.setComplaint_id(complaint);
 		    	response.setResponse_date(responseDate);
 		    	response.setResponse(responseInfo);
 		    	
@@ -123,7 +246,6 @@ public class ResponseController {
 	}
 	
 
-
 	/* Method to  READ one response. Returns a single response. */
 	public Response findById(int responseID) throws CustomizedException {
 		
@@ -135,11 +257,7 @@ public class ResponseController {
 			this.connect = TraditionalDatabaseConnectorFactory.getDatabaseConnection();
 			this.statement = this.connect.createStatement();
 			//create sql query
-			this.sqlQuery = "SELECT * FROM `micro_star`.`responses` WHERE Responses.response_id="+responseID;   
-			
-//			this.sqlQuery = "SELECT * FROM `micro_star`.`accounts` INNER JOIN "
-//					+ "`micro_star`.`users` ON `micro_star`.`accounts`.user_id=`micro_star`.`users`.user_id "
-//					+ "WHERE Accounts.acct_id="+acct_id;
+			this.sqlQuery = "SELECT * FROM `micro_star`.`responses` INNER JOIN `micro_star`.`complaints` ON `micro_star`.`responses`.complaint_id=`micro_star`.`complaints`.complaint_id WHERE Responses.response_id="+responseID;   
 			
 		    ResultSet rs = this.statement.executeQuery(this.sqlQuery);
 		    
@@ -150,14 +268,46 @@ public class ResponseController {
 		    	int complaintId = rs.getInt("complaint_id");
 		    	Date responseDate = rs.getDate("response_date");
 		    	String responseInfo = rs.getString("response");	
+		    	int custID = rs.getInt("cust_id");
+		    	int empID= rs.getInt("emp_id");
+		    	String complaintCat = rs.getString("complaint_category"); 
+		    	String complaintInfo = rs.getString("complaint");
+		    	Date complaintDate = rs.getDate("complaint_date");
+		    	String complaintType = rs.getString("complaint_type");
 		    	
+		    	Complaint complaint = new Complaint();
+		    	complaint.setComplaintID(complaintId);
+		    	complaint.setCustID(custID);
+		    	complaint.setEmpID(empID);
+		    	
+		       switch (complaintCat.toLowerCase()) {
+			    case "mild": 
+			    	complaint.setCategory(ComplaintCategory.MILD);
+			    	break;
+			    case "moderate": 
+			    	complaint.setCategory(ComplaintCategory.MODERATE);
+			    	break;
+			    case "severe": 
+			    	complaint.setCategory(ComplaintCategory.SEVERE);
+			    	break;
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + complaintCat);
+			}
+			
+			  complaint.setComplaint(complaintInfo);
+			  complaint.setComplaintDate(complaintDate);
+			  
+			  switch (complaintType.toLowerCase()) { case "broadband":
+			  complaint.setComplaintType(ComplaintType.BROADBAND); break; case "cable":
+			  complaint.setComplaintType(ComplaintType.CABLE); break; default: throw new
+			  IllegalArgumentException("Unexpected value: " + complaintType); }
+			 
 		    	response = new Response();
 		    	
 		    	response.setResponse_id(responseID1);
-		    	response.setComplaint_id(complaintId);
 		    	response.setResponse_date(responseDate);
 		    	response.setResponse(responseInfo);
-		       
+		       response.setComplaint_id(complaint);
 			    }
 			} catch (SQLException e) {
 				// TODO manage and log exceptions
@@ -182,15 +332,15 @@ public class ResponseController {
 		System.out.println(result + " row(s) affected. delete successful");
 		
 			if(result > 0) {
-				throw new ControllerException("Response deleted.");
+				throw new CustomizedException("Response deleted.");
 			}else if(result == 0) {
-				throw new ControllerException("No repsonse with given ID found");
+				throw new CustomizedException("No repsonse with given ID found");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (ControllerException e) {
-			throw new ControllerException(e.getMessage());
+		} catch (CustomizedException e) {
+			throw new CustomizedException(e.getMessage());
 		}
 		
 		return result;

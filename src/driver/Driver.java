@@ -1,11 +1,13 @@
 package driver;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 
+import controllers.ComplaintController;
+import controllers.ResponseController;
+import controllers.UserController;
+import models.Complaint;
+import models.Response;
+import models.User;
 import utils.ComplaintCategory;
-import utils.ComplaintType;
 import utils.CustomizedException;
 
 import utils.Role;
@@ -15,30 +17,25 @@ public class Driver {
 	public static void main(String[] args) {
 
 		User user = new User("","","","",Role.REPRESENTATIVE);
-		UserController controller = new UserController();
-		
-//		controller.addUser(user);
+		ResponseController rc = new ResponseController();
 
-		
-		Date d = new Date(0);
-		User user = new User("Pat","For", "ema", "", Role.CUSTOMER);
-		
+		java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
 		UserController uc = new UserController();
-		uc.createUser(user);
-		Complaint c = new Complaint(1703, 1702, ComplaintCategory.MILD, "",d, null);
+		Complaint c = new Complaint(1703, 1702, ComplaintCategory.MILD, "",sqlDate, null);
 		ComplaintController cc = new ComplaintController();
 		
-		int id = cc.addComplaint(c);
+		Response resp = new Response();
+		user = uc.findById(1703);
+		try {
+			
+			resp = rc.findById(1);
+		} catch (CustomizedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		// new Response(c, null, "response message");
 		
-		//c = cc.findById(id);
-		Response resp = new Response(c, null, "response message");
-		
-		
-		ResponseController rc = new ResponseController();
-		
-		
-		rc.addResponse(resp);
-		java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
+		System.out.println(resp);
 		
 		
 	}

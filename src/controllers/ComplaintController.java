@@ -175,8 +175,7 @@ public class ComplaintController {
 			this.connect = TraditionalDatabaseConnectorFactory.getDatabaseConnection();
 			this.statement = this.connect.createStatement();
 			//create sql query
-			this.sqlQuery = "SELECT complaint_id,cust_id, emp_id, complaint_category, complaint,"
-					+ "complaint_date, complaint_type FROM complaints";		    
+			this.sqlQuery = "SELECT * FROM complaints";		    
 		    ResultSet rs = this.statement.executeQuery(this.sqlQuery);
 		    
 		  //Read result values and create complaints objects

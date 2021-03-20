@@ -73,12 +73,12 @@ public class Response {
 //getters and setters
 	
 
-	public int getResponses_id() {
+	public int getResponse_id() {
 		return response_id;
 	}
 
 
-	public void setResponses_id(int responses_id) {
+	public void setResponse_id(int responses_id) {
 		this.response_id = responses_id;
 	}
 
