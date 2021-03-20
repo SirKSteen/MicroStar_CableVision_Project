@@ -2,7 +2,7 @@ package utils;
 
 public class ControllerException extends Exception {
 
-	ControllerException(String s){  
+	public ControllerException(String s){  
 		  super(s);  
 		 }  
 	
