@@ -21,5 +21,4 @@
         <mapping class="models.Complaint"/>
         <mapping class="models.Response"/>
     </session-factory>    
-    
 </hibernate-configuration>  

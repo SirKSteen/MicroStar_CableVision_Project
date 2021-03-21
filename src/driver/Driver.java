@@ -4,23 +4,20 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-
-import controllers.AuthController;
-import controllers.ComplaintController;
-import controllers.ResponseController;
-import controllers.UserController;
-import models.Complaint;
-import models.Response;
-import models.User;
 import utils.ComplaintCategory;
 import utils.ComplaintType;
 import utils.CustomizedException;
+
 import utils.Role;
 
 public class Driver {
 
-	public static void main(String[] args) throws CustomizedException {
+	public static void main(String[] args) {
+
+		User user = new User("","","","",Role.REPRESENTATIVE);
+		UserController controller = new UserController();
 		
+//		controller.addUser(user);
 
 		
 		Date d = new Date(0);
@@ -41,36 +38,12 @@ public class Driver {
 		
 		
 		rc.addResponse(resp);
+		java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
+		
 		
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

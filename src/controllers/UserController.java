@@ -83,10 +83,7 @@ public class UserController {
 	    }
 	   
 	   return userId;
-	}
-	
-	
-	
+	}	
 	
 	
 	/* Method to  READ all the users */
@@ -150,12 +147,6 @@ public class UserController {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
 	/* Method to  READ one user. Returns a single user. */
 	public User findById(int userId) {
 		
@@ -211,14 +202,6 @@ public class UserController {
 		return user;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
 	/*Method to UPDATE a user*/
 	public User updateUser(User updatedUser) {
 		User user = null;
@@ -257,11 +240,6 @@ public class UserController {
 	}
 	
 	
-	
-	
-	
-	
-	
 	/*Method to delete user*/
 	public int deleteUser(int userId) {
 		int result = -1;
@@ -285,8 +263,6 @@ public class UserController {
 	
 	
 	
-	
-	
 	//helper function to generate password hash in database before storing.
 	//no raw text passwords will be stored.
 	public String generatePasswordHash(String password) {
@@ -294,10 +270,6 @@ public class UserController {
 		String encrypted = BCrypt.hashpw(password, BCrypt.gensalt());
 		return encrypted;
 	}
-	
-
-	
-	
 	
 	
 	//Method to test if a plain text password matches the hash when converted
