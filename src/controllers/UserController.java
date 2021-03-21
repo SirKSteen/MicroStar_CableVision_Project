@@ -217,7 +217,7 @@ public class UserController {
 		return user;
 	}
 	
-<<<<<<< HEAD
+
 	/* Method to  READ one user. Returns a single user. */
 	public boolean findByEmail(String email) throws CustomizedException {
 		try {
@@ -243,9 +243,7 @@ public class UserController {
 		return true;
 	}
 	
-	
-=======
->>>>>>> refs/heads/develop
+
 	/*Method to UPDATE a user*/
 	public User updateUser(User updatedUser) throws CustomizedException {
 		User user = null;
@@ -296,16 +294,13 @@ public class UserController {
 		  result = this.statement.executeUpdate("DELETE FROM users " +
 	                   "WHERE user_id ="+userId);
 		
-<<<<<<< HEAD
 		System.out.println(result + " row(s) affected. delete successfull");
 		if(result > 0) {
 			throw new CustomizedException("User deleted.");
 		}else if(result == 0) {
 			throw new CustomizedException("No user with given ID found");
 		}
-=======
-		System.out.println(result + " row(s) affected. delete successful");
->>>>>>> refs/heads/develop
+
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

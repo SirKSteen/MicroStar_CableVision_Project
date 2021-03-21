@@ -21,11 +21,6 @@
         <mapping class="models.Account"/>
         <mapping class="models.Complaint"/>
         <mapping class="models.Response"/>
-
     </session-factory>    
-<<<<<<< HEAD
-</hibernate-configuration>  
-=======
 </hibernate-configuration>  
 
->>>>>>> refs/heads/develop

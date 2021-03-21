@@ -15,7 +15,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import controllers.AuthController;
-import controllers.UserController;
 import models.User;
 import utils.CustomizedException;
 import utils.Role;
