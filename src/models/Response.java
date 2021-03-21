@@ -28,8 +28,8 @@ public class Response {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //Automatically increments ID number based on previous record.
 	private int response_id;
 	
-	 @ManyToOne
-	 @JoinColumn(name = "complaint_id")
+	@ManyToOne
+	@JoinColumn(name = "complaint_id")
 	private Complaint complaint_id;
 	
 	private Date response_date;
