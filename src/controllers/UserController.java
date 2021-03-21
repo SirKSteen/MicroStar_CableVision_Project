@@ -95,6 +95,10 @@ public class UserController {
 	   return userId;
 	}
 	
+	
+	
+	
+	
 	/* Method to  READ all the users */
 	public ArrayList<User> getAllUsers() throws CustomizedException {
 		ArrayList<User> userList = new ArrayList<User>();
@@ -129,9 +133,10 @@ public class UserController {
 		       user.setLastName(lastName);
 		       user.setEmail(email);
 		       user.setPassword(password);
+		       
 		       switch (role.toLowerCase()) {
 			    case "customer": 
-				user.setRole(Role.CUSTOMER);
+			    	user.setRole(Role.CUSTOMER);
 				break;
 				case "representative":
 					user.setRole(Role.REPRESENTATIVE);
@@ -154,6 +159,7 @@ public class UserController {
 	    
 	    return userList;
 	}
+	
 	
 	/* Method to  READ one user. Returns a single user. */
 	public User findById(int userId) throws CustomizedException {
@@ -211,6 +217,7 @@ public class UserController {
 		return user;
 	}
 	
+<<<<<<< HEAD
 	/* Method to  READ one user. Returns a single user. */
 	public boolean findByEmail(String email) throws CustomizedException {
 		try {
@@ -237,6 +244,8 @@ public class UserController {
 	}
 	
 	
+=======
+>>>>>>> refs/heads/develop
 	/*Method to UPDATE a user*/
 	public User updateUser(User updatedUser) throws CustomizedException {
 		User user = null;
@@ -275,6 +284,8 @@ public class UserController {
 		
 		return user;
 	}
+	
+	
 	/*Method to delete user*/
 	public int deleteUser(int userId) throws CustomizedException {
 		int result = -1;
@@ -285,12 +296,16 @@ public class UserController {
 		  result = this.statement.executeUpdate("DELETE FROM users " +
 	                   "WHERE user_id ="+userId);
 		
+<<<<<<< HEAD
 		System.out.println(result + " row(s) affected. delete successfull");
 		if(result > 0) {
 			throw new CustomizedException("User deleted.");
 		}else if(result == 0) {
 			throw new CustomizedException("No user with given ID found");
 		}
+=======
+		System.out.println(result + " row(s) affected. delete successful");
+>>>>>>> refs/heads/develop
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -303,6 +318,9 @@ public class UserController {
 		return result;
 	}
 	
+	
+	
+	
 	//helper function to generate password hash in database before storing.
 	//no raw text passwords will be stored.
 	public String generatePasswordHash(String password) {
@@ -311,7 +329,8 @@ public class UserController {
 		return encrypted;
 	}
 	
-	//Method to test if a plain text password matches a previously hashed ones
+	
+	//Method to test if a plain text password matches the hash when converted
 	//using BCrypt
 	public boolean validatePassword(String testPassword,String encrypted) throws CustomizedException {
 

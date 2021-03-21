@@ -39,6 +39,7 @@ public class User {
 	private String email;
 	
 	private String password;
+	 
 	
 	@Enumerated(EnumType.STRING) // map to enumerated role in database
 	@Column(name = "user_role")
@@ -129,11 +130,13 @@ public class User {
 		this.role = role;
 	}
 	
+	
+
 
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", password=" + password + ", role=" + role + "]";
+		return "\nUser \nUser Id: " + userId + "\nfirstName: " + firstName + "\nlastName: " + lastName + "\nemail: " + email
+				+ "\npassword: " + password + "\nrole: " + role + "\n";
 	}
 	
 	
