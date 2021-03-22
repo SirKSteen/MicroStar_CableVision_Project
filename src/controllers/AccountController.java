@@ -15,6 +15,7 @@ import factories.HibernateConnectorSessionFactory;
 import factories.TraditionalDatabaseConnectorFactory;
 import models.Account;
 import models.User;
+import utils.CustomizedException;
 import utils.PaymentStatus;
 import utils.Role;
 
@@ -45,7 +46,7 @@ public class AccountController {
 	 * Method to add an account using hibernate
 	 */
 	
-	public int createAccount(Account account) {
+	public int createAccount(Account account) throws CustomizedException{
 		
 		int acct_id = -1; 
 		
@@ -87,7 +88,9 @@ public class AccountController {
 		
 	}
 	
-	public ArrayList<Account> getAllAccounts(){
+	
+	
+	public ArrayList<Account> getAllAccounts() throws CustomizedException{
 		
 		ArrayList<Account> accountsList = new ArrayList<Account>();
 		
@@ -180,7 +183,7 @@ public class AccountController {
 	}
 	
 	//Method to READ one Account. Returns a single acct
-	public Account findById(int acct_id) {
+	public Account findById(int acct_id) throws CustomizedException{
 		
 		Account account = null;
 		
@@ -267,7 +270,7 @@ public class AccountController {
 	}
 				
 		//Method to UPDATE a user		
-		public Account updateAccount(Account updatedAccount) {
+		public Account updateAccount(Account updatedAccount) throws CustomizedException{
 			
 			Account account = null;
 			
@@ -304,7 +307,7 @@ public class AccountController {
 	
 		//Method to delete an account
 		
-		public int deleteAccounts(int acct_id) {
+		public int deleteAccounts(int acct_id) throws CustomizedException{
 			int result = -1;
 			
 			//delete account using traditional connectivity 
