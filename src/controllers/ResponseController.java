@@ -18,6 +18,7 @@ import factories.HibernateConnectorSessionFactory;
 import factories.TraditionalDatabaseConnectorFactory;
 import models.Complaint;
 import models.Response;
+import models.User;
 import utils.ComplaintCategory;
 import utils.ComplaintType;
 import utils.CustomizedException;
@@ -113,10 +114,12 @@ public class ResponseController {
 		    	Date complaintDate = rs.getDate("complaint_date");
 		    	String complaintType = rs.getString("complaint_type");
 		    	
+		    	User user = new User();
+		    	
 		    	Complaint complaint = new Complaint();
 		    	complaint.setComplaintID(complaintID);
-		    	complaint.setCustID(custID);
-		    	complaint.setEmpID(empID);
+		    	complaint.setCustID(user);
+		    	complaint.setEmpID(user);
 		    	
 		       switch (complaintCat.toLowerCase()) {
 			    case "mild": 
@@ -196,9 +199,11 @@ public class ResponseController {
 		    	String complaintType = rs.getString("complaint_type");
 		    	
 		    	Complaint complaint = new Complaint();
+		    	User user = new User();
+		    	
 		    	complaint.setComplaintID(complaintID);
-		    	complaint.setCustID(custID);
-		    	complaint.setEmpID(empID);
+		    	complaint.setCustID(user);
+		    	complaint.setEmpID(user);
 		    	
 		       switch (complaintCat.toLowerCase()) {
 			    case "mild": 
@@ -276,9 +281,11 @@ public class ResponseController {
 		    	String complaintType = rs.getString("complaint_type");
 		    	
 		    	Complaint complaint = new Complaint();
+		    	User user = new User();
+		    	
 		    	complaint.setComplaintID(complaintId);
-		    	complaint.setCustID(custID);
-		    	complaint.setEmpID(empID);
+		    	complaint.setCustID(user);
+		    	complaint.setEmpID(user);
 		    	
 		       switch (complaintCat.toLowerCase()) {
 			    case "mild": 

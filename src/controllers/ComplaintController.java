@@ -16,6 +16,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import factories.HibernateConnectorSessionFactory;
 import factories.TraditionalDatabaseConnectorFactory;
 import models.Complaint;
+import models.User;
 import utils.ComplaintCategory;
 import utils.ComplaintType;
 import utils.CustomizedException;
@@ -116,9 +117,11 @@ public class ComplaintController {
 		    	String complaintType = rs.getString("complaint_type");
 		    	
 		    	Complaint complaint = new Complaint();
+		    	User user = new User();
+		    	
 		    	complaint.setComplaintID(complaintID);
-		    	complaint.setCustID(custID);
-		    	complaint.setEmpID(empID);
+		    	complaint.setCustID(user);
+		    	complaint.setEmpID(user);
 		    	
 		       switch (complaintCat.toLowerCase()) {
 			    case "mild": 
@@ -162,7 +165,6 @@ public class ComplaintController {
 	
 	
 	
-	
 
 	/* Method to  READ one complaint. Returns a single complaint. */
 	public Complaint findById(int complaintID) throws CustomizedException {
@@ -175,7 +177,7 @@ public class ComplaintController {
 			this.connect = TraditionalDatabaseConnectorFactory.getDatabaseConnection();
 			this.statement = this.connect.createStatement();
 			//create sql query
-			this.sqlQuery = "SELECT * FROM complaints";		    
+			this.sqlQuery = "SELECT * FROM complaints WHERE complaint_id="+complaintID;		    
 		    ResultSet rs = this.statement.executeQuery(this.sqlQuery);
 		    
 		  //Read result values and create complaints objects
@@ -192,10 +194,11 @@ public class ComplaintController {
 		       
 		       //create complaints objects using data retrieved from columns.
 		    	complaint = new Complaint();
+		    	User user = new User();
 		    	
 		    	complaint.setComplaintID(complaintID1);
-		    	complaint.setCustID(custID);
-		    	complaint.setEmpID(empID);
+		    	complaint.setCustID(user);
+		    	complaint.setEmpID(user);
 		    	
 		       switch (complaintCat.toLowerCase()) {
 			    case "mild": 
@@ -236,8 +239,8 @@ public class ComplaintController {
 	
 	
 	
-
 	
+
 	/*Method to UPDATE a complaint*/
 	public Complaint updateComplaints(Complaint updatedComplaint) throws CustomizedException {
 		Complaint complaint = null;
@@ -251,11 +254,11 @@ public class ComplaintController {
 			//with the matching ID and create an object from the values
 			complaint = (Complaint)this.session.get(Complaint.class, 
 									updatedComplaint.getComplaintID()); 
-			complaint.setCustID(updatedComplaint.getCustID());
-			complaint.setEmpID(updatedComplaint.getEmpID());
+//			complaint.setCustID(updatedComplaint.getCustID());
+//			complaint.setEmpID(updatedComplaint.getEmpID());
 			complaint.setCategory(updatedComplaint.getCategory());
 			complaint.setComplaint(updatedComplaint.getComplaint());
-			complaint.setComplaintDate(updatedComplaint.getComplaintDate());
+//			complaint.setComplaintDate(updatedComplaint.getComplaintDate());
 			complaint.setComplaintType(updatedComplaint.getComplaintType());
 			
 			//complete transaction
@@ -277,6 +280,50 @@ public class ComplaintController {
 		
 		return complaint;
 	}
+	
+	
+	
+	public Complaint assignTechnician(Complaint assignComplaint) throws CustomizedException {
+		Complaint complaint = null;
+	
+		try {
+			this.sessionFactory = HibernateConnectorSessionFactory.getHibernateSessionFactory();
+			this.session = this.sessionFactory.openSession();
+			this.transaction = this.session.beginTransaction();
+			
+			//gets the Stock object from the database. i.e it tries to retrieve the complaint
+			//with the matching ID and create an object from the values
+			complaint = (Complaint)this.session.get(Complaint.class, 
+					assignComplaint.getComplaintID()); 
+//			complaint.setCustID(assignComplaint.getCustID());
+			complaint.setEmpID(assignComplaint.getEmpID());
+//			complaint.setCategory(assignComplaint.getCategory());
+//			complaint.setComplaint(assignComplaint.getComplaint());
+//			complaint.setComplaintDate(assignComplaint.getComplaintDate());
+//			complaint.setComplaintType(assignComplaint.getComplaintType());
+			
+			//complete transaction
+		     this.transaction.commit();
+		    System.out.println("Technician successfully added");
+		} catch (HibernateException e) {
+			// TODO: handle exception
+			System.out.println(e);
+			if(this.transaction != null) {
+				this.transaction.rollback();
+				System.out.println("Rollback complete!");
+			}
+			throw new CustomizedException(e.getMessage());
+		}
+		  catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e);
+		}
+		
+		return complaint;
+	}
+	
+	
+	
 	
 	
 	
