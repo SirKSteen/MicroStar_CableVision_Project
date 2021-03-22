@@ -15,22 +15,18 @@ package loggers;
  * log.error("Sample error message"); log.fatal("Sample fatal message"); } }
  */
 
-
-
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger; 
- 
-public class Log4jJDBCExample 
-{
-    private static final Logger LOG = LogManager.getLogger(Log4jJDBCExample.class.getName());
-     
-    public static void main(String[] args) 
-    {
-    	//PropertyConfigurator.configure("log4j.properties");
-        LOG.debug("Debug Message Logged"); 
-        LOG.fatal("Sample fatal message");
-        LOG.info("Info Message Logged");
-        LOG.error("Error Message Logged");
-        LOG.warn("Test Warn message");
-    }
+import org.apache.logging.log4j.Logger;
+
+public class Log4jJDBCExample {
+	private static final Logger LOG = LogManager.getLogger(Log4jJDBCExample.class.getName());
+
+	public static void main(String[] args) {
+		// PropertyConfigurator.configure("log4j.properties");
+		LOG.debug("Debug Message Logged");
+		LOG.fatal("Sample fatal message");
+		LOG.info("Info Message Logged");
+		LOG.error("Error Message Logged");
+		LOG.warn("Test Warn message");
+	}
 }
