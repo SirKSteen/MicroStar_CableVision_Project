@@ -29,7 +29,15 @@ This repository aims to complete all Milestones stated in the MicroStar Cable Vi
 7. Add downloaded hibernate jar files to Hibernate user library in the project folder
 8. Open hibernate.cfg.xml located in the root folder of the project. Add your database username and password.
 9. Download JBCrypt jar file from <https://drive.google.com/file/d/1ilyaAU3kIjMMCB63VEpYUBNuKOBa8SnI/view?usp=sharing>. Add this file to the class path of the project.
+10. Download log4j2 jar files from <https://drive.google.com/drive/folders/1sQ-hLQPoeWKJ9Anccl1sB7e0mOZpzhQl?usp=sharing>.
+11. Add log4j2 jar files to the classpath of the project.
+12. Add properties folder to classpath as class library. 
 
 ### 3. Start Project
 
 Right click driver file and run as java application.
+
+### 4. Troubleshooting
+1. Ensure JRE is set to 1.8 or higher.
+2. If all packages in the src folder is showing as a folder, right click src folder and use as source.
+
