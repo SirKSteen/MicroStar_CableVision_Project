@@ -45,7 +45,7 @@ public class ResponseController {
 		this.statement = null;
 	}
 
-	public void addResponse(Response response) throws CustomizedException {
+	public Response addResponse(Response response) throws CustomizedException {
 
 		try {
 			// add user using hibernate
@@ -77,9 +77,47 @@ public class ResponseController {
 				session.close();
 			}
 
+			return response;
 		}
 	}
 
+	public Response updateResponse(Response updateResponse) throws CustomizedException {
+		Response response  = null;
+
+		try {
+			this.sessionFactory = HibernateConnectorSessionFactory.getHibernateSessionFactory();
+			this.session = this.sessionFactory.openSession();
+			this.transaction = this.session.beginTransaction();
+
+			// gets the Stock object from the database. i.e it tries to retrieve the
+			// complaint
+			// with the matching ID and create an object from the values
+			response = (Response) this.session.get(Response.class, updateResponse.getResponse());
+			
+			response.setResponse_id(updateResponse.getResponse_id());
+			response.setComplaint_id(updateResponse.getComplaint_id());
+			response.setResponse(updateResponse.getResponse());
+			response.setResponse_date(updateResponse.getResponse_date());
+
+			// complete transaction
+			this.transaction.commit();
+			System.out.println("Complaint successfully updated");
+		} catch (HibernateException e) {
+			// TODO: handle exception
+			System.out.println(e);
+			if (this.transaction != null) {
+				this.transaction.rollback();
+				System.out.println("Rollback complete!");
+			}
+			throw new CustomizedException(e.getMessage());
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e);
+		}
+
+		return response;
+	}
+	
 //	Method to  READ all the responses
 	public ArrayList<Response> getAllResponses() throws CustomizedException {
 		ArrayList<Response> responsesList = new ArrayList<>();
@@ -346,5 +384,6 @@ public class ResponseController {
 
 		return result;
 	}
+
 
 }
