@@ -14,9 +14,11 @@ import org.hibernate.Transaction;
 import factories.HibernateConnectorSessionFactory;
 import factories.TraditionalDatabaseConnectorFactory;
 import models.Complaint;
+import models.User;
 import utils.ComplaintCategory;
 import utils.ComplaintType;
 import utils.CustomizedException;
+import utils.Role;
 
 public class ComplaintController {
 
@@ -24,7 +26,7 @@ public class ComplaintController {
 	private SessionFactory sessionFactory;
 	private Transaction transaction;
 	private Session session;
-
+    private UserController userController;
 	// traditional connection vars
 	private Connection connect;
 	private Statement statement;
@@ -38,6 +40,7 @@ public class ComplaintController {
 		this.statement = null;
 		this.sqlQuery = "";
 		this.statement = null;
+		this.userController = null;
 	}
 
 //	Method to ADD complaints
@@ -92,49 +95,54 @@ public class ComplaintController {
 			this.statement = this.connect.createStatement();
 
 			// create sql query
-			this.sqlQuery = "SELECT complaint_id,cust_id, emp_id, complaint_category, complaint,"
-					+ "complaint_date, complaint_type FROM complaints";
+			this.sqlQuery = "SELECT * FROM micro_star.complaints";
 
 			// execute sql query on statement and a ResultSet is returned
 			ResultSet rs = this.statement.executeQuery(this.sqlQuery);
+			userController = new UserController();
 
-			// move cursor to beginning of row if it exists
-			while (rs.next()) {
-
-				int complaintID = rs.getInt("complaint_id");
-				int custID = rs.getInt("cust_id");
-				int empID = rs.getInt("emp_id");
-				String complaintCat = rs.getString("complaint_category");
-				String complaintInfo = rs.getString("complaint");
-				Date complaintDate = rs.getDate("complaint_date");
-				String complaintType = rs.getString("complaint_type");
-
-				Complaint complaint = new Complaint();
-				complaint.setComplaintID(complaintID);
-				complaint.setCustID(custID);
-				complaint.setEmpID(empID);
-
-				switch (complaintCat.toLowerCase()) {
-				case "mild":
-					complaint.setCategory(ComplaintCategory.MILD);
-					break;
-				case "moderate":
-					complaint.setCategory(ComplaintCategory.MODERATE);
-					break;
-				case "severe":
-					complaint.setCategory(ComplaintCategory.SEVERE);
-					break;
-				default:
-					throw new IllegalArgumentException("Unexpected value: " + complaintCat);
-				}
-
-				complaint.setComplaint(complaintInfo);
-				complaint.setComplaintDate(complaintDate);
-
-				switch (complaintType.toLowerCase()) {
-				case "broadband":
-					complaint.setComplaintType(ComplaintType.BROADBAND);
-					break;
+		    //move cursor to beginning of row if it exists
+		    while(rs.next()){
+		    	
+		    	int complaintID = rs.getInt("complaint_id");
+		    	int custID = rs.getInt("cust_id");
+		    	int empID= rs.getInt("emp_id");
+		    	String complaintCat = rs.getString("complaint_category"); 
+		    	String complaintInfo = rs.getString("complaint");
+		    	Date complaintDate = rs.getDate("complaint_date");
+		    	String complaintType = rs.getString("complaint_type");
+		    	
+		    	
+		    	Complaint complaint = new Complaint();
+		    	User customer = userController.findById(custID);
+		    	User employee = userController.findById(empID);
+		    	
+		
+		    	complaint.setComplaintID(complaintID);
+		    	complaint.setCustID(customer);
+		    	complaint.setEmpID(employee);
+		    	
+		       switch (complaintCat.toLowerCase()) {
+			    case "mild": 
+			    	complaint.setCategory(ComplaintCategory.MILD);
+			    	break;
+			    case "moderate": 
+			    	complaint.setCategory(ComplaintCategory.MODERATE);
+			    	break;
+			    case "severe": 
+			    	complaint.setCategory(ComplaintCategory.SEVERE);
+			    	break;
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + complaintCat);
+			}
+		       
+		       complaint.setComplaint(complaintInfo);
+		       complaint.setComplaintDate(complaintDate);
+		       
+		       switch (complaintType.toLowerCase()) {
+			    case "broadband": 
+			    	complaint.setComplaintType(ComplaintType.BROADBAND);
+				break;
 				case "cable":
 					complaint.setComplaintType(ComplaintType.CABLE);
 					break;
@@ -150,7 +158,7 @@ public class ComplaintController {
 			// TODO manage and log exceptions
 			e.printStackTrace();
 		}
-
+	
 		return complaintsList;
 	}
 
@@ -164,49 +172,56 @@ public class ComplaintController {
 			// retrieve complaints using traditional database connectivity
 			this.connect = TraditionalDatabaseConnectorFactory.getDatabaseConnection();
 			this.statement = this.connect.createStatement();
-			// create sql query
-			this.sqlQuery = "SELECT * FROM complaints";
-			ResultSet rs = this.statement.executeQuery(this.sqlQuery);
-
-			// Read result values and create complaints objects
-			if (rs.next()) {
-				// Retrieve by column name
-				int complaintID1 = rs.getInt("complaint_id");
-				int custID = rs.getInt("cust_id");
-				int empID = rs.getInt("emp_id");
-				String complaintCat = rs.getString("complaint_category");
-				String complaintInfo = rs.getString("complaint");
-				Date complaintDate = rs.getDate("complaint_date");
-				String complaintType = rs.getString("complaint_type");
-
-				// create complaints objects using data retrieved from columns.
-				complaint = new Complaint();
-
-				complaint.setComplaintID(complaintID1);
-				complaint.setCustID(custID);
-				complaint.setEmpID(empID);
-
-				switch (complaintCat.toLowerCase()) {
-				case "mild":
-					complaint.setCategory(ComplaintCategory.MILD);
-					break;
-				case "moderate":
-					complaint.setCategory(ComplaintCategory.MODERATE);
-					break;
-				case "severe":
-					complaint.setCategory(ComplaintCategory.SEVERE);
-					break;
-				default:
-					throw new IllegalArgumentException("Unexpected value: " + complaintCat);
-				}
-
-				complaint.setComplaint(complaintInfo);
-				complaint.setComplaintDate(complaintDate);
-
-				switch (complaintType.toLowerCase()) {
-				case "broadband":
-					complaint.setComplaintType(ComplaintType.BROADBAND);
-					break;
+			//create sql query
+			this.sqlQuery = "SELECT * FROM micro_star.complaints WHERE complaint_id="+complaintID;		    
+		    ResultSet rs = this.statement.executeQuery(this.sqlQuery);
+		    
+		  //Read result values and create complaints objects
+		   if(rs.next()){
+		       //Retrieve by column name 
+			    int complaintID1 = rs.getInt("complaint_id");
+		    	int custID = rs.getInt("cust_id");
+		    	int empID= rs.getInt("emp_id");
+		    	
+		    	String complaintCat = rs.getString("complaint_category"); 
+		    	String complaintInfo = rs.getString("complaint");
+		    	Date complaintDate = rs.getDate("complaint_date");
+		    	String complaintType = rs.getString("complaint_type");
+		    	
+		         userController = new UserController();
+		    
+		    	complaint = new Complaint();
+		    	
+		    	//get users from database
+		    	User customer = userController.findById(custID);;
+		    	User employee = userController.findById(empID);
+		    	
+		    	complaint.setCustID(customer);
+		    	complaint.setEmpID(employee);
+		    	
+		    	complaint.setComplaintID(complaintID1);
+		   
+		       switch (complaintCat.toLowerCase()) {
+			    case "mild": 
+			    	complaint.setCategory(ComplaintCategory.MILD);
+			    	break;
+			    case "moderate": 
+			    	complaint.setCategory(ComplaintCategory.MODERATE);
+			    	break;
+			    case "severe": 
+			    	complaint.setCategory(ComplaintCategory.SEVERE);
+			    	break;
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + complaintCat);
+			}
+		       
+		       complaint.setComplaint(complaintInfo);
+		       complaint.setComplaintDate(complaintDate);
+		       
+		       switch (complaintType.toLowerCase()) {
+			    case "broadband": 
+			    	complaint.setComplaintType(ComplaintType.BROADBAND);
+				break;
 				case "cable":
 					complaint.setComplaintType(ComplaintType.CABLE);
 					break;
@@ -219,11 +234,16 @@ public class ComplaintController {
 			// TODO manage and log exceptions
 			e.printStackTrace();
 		}
-
-		return complaint;
+		//System.out.println(complaint;
+	    return complaint;
 	}
+	
+	
+	
+	
 
-	/* Method to UPDATE a complaint */
+	/*Method to UPDATE a complaint*/
+
 	public Complaint updateComplaints(Complaint updatedComplaint) throws CustomizedException {
 		Complaint complaint = null;
 
@@ -231,16 +251,16 @@ public class ComplaintController {
 			this.sessionFactory = HibernateConnectorSessionFactory.getHibernateSessionFactory();
 			this.session = this.sessionFactory.openSession();
 			this.transaction = this.session.beginTransaction();
-
-			// gets the Stock object from the database. i.e it tries to retrieve the
-			// complaint
-			// with the matching ID and create an object from the values
-			complaint = (Complaint) this.session.get(Complaint.class, updatedComplaint.getComplaintID());
-			complaint.setCustID(updatedComplaint.getCustID());
-			complaint.setEmpID(updatedComplaint.getEmpID());
+			
+			//gets the Stock object from the database. i.e it tries to retrieve the complaint
+			//with the matching ID and create an object from the values
+			complaint = (Complaint)this.session.get(Complaint.class, 
+									updatedComplaint.getComplaintID()); 
+//			complaint.setCustID(updatedComplaint.getCustID());
+//			complaint.setEmpID(updatedComplaint.getEmpID());
 			complaint.setCategory(updatedComplaint.getCategory());
 			complaint.setComplaint(updatedComplaint.getComplaint());
-			complaint.setComplaintDate(updatedComplaint.getComplaintDate());
+//			complaint.setComplaintDate(updatedComplaint.getComplaintDate());
 			complaint.setComplaintType(updatedComplaint.getComplaintType());
 
 			// complete transaction
@@ -262,7 +282,47 @@ public class ComplaintController {
 		return complaint;
 	}
 
-	/* Method to delete a complaint */
+	public Complaint assignTechnician(Complaint assignComplaint) throws CustomizedException {
+		Complaint complaint = null;
+	
+		try {
+			this.sessionFactory = HibernateConnectorSessionFactory.getHibernateSessionFactory();
+			this.session = this.sessionFactory.openSession();
+			this.transaction = this.session.beginTransaction();
+			
+			//gets the Stock object from the database. i.e it tries to retrieve the complaint
+			//with the matching ID and create an object from the values
+			complaint = (Complaint)this.session.get(Complaint.class, 
+					assignComplaint.getComplaintID()); 
+//			complaint.setCustID(assignComplaint.getCustID());
+			complaint.setEmpID(assignComplaint.getEmpID());
+//			complaint.setCategory(assignComplaint.getCategory());
+//			complaint.setComplaint(assignComplaint.getComplaint());
+//			complaint.setComplaintDate(assignComplaint.getComplaintDate());
+//			complaint.setComplaintType(assignComplaint.getComplaintType());
+			
+			//complete transaction
+		     this.transaction.commit();
+		    System.out.println("Technician successfully added");
+		} catch (HibernateException e) {
+			// TODO: handle exception
+			System.out.println(e);
+			if(this.transaction != null) {
+				this.transaction.rollback();
+				System.out.println("Rollback complete!");
+			}
+			throw new CustomizedException(e.getMessage());
+		}
+		  catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e);
+		}
+		
+		return complaint;
+	}
+	
+	
+	/*Method to delete a complaint*/
 	public int deleteComplaint(int complaintId) throws CustomizedException {
 		int result = -1;
 		// delete complaint using traditional connectivity

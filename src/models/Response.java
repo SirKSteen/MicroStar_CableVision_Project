@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import java.util.Date;
@@ -29,7 +30,7 @@ public class Response {
 	private int response_id;
 
 	@ManyToOne
-	@JoinColumn(name = "complaint_id")
+    @JoinColumn(name = "complaint_id")
 	private Complaint complaint_id;
 
 	private Date response_date;

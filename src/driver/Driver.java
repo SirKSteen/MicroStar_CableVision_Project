@@ -3,16 +3,23 @@ package driver;
 import controllers.ComplaintController;
 import controllers.ResponseController;
 import controllers.UserController;
+import models.Account;
 import models.Complaint;
+import models.Response;
 import models.User;
 import utils.ComplaintCategory;
+import utils.ComplaintType;
 import utils.CustomizedException;
-
+import utils.PaymentStatus;
 import utils.Role;
+
+import java.sql.Date;
+import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import controllers.AccountController;
 import controllers.AuthController;
 
 public class Driver {
@@ -20,30 +27,27 @@ public class Driver {
 
 	public static void main(String[] args) {
 
-		AuthController ac = new AuthController();
-
+		
+		UserController uc = new UserController();
+		AccountController ac = new AccountController();
+		ComplaintController cc = new ComplaintController();
+		ResponseController rc = new ResponseController();
+		User user = null;
+	
 		try {
-			boolean t = ac.updatePassword(1700, "secrets", "secret");
+			Complaint ccc = cc.findById(3);
+			for(Response res: rc.getResponsesPerComplaint(3)) {
+				System.out.println(res);
+			}
+			
+			;
+			
 		} catch (CustomizedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		LOG.debug("Debug Message Logged");
-		LOG.fatal("Sample fatal message");
-		LOG.info("Info Message Logged");
-		LOG.error("Error Message Logged");
-		LOG.warn("Test Warn message");
-		LOG.trace("TRACE MESSAGE");
-
-		User user = new User("", "", "", "", Role.REPRESENTATIVE);
-		ResponseController rc = new ResponseController();
-
-		java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
-		UserController uc = new UserController();
-		Complaint c = new Complaint(1703, 1702, ComplaintCategory.MILD, "", sqlDate, null);
-		ComplaintController cc = new ComplaintController();
-
+		
+		
 	}
 
 }

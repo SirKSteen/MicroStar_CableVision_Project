@@ -18,18 +18,21 @@ import factories.HibernateConnectorSessionFactory;
 import factories.TraditionalDatabaseConnectorFactory;
 import models.Complaint;
 import models.Response;
+import models.User;
 import utils.ComplaintCategory;
 import utils.ComplaintType;
 import utils.CustomizedException;
+import utils.Role;
 
 public class ResponseController {
 
 	// hibernate session config
-//    private HibernateConnectorSessionFactory hibernateSessionFactory;
 	private SessionFactory sessionFactory;
 	private Transaction transaction;
 	private Session session;
 
+	 private UserController userController;
+	 
 	// traditional connection config
 	private Connection connect;
 	private Statement statement;
@@ -43,6 +46,7 @@ public class ResponseController {
 		this.statement = null;
 		this.sqlQuery = "";
 		this.statement = null;
+		this.userController = null;
 	}
 
 	public void addResponse(Response response) throws CustomizedException {
@@ -92,10 +96,11 @@ public class ResponseController {
 			this.statement = this.connect.createStatement();
 
 			// create sql query
-			this.sqlQuery = "SELECT * FROM responses JOIN Complaints ON responses.complaint_id=Complaints.complaint_id";
+			this.sqlQuery = "SELECT * FROM micro_star.responses INNER JOIN micro_star.Complaints ON micro_star.responses.complaint_id=micro_star.Complaints.complaint_id";
 
 			// execute sql query on statement and a ResultSet is returned
 			ResultSet rs = this.statement.executeQuery(this.sqlQuery);
+			userController = new UserController();
 
 			// move cursor to beginning of row if it exists
 			while (rs.next()) {
@@ -104,18 +109,24 @@ public class ResponseController {
 				int complaintID = rs.getInt("complaint_id");
 				Date responseDate = rs.getDate("response_date");
 				String responseInfo = rs.getString("response");
-				int custID = rs.getInt("cust_id");
-				int empID = rs.getInt("emp_id");
 				String complaintCat = rs.getString("complaint_category");
 				String complaintInfo = rs.getString("complaint");
 				Date complaintDate = rs.getDate("complaint_date");
 				String complaintType = rs.getString("complaint_type");
-
-				Complaint complaint = new Complaint();
+				int custID = rs.getInt("cust_id");
+		    	int empID= rs.getInt("emp_id");
+		    	
+		    	
+		    	//get users from database
+		    	User customer = userController.findById(custID);;
+		    	User employee = userController.findById(empID);
+		    	
+		    	Complaint complaint = new Complaint();
 				complaint.setComplaintID(complaintID);
-				complaint.setCustID(custID);
-				complaint.setEmpID(empID);
-
+		    	complaint.setCustID(customer);
+		    	complaint.setEmpID(employee);
+				
+			
 				switch (complaintCat.toLowerCase()) {
 				case "mild":
 					complaint.setCategory(ComplaintCategory.MILD);
@@ -165,6 +176,7 @@ public class ResponseController {
 	public ArrayList<Response> getResponsesPerComplaint(int complaintId) throws CustomizedException {
 		ArrayList<Response> responsesList = new ArrayList<>();
 
+
 		try {
 			// get instance of single database connection
 			this.connect = TraditionalDatabaseConnectorFactory.getDatabaseConnection();
@@ -173,11 +185,12 @@ public class ResponseController {
 			this.statement = this.connect.createStatement();
 
 			// create sql query
-			this.sqlQuery = "SELECT * FROM `micro_star`.`responses` INNER JOIN `micro_star`.`complaints` ON `micro_star`.`responses`.complaint_id=`micro_star`.`complaints`.complaint_id WHERE Responses.response_id="
+			this.sqlQuery = "SELECT * FROM `micro_star`.`responses` INNER JOIN `micro_star`.`complaints` ON `micro_star`.`responses`.complaint_id=`micro_star`.`complaints`.complaint_id WHERE `micro_star`.`complaints`.complaint_id="
 					+ complaintId;
 
 			// execute sql query on statement and a ResultSet is returned
 			ResultSet rs = this.statement.executeQuery(this.sqlQuery);
+			userController = new UserController();
 
 			// move cursor to beginning of row if it exists
 			while (rs.next()) {
@@ -186,18 +199,22 @@ public class ResponseController {
 				int complaintID = rs.getInt("complaint_id");
 				Date responseDate = rs.getDate("response_date");
 				String responseInfo = rs.getString("response");
-				int custID = rs.getInt("cust_id");
-				int empID = rs.getInt("emp_id");
 				String complaintCat = rs.getString("complaint_category");
 				String complaintInfo = rs.getString("complaint");
 				Date complaintDate = rs.getDate("complaint_date");
 				String complaintType = rs.getString("complaint_type");
 
+				int custID = rs.getInt("cust_id");
+				int empID = rs.getInt("emp_id");
+				
 				Complaint complaint = new Complaint();
-				complaint.setComplaintID(complaintID);
-				complaint.setCustID(custID);
-				complaint.setEmpID(empID);
-
+		    	User customer = userController.findById(custID);
+		    	User employee = userController.findById(empID);
+		    	
+		    	complaint.setComplaintID(complaintID);
+		    	complaint.setCustID(customer);
+		    	complaint.setEmpID(employee);
+		    	
 				switch (complaintCat.toLowerCase()) {
 				case "mild":
 					complaint.setCategory(ComplaintCategory.MILD);
@@ -253,11 +270,13 @@ public class ResponseController {
 			// retrieve complaints using traditional database connectivity
 			this.connect = TraditionalDatabaseConnectorFactory.getDatabaseConnection();
 			this.statement = this.connect.createStatement();
+
 			// create sql query
 			this.sqlQuery = "SELECT * FROM `micro_star`.`responses` INNER JOIN `micro_star`.`complaints` ON `micro_star`.`responses`.complaint_id=`micro_star`.`complaints`.complaint_id WHERE Responses.response_id="
 					+ responseID;
 
 			ResultSet rs = this.statement.executeQuery(this.sqlQuery);
+			userController = new UserController();
 
 			// Read result values and create response objects
 			if (rs.next()) {
@@ -266,18 +285,21 @@ public class ResponseController {
 				int complaintId = rs.getInt("complaint_id");
 				Date responseDate = rs.getDate("response_date");
 				String responseInfo = rs.getString("response");
-				int custID = rs.getInt("cust_id");
-				int empID = rs.getInt("emp_id");
 				String complaintCat = rs.getString("complaint_category");
 				String complaintInfo = rs.getString("complaint");
 				Date complaintDate = rs.getDate("complaint_date");
 				String complaintType = rs.getString("complaint_type");
 
+				int custID = rs.getInt("cust_id");
+				int empID = rs.getInt("emp_id");
+				
 				Complaint complaint = new Complaint();
+		    	User customer = userController.findById(custID);
+		    	User employee = userController.findById(empID);
+		    	complaint.setCustID(customer);
+		    	complaint.setEmpID(employee);
 				complaint.setComplaintID(complaintId);
-				complaint.setCustID(custID);
-				complaint.setEmpID(empID);
-
+				
 				switch (complaintCat.toLowerCase()) {
 				case "mild":
 					complaint.setCategory(ComplaintCategory.MILD);
