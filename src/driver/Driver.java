@@ -5,6 +5,7 @@ import controllers.ResponseController;
 import controllers.UserController;
 import models.Complaint;
 import models.User;
+import server.Server;
 import utils.ComplaintCategory;
 import utils.CustomizedException;
 
@@ -22,6 +23,8 @@ public class Driver {
 
 		AuthController ac = new AuthController();
 
+		new Server();
+		
 		try {
 			boolean t = ac.updatePassword(1700, "secrets", "secret");
 		} catch (CustomizedException e) {

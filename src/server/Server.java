@@ -26,15 +26,13 @@ public class Server {
 	private ServerSocket serverSocket;
 	private Socket socket;
 	private ObjectOutputStream objectOutStream;
-	private static Connection dBConn = null;
 	private ObjectInputStream objectInStream;
 	private AccountController accountController;
 	private AuthController authController;
 	private ComplaintController complaintController;
 	private ResponseController responseController;
 	private UserController userController;
-	private Statement statement;
-	private ResultSet result = null;
+
 	
 	public Server() {
 		try {
@@ -43,11 +41,9 @@ public class Server {
 			try {
 				acceptAndProcessRequest();
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			System.out.println("Failed server socket "+e.getLocalizedMessage());
 		}
 	
@@ -63,7 +59,6 @@ public class Server {
 				endPoint = (String)this.objectInStream.readObject();
 				processRequest(operation, endPoint);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				System.out.println("Failed socket "+e.getLocalizedMessage());
 				break;
 			} catch (CustomizedException ce) {
@@ -78,7 +73,6 @@ public class Server {
 			this.objectInStream = new ObjectInputStream(this.socket.getInputStream());
 			this.objectOutStream = new ObjectOutputStream(this.socket.getOutputStream());
 		} catch (IOException ex) {
-			// TODO Auto-generated catch block
 			ex.printStackTrace();
 		}
 	}
@@ -99,8 +93,8 @@ public class Server {
 				this.objectOutStream.writeObject(returnAccountUpdate);
 				break;
 			case "findbyid": 
-				Account findById = (Account)this.objectInStream.readObject();
-				Account returnId = accountController.updateAccount(findById);
+				int findById = (int)this.objectInStream.readObject();
+				Account returnId = accountController.findById(findById); 
 				this.objectOutStream.writeObject(returnId);
 				break;
 			case "deleteaccount": 
@@ -110,10 +104,10 @@ public class Server {
 				break;
 			case "getallaccounts": 
 				//check
-				ArrayList<Account> getAllAccount = (ArrayList<Account>) this.objectInStream.readObject();
+				//ArrayList<Account> getAllAccount = (ArrayList<Account>) this.objectInStream.readObject();
 				ArrayList<Account> returnAllAcoounts = this.accountController.getAllAccounts();
 				this.objectOutStream.writeObject(returnAllAcoounts);
-				break;
+				break; 
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + operation.toLowerCase());
 			}
@@ -167,7 +161,7 @@ public class Server {
 				break;
 			case "getallcomplaints": 
 				//assess
-				ArrayList<Complaint> ComplaintAllId = (ArrayList<Complaint>)this.objectInStream.readObject();
+				//ArrayList<Complaint> ComplaintAllId = (ArrayList<Complaint>)this.objectInStream.readObject();
 				ArrayList<Complaint> returnComplaintId = this.complaintController.getAllComplaints();
 				this.objectOutStream.writeObject(returnComplaintId);
 				break;
@@ -203,12 +197,12 @@ public class Server {
 				this.objectOutStream.writeObject(returnDeleteId);
 				break;
 			case "getallresponses": //assess
-				ArrayList<Response> viewAllId = (ArrayList<Response>)this.objectInStream.readObject();
+				//ArrayList<Response> viewAllId = (ArrayList<Response>)this.objectInStream.readObject();
 				ArrayList<Response> returnAllResponse = this.responseController.getAllResponses();
 				this.objectOutStream.writeObject(returnAllResponse);
 				break;
 			case "getresponsespercomplaint": 
-				ArrayList<Response> viewPerComplaintId = (ArrayList<Response>) this.objectInStream.readObject();
+				//ArrayList<Response> viewPerComplaintId = (ArrayList<Response>) this.objectInStream.readObject();
 				ArrayList<Response> returnComplaint = this.responseController.getAllResponses();
 				this.objectOutStream.writeObject(returnComplaint);
 				break;
@@ -248,7 +242,7 @@ public class Server {
 				break;
 			case "getallusers": 
 				//assess
-				ArrayList<User> getAllUser = (ArrayList<User>)this.objectInStream.readObject();
+				//ArrayList<User> getAllUser = (ArrayList<User>)this.objectInStream.readObject();
 				ArrayList<User> returngetAllUser= this.userController.getAllUsers();//here
 				this.objectOutStream.writeObject(returngetAllUser);
 				break;
