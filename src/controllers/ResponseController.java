@@ -96,7 +96,7 @@ public class ResponseController {
 			this.statement = this.connect.createStatement();
 
 			// create sql query
-			this.sqlQuery = "SELECT * FROM micro_star.responses INNER JOIN micro_star.Complaints ON micro_star.responses.complaint_id=micro_star.Complaints.complaint_id";
+			this.sqlQuery = "SELECT * FROM micro_star.responses INNER JOIN micro_star.Complaints ON micro_star.responses.complaint_id=micro_star.complaints.complaint_id";
 
 			// execute sql query on statement and a ResultSet is returned
 			ResultSet rs = this.statement.executeQuery(this.sqlQuery);
@@ -350,7 +350,7 @@ public class ResponseController {
 		try {
 			this.connect = TraditionalDatabaseConnectorFactory.getDatabaseConnection();
 			this.statement = this.connect.createStatement();
-			result = this.statement.executeUpdate("DELETE FROM responses " + "WHERE response_id =" + responseId);
+			result = this.statement.executeUpdate("DELETE FROM responses WHERE response_id = " + responseId);
 
 			System.out.println(result + " row(s) affected. delete successful");
 
