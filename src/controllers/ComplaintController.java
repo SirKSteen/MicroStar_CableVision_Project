@@ -320,7 +320,86 @@ public class ComplaintController {
 	}
 	
 	
-	
+//	Method to accept a user id and returns an ArrayList of complaints
+//	that are tied to that specific User
+	public ArrayList <Complaint> getComplaintsPerUser(int userID) {
+		
+		ArrayList<Complaint> userComplaintsList = new ArrayList <>();
+		Complaint complaint = null;
+		User user = null;
+		
+		try {
+	    	//get instance of single database connection
+	    	this.connect = TraditionalDatabaseConnectorFactory.getDatabaseConnection();
+	    	
+	    	//initialize statement that will be used to execute sql query
+			this.statement = this.connect.createStatement();
+			
+			
+			
+			//create sql query
+			this.sqlQuery = "SELECT * FROM complaints WHERE cust_id="+userID;
+		    
+			//execute sql query on statement and a ResultSet is returned
+		    ResultSet rs = this.statement.executeQuery(this.sqlQuery);
+		    
+		    //move cursor to beginning of row if it exists
+		    while(rs.next()){
+		    	
+		    	int complaintID = rs.getInt("complaint_id");
+		    	int custID = rs.getInt("cust_id");
+		    	int empID= rs.getInt("emp_id");
+		    	String complaintCat = rs.getString("complaint_category"); 
+		    	String complaintInfo = rs.getString("complaint");
+		    	Date complaintDate = rs.getDate("complaint_date");
+		    	String complaintType = rs.getString("complaint_type");
+		    	
+		     	complaint = new Complaint();
+		    	user = new User();
+		    	
+		    	complaint.setComplaintID(complaintID);
+		    	complaint.setCustID(user);
+		    	complaint.setEmpID(user);
+		    	
+		       switch (complaintCat.toLowerCase()) {
+			    case "mild": 
+			    	complaint.setCategory(ComplaintCategory.MILD);
+			    	break;
+			    case "moderate": 
+			    	complaint.setCategory(ComplaintCategory.MODERATE);
+			    	break;
+			    case "severe": 
+			    	complaint.setCategory(ComplaintCategory.SEVERE);
+			    	break;
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + complaintCat);
+			}
+		       
+		       complaint.setComplaint(complaintInfo);
+		       complaint.setComplaintDate(complaintDate);
+		       
+		       switch (complaintType.toLowerCase()) {
+			    case "broadband": 
+			    	complaint.setComplaintType(ComplaintType.BROADBAND);
+				break;
+				case "cable":
+					complaint.setComplaintType(ComplaintType.CABLE);
+					break;
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + complaintType);
+			}
+		       
+		       //populate complaintsList to be returned
+		       userComplaintsList.add(complaint);
+		       
+		    }
+		} catch (SQLException e) {
+			// TODO manage and log exceptions
+			e.printStackTrace();
+		}
+		
+		return userComplaintsList;
+	}
 	
 	
 	
