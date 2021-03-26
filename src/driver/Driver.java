@@ -1,5 +1,7 @@
 package driver;
 
+import java.util.ArrayList;
+
 import controllers.ComplaintController;
 import controllers.ResponseController;
 import controllers.UserController;
@@ -7,6 +9,7 @@ import models.Complaint;
 import models.User;
 import server.Server;
 import utils.ComplaintCategory;
+import utils.ComplaintType;
 import utils.CustomizedException;
 
 import utils.Role;
@@ -41,11 +44,12 @@ public class Driver {
 
 		User user = new User("", "", "", "", Role.REPRESENTATIVE);
 		ResponseController rc = new ResponseController();
-
+		
 		java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
 		UserController uc = new UserController();
 		Complaint c = new Complaint(1703, 1702, ComplaintCategory.MILD, "", sqlDate, null);
 		ComplaintController cc = new ComplaintController();
+
 
 	}
 
