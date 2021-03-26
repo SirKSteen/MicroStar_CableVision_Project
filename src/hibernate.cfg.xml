@@ -19,7 +19,7 @@
         <!-- Add annotated classes here -->
         <mapping class="models.User"/>
         <mapping class="models.Account"/>
-         <mapping class="models.Complaint"/>
+        <mapping class="models.Complaint"/>
         <mapping class="models.Response"/>
     </session-factory>    
 </hibernate-configuration>  

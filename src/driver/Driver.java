@@ -1,5 +1,7 @@
 package driver;
 
+import java.util.ArrayList;
+
 import controllers.ComplaintController;
 import controllers.ResponseController;
 import controllers.UserController;
@@ -7,6 +9,7 @@ import models.Account;
 import models.Complaint;
 import models.Response;
 import models.User;
+import server.Server;
 import utils.ComplaintCategory;
 import utils.ComplaintType;
 import utils.CustomizedException;
@@ -27,27 +30,9 @@ public class Driver {
 
 	public static void main(String[] args) {
 
+
 		
-		UserController uc = new UserController();
-		AccountController ac = new AccountController();
-		ComplaintController cc = new ComplaintController();
-		ResponseController rc = new ResponseController();
-		User user = null;
-	
-		try {
-			Complaint ccc = cc.findById(4);
-			for(Response res: rc.getResponsesPerComplaint(3)) {
-				System.out.println(res);
-			}
-			
-			;
-			
-		} catch (CustomizedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
+
 	}
 
 }

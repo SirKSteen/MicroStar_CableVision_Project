@@ -61,9 +61,8 @@ public class Complaint {
 		this.complaintDate = new Date();
 		this.complaintType = null;
 	}
-	
-		
-	
+
+			
 	public Complaint(User custID, User empID, ComplaintCategory category, String complaint, Date complaintDate,
 			ComplaintType complaintType) {
 		this.custID = custID;
@@ -75,7 +74,7 @@ public class Complaint {
 	}
 
 
-	public Complaint(final Complaint c ) {
+	public Complaint(final Complaint c) {
 		this.complaintID = c.complaintID;
 		this.custID = c.custID;
 		this.empID = c.empID;
