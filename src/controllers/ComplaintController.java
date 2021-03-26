@@ -321,7 +321,7 @@ public class ComplaintController {
 	
 //	Method to accept a user id and returns an ArrayList of complaints
 //	that are tied to that specific User
-	public ArrayList <Complaint> getComplaintsPerUser(int userID) {
+	public ArrayList <Complaint> getComplaintsPerUser(int userID) throws CustomizedException {
 		
 		ArrayList<Complaint> userComplaintsList = new ArrayList <>();
 		Complaint complaint = null;
