@@ -1,24 +1,16 @@
 package server;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-
-import javax.swing.JOptionPane;
 
 import controllers.*;
 import models.*;
 import utils.CustomizedException;
-
+import utils.Role;
 import controllers.ResponseController;
 
 public class Server {
@@ -83,19 +75,19 @@ public class Server {
 		case "account":
 			switch (operation.toLowerCase()) {
 			case "createaccount": 
-				Account account = (Account)this.objectInStream.readObject();
-				int newAccountId = accountController.createAccount(account);
+				Account acctToCreate = (Account)this.objectInStream.readObject();
+				int newAccountId = accountController.createAccount(acctToCreate);
 				this.objectOutStream.writeObject(newAccountId);
 				break;
 			case "updateaccount": 
 				Account accToUpdate = (Account)this.objectInStream.readObject();
-				Account returnAccountUpdate = accountController.updateAccount(accToUpdate);
-				this.objectOutStream.writeObject(returnAccountUpdate);
+				Account updatedAccount = accountController.updateAccount(accToUpdate);
+				this.objectOutStream.writeObject(updatedAccount);
 				break;
 			case "findbyid": 
-				int findById = (int)this.objectInStream.readObject();
-				Account returnId = accountController.findById(findById); 
-				this.objectOutStream.writeObject(returnId);
+				int acctIdToFind = (int)this.objectInStream.readObject();
+				Account acctFound = accountController.findById(acctIdToFind); 
+				this.objectOutStream.writeObject(acctFound);
 				break;
 			case "deleteaccount": 
 				int deleteAcctId = (int)this.objectInStream.readObject();
@@ -103,34 +95,30 @@ public class Server {
 				this.objectOutStream.writeObject(deletedId);
 				break;
 			case "getallaccounts": 
-				//check
-				//ArrayList<Account> getAllAccount = (ArrayList<Account>) this.objectInStream.readObject();
-				ArrayList<Account> returnAllAcoounts = this.accountController.getAllAccounts();
-				this.objectOutStream.writeObject(returnAllAcoounts);
+				ArrayList<Account> accountList = this.accountController.getAllAccounts();
+				this.objectOutStream.writeObject(accountList);
 				break; 
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + operation.toLowerCase());
 			}
 			break;
 			
-		//AuthenticastionController
+		//AuthenticationController
 		case "auth":
 			switch (operation.toLowerCase()) {
 			case "login": 
-				boolean login = (boolean)this.objectInStream.readObject();
-				boolean returnLogin = this.authController.login(0, endPoint, null);
-				this.objectOutStream.writeObject(endPoint);
+				int loginUserId = (int)this.objectInStream.readObject();
+				String password = (String)this.objectInStream.readObject();
+				Role role = (Role)this.objectInStream.readObject();
+				boolean loginSuccess = this.authController.login(loginUserId, password, role);
+				this.objectOutStream.writeObject(loginSuccess);
 				break;
 			case "updatepassword":
-				boolean loginPasswordUpate = (boolean)this.objectInStream.readObject();
-				boolean returnPasswordUpdate = this.authController.updatePassword(0, operation, endPoint);
-				this.objectOutStream.writeObject(returnPasswordUpdate);
-				break;
-			case "register": 
-				int registerId = (int)this.objectInStream.readObject();
-				//assess this
-				int returnRegisterId = this.authController.register(null);
-				this.objectOutStream.writeObject(returnRegisterId);
+				int updatePasswordUserId = (int)this.objectInStream.readObject();
+				String oldPassword = (String)this.objectInStream.readObject();
+				String newPassword = (String)this.objectInStream.readObject();
+				boolean passwordUpdated = this.authController.updatePassword(updatePasswordUserId, oldPassword, newPassword);
+				this.objectOutStream.writeObject(passwordUpdated);
 				break;
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + operation.toLowerCase());
@@ -149,10 +137,9 @@ public class Server {
 				this.objectOutStream.writeObject(complaintUpdate);
 				break;
 			case "findbyid": 
-				int findById = (int)this.objectInStream.readObject();
-				//assess
-				Complaint returnFoundId = this.complaintController.findById(findById);
-				this.objectOutStream.writeObject(returnFoundId);
+				int comIdToFind = (int)this.objectInStream.readObject();
+				Complaint returnFoundComplaint = this.complaintController.findById(comIdToFind);
+				this.objectOutStream.writeObject(returnFoundComplaint);
 				break;
 			case "deletecomplaint": 
 				int deleteId = (int)this.objectInStream.readObject();
@@ -160,12 +147,12 @@ public class Server {
 				this.objectOutStream.writeObject(returnDeleteId);
 				break;
 			case "getallcomplaints": 
-				//assess
-				//ArrayList<Complaint> ComplaintAllId = (ArrayList<Complaint>)this.objectInStream.readObject();
-				ArrayList<Complaint> returnComplaintId = this.complaintController.getAllComplaints();
-				this.objectOutStream.writeObject(returnComplaintId);
+				ArrayList<Complaint> returnComplaintList = this.complaintController.getAllComplaints();
+				this.objectOutStream.writeObject(returnComplaintList);
 				break;
 			case "assigntechnician": 
+				User technician = (User)this.objectInStream.readObject();
+				
 				break;
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + operation.toLowerCase());
@@ -175,10 +162,9 @@ public class Server {
 		case "response":
 			switch (operation.toLowerCase()) {
 			case "addresponse": 
-				Response responseId = (Response)this.objectInStream.readObject();
-				//assess class 
-				Response returnResponseId = this.responseController.addResponse(responseId);
-				this.objectOutStream.writeObject(returnResponseId);
+				Response responseToAdd = (Response)this.objectInStream.readObject(); 
+				Response addedRespId = this.responseController.addResponse(responseToAdd);
+				this.objectOutStream.writeObject(addedRespId);
 				break;
 			case "updateresponse": 
 				Response updateId = (Response) this.objectInStream.readObject();
@@ -186,9 +172,8 @@ public class Server {
 				this.objectOutStream.writeObject(returnUpdateId);
 				break;
 			case "findbyid": 
-				//assess
-				int findByResponseId = (int)this.objectInStream.readObject();
-				Response returnFoundResponseId = this.responseController.findById(findByResponseId);
+				int findResponseId = (int)this.objectInStream.readObject();
+				Response returnFoundResponseId = this.responseController.findById(findResponseId);
 				this.objectOutStream.writeObject(returnFoundResponseId);
 				break;
 			case "deleteresponse": 
@@ -196,14 +181,13 @@ public class Server {
 				int returnDeleteId = this.responseController.deleteResponse(deleteResponseId);
 				this.objectOutStream.writeObject(returnDeleteId);
 				break;
-			case "getallresponses": //assess
-				//ArrayList<Response> viewAllId = (ArrayList<Response>)this.objectInStream.readObject();
+			case "getallresponses": 
 				ArrayList<Response> returnAllResponse = this.responseController.getAllResponses();
 				this.objectOutStream.writeObject(returnAllResponse);
 				break;
 			case "getresponsespercomplaint": 
-				//ArrayList<Response> viewPerComplaintId = (ArrayList<Response>) this.objectInStream.readObject();
-				ArrayList<Response> returnComplaint = this.responseController.getAllResponses();
+				int complaintId = (int)this.objectInStream.readObject();
+				ArrayList<Response> returnComplaint = this.responseController.getResponsesPerComplaint(complaintId);
 				this.objectOutStream.writeObject(returnComplaint);
 				break;
 			default:
@@ -213,24 +197,21 @@ public class Server {
 		case "user":
 			switch (operation.toLowerCase()) {
 			case "createuser": 
-				//assess
-				int userId = (int) this.objectInStream.readObject();
-				int returnUserId = this.userController.createUser(null);//here
+				User user = (User)this.objectInStream.readObject();
+				int returnUserId = this.userController.createUser(user);
 				this.objectOutStream.writeObject(returnUserId);
 				break;
 			case "updateuser": 
 				User userIdUpdate = (User) this.objectInStream.readObject();
-				User returnUserIdUpdate = this.userController.updateUser(userIdUpdate);//here
+				User returnUserIdUpdate = this.userController.updateUser(userIdUpdate);
 				this.objectOutStream.writeObject(returnUserIdUpdate);
 				break;
 			case "findbyid": 
-				//assess
-				int user = (int)this.objectInStream.readObject();
-				User returnFindUser = this.userController.findById(user);
+				int userId = (int)this.objectInStream.readObject();
+				User returnFindUser = this.userController.findById(userId);
 				this.objectOutStream.writeObject(returnFindUser);
 				break;
 			case "findbyemail": 
-				//assess
 				String findByEmail = (String)this.objectInStream.readObject();
 				boolean returnFindByEmail = this.userController.findByEmail(findByEmail);
 				this.objectOutStream.writeObject(returnFindByEmail);
@@ -241,10 +222,8 @@ public class Server {
 				this.objectOutStream.writeObject(returnDeleteUser);
 				break;
 			case "getallusers": 
-				//assess
-				//ArrayList<User> getAllUser = (ArrayList<User>)this.objectInStream.readObject();
-				ArrayList<User> returngetAllUser= this.userController.getAllUsers();//here
-				this.objectOutStream.writeObject(returngetAllUser);
+				ArrayList<User> userList = this.userController.getAllUsers();
+				this.objectOutStream.writeObject(userList);
 				break;
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + operation.toLowerCase());
