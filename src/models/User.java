@@ -1,5 +1,7 @@
 package models;
 
+import java.io.Serializable;
+
 /*This class will serve as the user domain object.
  * it will map to the users table in the mysql database
  * 
@@ -18,7 +20,7 @@ import utils.Role;
 
 @Entity
 @Table(name = "Users") // reference the user table in database.
-public class User {
+public class User implements Serializable {
 
 	/*
 	 * use annotations to specify id column and set it to auto generate ID's. we
