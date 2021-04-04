@@ -215,7 +215,13 @@ public class ComplaintView extends JInternalFrame implements ActionListener{
 				UserController uc = new UserController();
 				ComplaintController cc = new ComplaintController();
 				int custId = Integer.parseInt(custIdText.trim());
-				User userId = uc.findById(custId);
+				User userId = null;
+				try {
+					userId = uc.findById(custId);
+				} catch (CustomizedException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
 				
 				complaint.setCustID(userId);
 				complaint.setComplaint(this.complaintTextArea.getText());

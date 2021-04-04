@@ -7,7 +7,6 @@ import controllers.ComplaintController;
 import controllers.ResponseController;
 import controllers.UserController;
 import models.Complaint;
-import models.Response;
 import models.User;
 import utils.ComplaintCategory;
 import utils.ComplaintType;
@@ -15,13 +14,59 @@ import utils.CustomizedException;
 
 import utils.Role;
 
-public class Driver {
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import controllers.AuthController;
+
+
+
+public class Driver {
+	private static final Logger LOG = LogManager.getLogger(Driver.class.getName());
 	public static void main(String[] args) {
+
 //
 //		User user = new User("","","","",Role.REPRESENTATIVE);
 //		ResponseController rc = new ResponseController();
 //		
+
+
+
+		AuthController ac = new AuthController();
+		
+		try {
+			boolean t = ac.updatePassword(1700, "secrets","secret");
+		} catch (CustomizedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		LOG.debug("Debug Message Logged"); 
+        LOG.fatal("Sample fatal message");
+        LOG.info("Info Message Logged");
+        LOG.error("Error Message Logged");
+        LOG.warn("Test Warn message");
+        LOG.trace("TRACE MESSAGE");
+        
+
+		User user = new User("","","","",Role.REPRESENTATIVE);
+		ResponseController rc = new ResponseController();
+		
+		java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
+		UserController uc = new UserController();
+
+		
+
+//		uc.createUser(user);
+		
+		
+		
+		
+
+		ComplaintController cc = new ComplaintController();	
+		
+//		uc.createUser(user);	
+
 //		try {
 //			System.out.println("find Complaint");
 //			Complaint c2 = cc.findById(18);
@@ -52,6 +97,9 @@ public class Driver {
 //		System.out.println(resp);
 		
 		
+
+//
+
 //		User u2 = new User(
 //				"Wally",
 //				"Banks",
@@ -62,33 +110,53 @@ public class Driver {
 //		System.out.println("Create User");
 ////		uc.createUser(u2);
 //		
+
 //		User cust1 = uc.findById(1731);
 //		
 		
 //		User u1 = new User ("Max","Hunter","mhunt@gmail.com",
 //				"pass000",Role.CUSTOMER);
-		UserController uc = new UserController();
-		
-//		uc.createUser(u1);	
-		
-//		In order to create a complaint, do a find by id and store that user
-//		into a new user and use that as the custId for complaint
-		
-		User custID = uc.findById(1732);
-		System.out.println("Found: "+custID);
-		
-		ComplaintController cc = new ComplaintController();	
-		java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
-		
-		Complaint c1 = new Complaint(
-				custID,
-				null,
-				ComplaintCategory.MODERATE,
-				"This is a sample complaint for Max",
-				sqlDate,
-				ComplaintType.BROADBAND
-				);
+//		UserController uc = new UserController();
 //		
+////		uc.createUser(u1);	
+//		
+////		In order to create a complaint, do a find by id and store that user
+////		into a new user and use that as the custId for complaint
+//		
+//		User custID = uc.findById(1732);
+//		System.out.println("Found: "+custID);
+//		
+////		ComplaintController cc = new ComplaintController();	
+////		java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
+//		
+//		Complaint c1 = new Complaint(
+//				custID,
+//				null,
+//				ComplaintCategory.MODERATE,
+//				"This is a sample complaint for Max",
+//				sqlDate,
+//				ComplaintType.BROADBAND
+//				);
+////		
+
+//		User cust1;
+//		try {
+//			cust1 = uc.findById(1731);
+//		} catch (CustomizedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		Complaint c2 = new Complaint(
+//				cust1,
+//				null,
+//				ComplaintCategory.SEVERE,
+//				"This is a sample complaint for Wally",
+//				sqlDate,
+//				ComplaintType.CABLE
+//				);
+		
+
 //		try {
 //			cc.addComplaint(c1);
 //			System.out.println("Complaint added successfully!");
@@ -123,29 +191,6 @@ public class Driver {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

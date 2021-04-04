@@ -11,8 +11,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.mindrot.jbcrypt.BCrypt;
-
 import factories.HibernateConnectorSessionFactory;
 import factories.TraditionalDatabaseConnectorFactory;
 import models.Complaint;
@@ -20,7 +18,6 @@ import models.User;
 import utils.ComplaintCategory;
 import utils.ComplaintType;
 import utils.CustomizedException;
-import utils.Role;
 
 public class ComplaintController {
 

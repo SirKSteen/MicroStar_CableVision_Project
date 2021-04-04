@@ -5,10 +5,7 @@ package models;
  * 
  * */
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,13 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-
-import factories.HibernateConnectorSessionFactory;
-import utils.Role;
 import java.util.Date;
 
 
@@ -38,8 +28,8 @@ public class Response {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //Automatically increments ID number based on previous record.
 	private int response_id;
 	
-	 @ManyToOne
-	 @JoinColumn(name = "complaint_id")
+	@ManyToOne
+	@JoinColumn(name = "complaint_id")
 	private Complaint complaint_id;
 	
 	private Date response_date;
