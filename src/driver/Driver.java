@@ -18,15 +18,10 @@ import utils.Role;
 public class Driver {
 
 	public static void main(String[] args) {
-
-		User user = new User("","","","",Role.REPRESENTATIVE);
-		ResponseController rc = new ResponseController();
-		
-		java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
-		UserController uc = new UserController();
-		ComplaintController cc = new ComplaintController();	
-		
-//		uc.createUser(user);	
+//
+//		User user = new User("","","","",Role.REPRESENTATIVE);
+//		ResponseController rc = new ResponseController();
+//		
 //		try {
 //			System.out.println("find Complaint");
 //			Complaint c2 = cc.findById(18);
@@ -57,41 +52,74 @@ public class Driver {
 //		System.out.println(resp);
 		
 		
-		User u2 = new User(
-				"Wally",
-				"Banks",
-				"bankswall@gmail.com",
-				"live321",
-				Role.CUSTOMER);
+//		User u2 = new User(
+//				"Wally",
+//				"Banks",
+//				"bankswall@gmail.com",
+//				"live321",
+//				Role.CUSTOMER);
+//		
+//		System.out.println("Create User");
+////		uc.createUser(u2);
+//		
+//		User cust1 = uc.findById(1731);
+//		
 		
-		System.out.println("Create User");
-//		uc.createUser(u2);
+//		User u1 = new User ("Max","Hunter","mhunt@gmail.com",
+//				"pass000",Role.CUSTOMER);
+		UserController uc = new UserController();
 		
-		User cust1 = uc.findById(1731);
+//		uc.createUser(u1);	
 		
-		Complaint c2 = new Complaint(
-				cust1,
+//		In order to create a complaint, do a find by id and store that user
+//		into a new user and use that as the custId for complaint
+		
+		User custID = uc.findById(1732);
+		System.out.println("Found: "+custID);
+		
+		ComplaintController cc = new ComplaintController();	
+		java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
+		
+		Complaint c1 = new Complaint(
+				custID,
 				null,
-				ComplaintCategory.SEVERE,
-				"This is a sample complaint for Wally",
+				ComplaintCategory.MODERATE,
+				"This is a sample complaint for Max",
 				sqlDate,
-				ComplaintType.CABLE
+				ComplaintType.BROADBAND
 				);
-		
+//		
 //		try {
-//			cc.addComplaint(c2);
+//			cc.addComplaint(c1);
 //			System.out.println("Complaint added successfully!");
 //		} catch (CustomizedException e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
 		
-		ArrayList <Complaint> complaintsResult = new ArrayList <> ();
+		ArrayList <Complaint> dispList = new ArrayList<> ();
+		try {
+			dispList = cc.getAllComplaints();
+			System.out.println("Printing:\n"+dispList);
+		} catch (CustomizedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		System.out.println("Complaints retrieved for user id 1724\n");
-		complaintsResult = cc.getComplaintsPerUser(1724);
 		
-		System.out.println(complaintsResult);
+		
+//		ArrayList <Complaint> complaintsResult = new ArrayList <> ();
+//		
+//		System.out.println("Complaints retrieved for user id 1724\n");
+//		complaintsResult = cc.getComplaintsPerUser(1724);
+//		
+//		System.out.println(complaintsResult);
+		
+
+		
+			
+		
+		
 	}
 
 }

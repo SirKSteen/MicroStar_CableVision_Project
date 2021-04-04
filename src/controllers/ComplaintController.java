@@ -109,8 +109,8 @@ public class ComplaintController {
 		    while(rs.next()){
 		    	
 		    	int complaintID = rs.getInt("complaint_id");
-		    	int custID = rs.getInt("cust_id");
-		    	int empID= rs.getInt("emp_id");
+//		    	User custID = rs.getInt("cust_id");
+//		    	User empID= rs.getInt("emp_id");
 		    	String complaintCat = rs.getString("complaint_category"); 
 		    	String complaintInfo = rs.getString("complaint");
 		    	Date complaintDate = rs.getDate("complaint_date");
@@ -433,36 +433,42 @@ public class ComplaintController {
 		
 		return result;
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
 	
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
