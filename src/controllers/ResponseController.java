@@ -49,6 +49,7 @@ public class ResponseController {
 		this.userController = null;
 	}
 
+	@SuppressWarnings("finally")
 	public Response addResponse(Response response) throws CustomizedException {
 
 		try {

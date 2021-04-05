@@ -6,6 +6,7 @@ import controllers.ComplaintController;
 import controllers.ResponseController;
 import controllers.UserController;
 import models.Complaint;
+import models.Response;
 import models.User;
 import utils.ComplaintCategory;
 import utils.ComplaintType;
@@ -29,86 +30,68 @@ public class Driver {
 //		ResponseController rc = new ResponseController();
 //		
 
-
-
  		new Server();
-		
-
-
+ 		
 		User user = new User("","","","",Role.REPRESENTATIVE);
 		ResponseController rc = new ResponseController();
 		
 		java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
 		UserController uc = new UserController();
 
-		
-
 //		uc.createUser(user);
-		
-		
-		
-		
 
 		ComplaintController cc = new ComplaintController();	
 		
-//		uc.createUser(user);	
-
+		ArrayList <Complaint> dispList = new ArrayList<> ();
 //		try {
-//			System.out.println("find Complaint");
-//			Complaint c2 = cc.findById(18);
-//			System.out.println(c2);
-//			
-//			User user2 = uc.findById(1721);
-//			System.out.println("Update Complaint");
-//			c2.setEmpID(user2);
-//			cc.assignTechnician(c2);
-//		} catch (CustomizedException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		} 
-//		
-//		
-	
-//		Response resp = new Response();
-//		user = uc.findById(1703);
-//		try {
-//			
-//			resp = rc.findById(1);
-//		} catch (CustomizedException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-		// new Response(c, null, "response message");
-		
-//		System.out.println(resp);
-		
-
-
-//		try {
-//			cc.addComplaint(c1);
-//			System.out.println("Complaint added successfully!");
+//			dispList = cc.getAllComplaints();
+//			System.out.println("Printing:\n"+dispList);
 //		} catch (CustomizedException e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		
-		ArrayList <Complaint> dispList = new ArrayList<> ();
+
+		/*
 		try {
-			dispList = cc.getAllComplaints();
-			System.out.println("Printing:\n"+dispList);
+			Complaint searchC = cc.findById(14);
+			System.out.println("Complaint: \n"+searchC);
+			
+			Response r2 = new Response(
+					searchC, 
+					sqlDate, 
+					"Thanks for everything!!"
+					);
+			ResponseController rc1 = new ResponseController();
+			rc1.addResponse(r2);
+			System.out.println("Response added!");
+		} catch (CustomizedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
+		
+		ComplaintController cc1 = new ComplaintController();
+		ArrayList <Complaint> mc = new ArrayList <> ();
+		
+		try {
+			mc = cc1.getAllMildComplaints();
+			System.out.println(mc);
 		} catch (CustomizedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		
-		
-//		ArrayList <Complaint> complaintsResult = new ArrayList <> ();
-//		
-//		System.out.println("Complaints retrieved for user id 1724\n");
-//		complaintsResult = cc.getComplaintsPerUser(1724);
-//		
-//		System.out.println(complaintsResult);
+		/*
+		try {
+			
+			Complaint c3 = cc1.viewComplaintAndResponses(14);
+			System.out.println(c3);
+		} catch (CustomizedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
 		
 
 		

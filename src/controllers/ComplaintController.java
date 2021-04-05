@@ -14,6 +14,7 @@ import org.hibernate.Transaction;
 import factories.HibernateConnectorSessionFactory;
 import factories.TraditionalDatabaseConnectorFactory;
 import models.Complaint;
+import models.Response;
 import models.User;
 import utils.ComplaintCategory;
 import utils.ComplaintType;
@@ -83,6 +84,13 @@ public class ComplaintController {
 		return complaintId;
 		}
 		
+		
+		
+		
+//		*************************************************************************	
+		
+		
+		
 		// Method to  READ all the complaints
 		public ArrayList<Complaint> getAllComplaints() throws CustomizedException {
 		ArrayList<Complaint> complaintsList = new ArrayList<>();
@@ -121,7 +129,7 @@ public class ComplaintController {
 		    complaint.setCustID(customer);
 		    complaint.setEmpID(employee);
 		   
-		      switch (complaintCat.toLowerCase()) {
+		   switch (complaintCat.toLowerCase()) {
 		   case "mild":
 		    complaint.setCategory(ComplaintCategory.MILD);
 		    break;
@@ -160,6 +168,260 @@ public class ComplaintController {
 		return complaintsList;
 		}
 		
+		
+//		*************************************************************************	
+		
+		
+		// Method to  READ all MILD complaints 
+		public ArrayList<Complaint> getAllMildComplaints() throws CustomizedException {
+				ArrayList<Complaint> complaintsList = new ArrayList<>();
+				
+				try {
+				// get instance of single database connection
+				this.connect = TraditionalDatabaseConnectorFactory.getDatabaseConnection();
+				
+				// initialize statement that will be used to execute sql query
+				this.statement = this.connect.createStatement();
+				
+				// create sql query
+				this.sqlQuery = "SELECT * FROM micro_star.complaints "
+						+ "WHERE complaint_category="+"'" + ComplaintCategory.MILD + "'";
+				
+				// execute sql query on statement and a ResultSet is returned
+				ResultSet rs = this.statement.executeQuery(this.sqlQuery);
+				userController = new UserController();
+				
+				   //move cursor to beginning of row if it exists
+				   while(rs.next()){
+				   
+				    int complaintID = rs.getInt("complaint_id");
+				    int custID = rs.getInt("cust_id");
+				    int empID= rs.getInt("emp_id");
+				    String complaintCat = rs.getString("complaint_category");
+				    String complaintInfo = rs.getString("complaint");
+				    Date complaintDate = rs.getDate("complaint_date");
+				    String complaintType = rs.getString("complaint_type");
+				   
+				   
+				    Complaint complaint = new Complaint();
+				    User customer = userController.findById(custID);
+				    User employee = userController.findById(empID);
+				   
+				    complaint.setComplaintID(complaintID);
+				    complaint.setCustID(customer);
+				    complaint.setEmpID(employee);
+				   
+				   switch (complaintCat.toLowerCase()) {
+				   case "mild":
+				    complaint.setCategory(ComplaintCategory.MILD);
+				    break;
+				   case "moderate":
+					    complaint.setCategory(ComplaintCategory.MODERATE);
+					    break;
+				   case "severe":
+					    complaint.setCategory(ComplaintCategory.SEVERE);
+					    break;
+				default:
+				throw new IllegalArgumentException("Unexpected value: " + complaintCat);
+				}
+				     
+				      complaint.setComplaint(complaintInfo);
+				      complaint.setComplaintDate(complaintDate);
+				     
+				      switch (complaintType.toLowerCase()) {
+				   case "broadband":
+				    complaint.setComplaintType(ComplaintType.BROADBAND);
+				break;
+				case "cable":
+				complaint.setComplaintType(ComplaintType.CABLE);
+				break;
+				default:
+				throw new IllegalArgumentException("Unexpected value: " + complaintType);
+				}
+				
+				// populate complaintsList to be returned
+				complaintsList.add(complaint);
+				
+				}
+				} catch (SQLException e) {
+				// TODO manage and log exceptions
+				e.printStackTrace();
+				}
+				return complaintsList;
+				}
+				
+		
+//		*************************************************************************	
+		
+		
+		// Method to  READ all MODERATE complaints 
+				public ArrayList<Complaint> getAllModerateComplaints() throws CustomizedException {
+						ArrayList<Complaint> complaintsList = new ArrayList<>();
+						
+						try {
+						// get instance of single database connection
+						this.connect = TraditionalDatabaseConnectorFactory.getDatabaseConnection();
+						
+						// initialize statement that will be used to execute sql query
+						this.statement = this.connect.createStatement();
+						
+						// create sql query
+						this.sqlQuery = "SELECT * FROM micro_star.complaints "
+								+ "WHERE complaint_category="+"'" + ComplaintCategory.MODERATE + "'";
+						
+						// execute sql query on statement and a ResultSet is returned
+						ResultSet rs = this.statement.executeQuery(this.sqlQuery);
+						userController = new UserController();
+						
+						   //move cursor to beginning of row if it exists
+						   while(rs.next()){
+						   
+						    int complaintID = rs.getInt("complaint_id");
+						    int custID = rs.getInt("cust_id");
+						    int empID= rs.getInt("emp_id");
+						    String complaintCat = rs.getString("complaint_category");
+						    String complaintInfo = rs.getString("complaint");
+						    Date complaintDate = rs.getDate("complaint_date");
+						    String complaintType = rs.getString("complaint_type");
+						   
+						   
+						    Complaint complaint = new Complaint();
+						    User customer = userController.findById(custID);
+						    User employee = userController.findById(empID);
+						   
+						    complaint.setComplaintID(complaintID);
+						    complaint.setCustID(customer);
+						    complaint.setEmpID(employee);
+						   
+						   switch (complaintCat.toLowerCase()) {
+						   case "mild":
+						    complaint.setCategory(ComplaintCategory.MILD);
+						    break;
+						   case "moderate":
+							    complaint.setCategory(ComplaintCategory.MODERATE);
+							    break;
+						   case "severe":
+							    complaint.setCategory(ComplaintCategory.SEVERE);
+							    break;
+						default:
+						throw new IllegalArgumentException("Unexpected value: " + complaintCat);
+						}
+						     
+						      complaint.setComplaint(complaintInfo);
+						      complaint.setComplaintDate(complaintDate);
+						     
+						      switch (complaintType.toLowerCase()) {
+						   case "broadband":
+						    complaint.setComplaintType(ComplaintType.BROADBAND);
+						break;
+						case "cable":
+						complaint.setComplaintType(ComplaintType.CABLE);
+						break;
+						default:
+						throw new IllegalArgumentException("Unexpected value: " + complaintType);
+						}
+						
+						// populate complaintsList to be returned
+						complaintsList.add(complaint);
+						
+						}
+						} catch (SQLException e) {
+						// TODO manage and log exceptions
+						e.printStackTrace();
+						}
+						return complaintsList;
+						}
+						
+	
+//				*************************************************************************	
+				
+				
+				
+				// Method to  READ all SEVERE complaints 
+				public ArrayList<Complaint> getAllSevereComplaints() throws CustomizedException {
+						ArrayList<Complaint> complaintsList = new ArrayList<>();
+						
+						try {
+						// get instance of single database connection
+						this.connect = TraditionalDatabaseConnectorFactory.getDatabaseConnection();
+						
+						// initialize statement that will be used to execute sql query
+						this.statement = this.connect.createStatement();
+						
+						// create sql query
+						this.sqlQuery = "SELECT * FROM micro_star.complaints "
+								+ "WHERE complaint_category="+"'" + ComplaintCategory.SEVERE + "'";
+						
+						// execute sql query on statement and a ResultSet is returned
+						ResultSet rs = this.statement.executeQuery(this.sqlQuery);
+						userController = new UserController();
+						
+						   //move cursor to beginning of row if it exists
+						   while(rs.next()){
+						   
+						    int complaintID = rs.getInt("complaint_id");
+						    int custID = rs.getInt("cust_id");
+						    int empID= rs.getInt("emp_id");
+						    String complaintCat = rs.getString("complaint_category");
+						    String complaintInfo = rs.getString("complaint");
+						    Date complaintDate = rs.getDate("complaint_date");
+						    String complaintType = rs.getString("complaint_type");
+						   
+						   
+						    Complaint complaint = new Complaint();
+						    User customer = userController.findById(custID);
+						    User employee = userController.findById(empID);
+						   
+						    complaint.setComplaintID(complaintID);
+						    complaint.setCustID(customer);
+						    complaint.setEmpID(employee);
+						   
+						   switch (complaintCat.toLowerCase()) {
+						   case "mild":
+						    complaint.setCategory(ComplaintCategory.MILD);
+						    break;
+						   case "moderate":
+							    complaint.setCategory(ComplaintCategory.MODERATE);
+							    break;
+						   case "severe":
+							    complaint.setCategory(ComplaintCategory.SEVERE);
+							    break;
+						default:
+						throw new IllegalArgumentException("Unexpected value: " + complaintCat);
+						}
+						     
+						      complaint.setComplaint(complaintInfo);
+						      complaint.setComplaintDate(complaintDate);
+						     
+						      switch (complaintType.toLowerCase()) {
+						   case "broadband":
+						    complaint.setComplaintType(ComplaintType.BROADBAND);
+						break;
+						case "cable":
+						complaint.setComplaintType(ComplaintType.CABLE);
+						break;
+						default:
+						throw new IllegalArgumentException("Unexpected value: " + complaintType);
+						}
+						
+						// populate complaintsList to be returned
+						complaintsList.add(complaint);
+						
+						}
+						} catch (SQLException e) {
+						// TODO manage and log exceptions
+						e.printStackTrace();
+						}
+						return complaintsList;
+						}
+						
+		
+				
+		
+//		*************************************************************************	
+				
+				
+				
 		/* Method to READ one complaint. Returns a single complaint. */
 		public Complaint findById(int complaintID) throws CustomizedException {
 		
@@ -191,7 +453,7 @@ public class ComplaintController {
 		    complaint = new Complaint();
 		   
 		    //get users from database
-		    User customer = userController.findById(custID);;
+		    User customer = userController.findById(custID);
 		    User employee = userController.findById(empID);
 		   
 		    complaint.setCustID(customer);
@@ -235,6 +497,98 @@ public class ComplaintController {
 		   return complaint;
 		}
 		
+		
+	
+		
+//		*************************************************************************	
+		
+		
+		
+		/* Method to READ one complaint. Returns a single complaint. */
+		public Complaint viewComplaintAndResponses(int complaintID) throws CustomizedException {
+		
+		Complaint complaint = null;
+		
+		try {
+		
+		// retrieve complaints using traditional database connectivity
+		this.connect = TraditionalDatabaseConnectorFactory.getDatabaseConnection();
+		this.statement = this.connect.createStatement();
+		//create sql query
+		this.sqlQuery = "SELECT * FROM micro_star.complaints WHERE complaint_id="+complaintID;    
+		   ResultSet rs = this.statement.executeQuery(this.sqlQuery);
+		   
+		 //Read result values and create complaints objects
+		  if(rs.next()){
+		      //Retrieve by column name
+		   int complaintID1 = rs.getInt("complaint_id");
+		    int custID = rs.getInt("cust_id");
+		    int empID= rs.getInt("emp_id");
+		   
+		    String complaintCat = rs.getString("complaint_category");
+		    String complaintInfo = rs.getString("complaint");
+		    Date complaintDate = rs.getDate("complaint_date");
+		    String complaintType = rs.getString("complaint_type");
+		   
+		        userController = new UserController();
+		   
+		    complaint = new Complaint();
+		   
+		    //get users from database
+		    User customer = userController.findById(custID);
+		    User employee = userController.findById(empID);
+		   
+		    complaint.setCustID(customer);
+		    complaint.setEmpID(employee);
+		   
+		    complaint.setComplaintID(complaintID1);
+		 
+		      switch (complaintCat.toLowerCase()) {
+		   case "mild":
+		    complaint.setCategory(ComplaintCategory.MILD);
+		    break;
+		   case "moderate":
+		    complaint.setCategory(ComplaintCategory.MODERATE);
+		    break;
+		   case "severe":
+		    complaint.setCategory(ComplaintCategory.SEVERE);
+		    break;
+		default:
+		throw new IllegalArgumentException("Unexpected value: " + complaintCat);
+		}
+		     
+		      complaint.setComplaint(complaintInfo);
+		      complaint.setComplaintDate(complaintDate);
+		     
+		      switch (complaintType.toLowerCase()) {
+		   case "broadband":
+		    complaint.setComplaintType(ComplaintType.BROADBAND);
+		break;
+		case "cable":
+		complaint.setComplaintType(ComplaintType.CABLE);
+		break;
+		default:
+		throw new IllegalArgumentException("Unexpected value: " + complaintType);
+		}
+		      ArrayList <Response> responseList = new ArrayList <> ();
+		      ResponseController rc = new ResponseController();
+		      responseList = rc.getResponsesPerComplaint(complaintID);
+		      System.out.println(responseList);
+		}
+		} catch (SQLException e) {
+		// TODO manage and log exceptions
+		e.printStackTrace();
+		}
+		   return complaint;
+		}
+		
+		
+
+		
+//		*************************************************************************
+		
+		
+		
 		/*Method to UPDATE a complaint*/
 		public Complaint updateComplaints(Complaint updatedComplaint) throws CustomizedException {
 		Complaint complaint = null;
@@ -273,6 +627,9 @@ public class ComplaintController {
 		return complaint;
 		}
 		
+//		*************************************************************************	
+		
+		
 		public Complaint assignTechnician(Complaint assignComplaint) throws CustomizedException {
 		Complaint complaint = null;
 		try {
@@ -307,6 +664,11 @@ public class ComplaintController {
 		}
 		return complaint;
 		}
+		
+		
+//		*************************************************************************	
+		
+		
 		// Method to accept a user id and returns an ArrayList of complaints
 		// that are tied to that specific User
 		public ArrayList <Complaint> getComplaintsPerUser(int userID) throws CustomizedException {
@@ -386,6 +748,10 @@ public class ComplaintController {
 		}
 		return userComplaintsList;
 		}
+		
+		
+//		*************************************************************************	
+		
 		
 		/*Method to delete a complaint*/
 		public int deleteComplaint(int complaintId) throws CustomizedException {

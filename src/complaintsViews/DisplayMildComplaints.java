@@ -12,7 +12,7 @@ import utils.CustomizedException;
  *
  * @author Steen
  */
-public class FindComplaintById extends javax.swing.JInternalFrame {
+public class DisplayMildComplaints extends javax.swing.JInternalFrame {
 
     /**
 	 * 
@@ -21,7 +21,7 @@ public class FindComplaintById extends javax.swing.JInternalFrame {
 	/**
      * Creates new form NewJFrame
      */
-    public FindComplaintById() {
+    public DisplayMildComplaints() {
         initComponents();
         addRowsToJTable();
     }
@@ -31,7 +31,7 @@ public class FindComplaintById extends javax.swing.JInternalFrame {
 //        Grab the returned array list and put it into a variable of type Arraylist
     	  ComplaintController cc = new ComplaintController();
 			try {
-				ArrayList <Complaint> displayList = cc.findById();
+				ArrayList <Complaint> displayList = cc.getAllMildComplaints();
 				System.out.println("List successfully retrieved!");
 				 Object rowData[] = new Object[7];
 			        for (int i =0; i < displayList.size(); i++ ){
