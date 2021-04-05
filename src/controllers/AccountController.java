@@ -43,8 +43,6 @@ public class AccountController {
 	/*
 	 * Method to add an account using hibernate
 	 */
-
-	
 	public int createAccount(Account account) throws CustomizedException{
 		
 		int acct_id = -1; 
@@ -78,12 +76,8 @@ public class AccountController {
 			}
 		} catch (Exception exception) {
 			System.out.println(exception.getMessage());
-		} finally {
-
-			if (this.session != null) {
-				this.session.close();
-			}
-		}
+			throw new CustomizedException(exception.getMessage());
+		} 
 		return acct_id;
 
 	}

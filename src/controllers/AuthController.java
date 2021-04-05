@@ -22,11 +22,11 @@ public class AuthController {
 		this.user = this.userController.findById(userId);
 		boolean loggedIn = false;
 		if (this.user != null) {
-
 			try {
+				
 				this.userController.validatePassword(password, this.user.getPassword());
 
-				if (this.user.getRole() == role) {
+				if (this.user.getRole().equals(role)) {
 					loggedIn = true;// user logged in successfully
 				} else {
 					throw new CustomizedException("User is not registered as " + role);
@@ -39,6 +39,7 @@ public class AuthController {
 			}
 		} else {
 			System.out.println("user not found");
+			throw new CustomizedException("user not found");
 		}
 
 		return loggedIn;

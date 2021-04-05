@@ -15,7 +15,6 @@ public class TraditionalDatabaseConnectorFactory {
 
 			try {
 				connection = DriverManager.getConnection(connectionString, "root", "1234567890");
-
 			} catch (SQLException e) {
 				throw e;
 			}

@@ -56,11 +56,9 @@ public class ClientHandler implements Runnable {
 	private void acceptAndProcessRequest() throws CustomizedException {
 		String operation = "",endPoint = "";
 			try {
-				while(true) {
-					operation = (String)this.objectInStream.readObject();
-					endPoint = (String)this.objectInStream.readObject();
-					processRequest(operation, endPoint);
-				}
+				operation = (String)this.objectInStream.readObject();
+				endPoint = (String)this.objectInStream.readObject();
+				processRequest(operation, endPoint);
 			}catch (IOException e) {
 				throw new CustomizedException(e.getMessage());
 			}
@@ -233,7 +231,7 @@ public class ClientHandler implements Runnable {
 			case "addresponse": 
 				try {
 					Response responseToAdd = (Response)this.objectInStream.readObject(); 
-					Response addedRespId = this.responseController.addResponse(responseToAdd);
+					int addedRespId = this.responseController.addResponse(responseToAdd);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(addedRespId);
 				} catch (Exception e) {

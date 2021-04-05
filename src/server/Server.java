@@ -23,8 +23,8 @@ public class Server {
 				try {
 					this.connectionSocket = this.serverSocket.accept();
 					System.out.println("Starting a new thread for client "+this.clientCount++ +"\t"+LocalDateTime.now()+"\t");
-					ClientHandler ch = new ClientHandler(connectionSocket);
-					new Thread(ch).start();
+					ClientHandler clientHandler = new ClientHandler(connectionSocket);
+					new Thread(clientHandler).start();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

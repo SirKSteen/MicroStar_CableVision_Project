@@ -49,7 +49,8 @@ public class ResponseController {
 		this.userController = null;
 	}
 
-	public Response addResponse(Response response) throws CustomizedException {
+	public int addResponse(Response response) throws CustomizedException {
+		int responseId = -1;
 
 		try {
 			// add user using hibernate
@@ -61,7 +62,7 @@ public class ResponseController {
 
 			this.transaction = this.session.beginTransaction();
 			// can save as much objects here
-			this.session.save(response);
+			 responseId = (int) this.session.save(response);
 
 			this.session.getTransaction().commit();
 			System.out.println("transaction complete ");
@@ -75,14 +76,9 @@ public class ResponseController {
 
 		} catch (Exception exception) {
 			System.out.println(exception.getMessage());
-		} finally {
-
-			if (session != null) {
-				session.close();
-			}
-
-			return response;
-		}
+		} 
+		
+		return responseId;
 	}
 
 	public Response updateResponse(Response updateResponse) throws CustomizedException {
@@ -406,33 +402,4 @@ public class ResponseController {
 		return result;
 	}
 
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
