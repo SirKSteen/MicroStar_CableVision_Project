@@ -298,10 +298,9 @@ public class AccountController {
 			return account;
 		} 
 		
-
 		//Method to delete an account
 		
-		public int deleteAccounts(int acct_id) throws CustomizedException{
+	public int deleteAccounts(int acct_id) throws CustomizedException{
 			int result = -1;
 			
 			//delete account using traditional connectivity 
