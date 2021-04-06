@@ -11,7 +11,9 @@ import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -28,6 +30,7 @@ import AccountView.*;
 import ComplaintsView.*;
 import ResponseView.*;
 import UserView.*;
+import login.*;
 
 public class MicroMainFrame extends JFrame implements ActionListener{
 	
@@ -39,12 +42,13 @@ public class MicroMainFrame extends JFrame implements ActionListener{
 	private JMenuItem r1, r2, r3, r4, r5, r6;
 	private JMenuItem a1, a2, a3, a4, a5;
 	private JDesktopPane desktopPane;
-	private JDesktopPane sidePane;
-	private JLabel heading; 
-	private JPanel contentPane;
-	private JInternalFrame intFrame;
-//	private JPanel panel; 
-	
+	private JDesktopPane leftTopPane;
+	private JDesktopPane leftBottomPane;
+	private JLabel label;
+	private JComboBox comboBox;
+	private JFrame frame;
+ 
+	//internal JFrame to facilitate password pane and mainframe
 	
 	public MicroMainFrame() { 
 		
@@ -57,7 +61,7 @@ public class MicroMainFrame extends JFrame implements ActionListener{
 		menu3.setPreferredSize(new Dimension(200, menu3.getPreferredSize().height));
 		menu4 = new JMenu("Accounts");
 		menu4.setPreferredSize(new Dimension(200, menu4.getPreferredSize().height));
-		clock = new JMenu();
+		clock = new JMenu("");
 		clock.setPreferredSize(new Dimension(370, menu1.getPreferredSize().height));
 		logoutBtn = new JButton("LOGOUT");
 		
@@ -70,8 +74,7 @@ public class MicroMainFrame extends JFrame implements ActionListener{
 		i3 = new JMenuItem("Find user ID");
 		i4 = new JMenuItem("Update User");
 		i5 = new JMenuItem("Delete User");
-		//desktopPane = new JDesktopPane(); 
-	    //showForm();
+		
 	    
 	    //complaints drop down menu
 	    c1 = new JMenuItem("Add complaint");
@@ -79,8 +82,7 @@ public class MicroMainFrame extends JFrame implements ActionListener{
 		c2 = new JMenuItem("View all Complaints");
 		c3 = new JMenuItem("Update Complaint");
 		c4 = new JMenuItem("Delete Complaint");
-		//desktopPane = new JDesktopPane(); 
-	   // showForm();
+		
 	    
 	  //ResponseView drop down menu
   		r1 = new JMenuItem("Add Response");
@@ -90,9 +92,7 @@ public class MicroMainFrame extends JFrame implements ActionListener{
   		r4 = new JMenuItem("Response per Complaint");
   		r5 = new JMenuItem("find Complaint by ID");
   		r6 = new JMenuItem("Delete Response");
-  		//desktopPane = new JDesktopPane(); 
-  	    //showForm();
-  	    
+  		
   	//AccountView drop down menu
   		a1 = new JMenuItem("Add Acoount");
   		a1.setPreferredSize(new Dimension(200, menu4.getPreferredSize().height));
@@ -101,9 +101,11 @@ public class MicroMainFrame extends JFrame implements ActionListener{
   		a4 = new JMenuItem("Update Account");
   		a5 = new JMenuItem("Delete Account");
   		
-  		
+  		;
   		desktopPane = new JDesktopPane(); 
-  		sidePane = new JDesktopPane();
+  		leftTopPane = new JDesktopPane();
+  		leftBottomPane = new JDesktopPane();
+		
   	    showForm();
 
 	    
@@ -122,15 +124,29 @@ public class MicroMainFrame extends JFrame implements ActionListener{
 		this.desktopPane.setBounds(360,10,900,700);
 		this.desktopPane.setBackground(Color.white);
 		
-//		JInternalFrame intFrame = new JInternalFrame("Our Frame", true, true, true, true);
-//	    intFrame.add(sidePane);
-		sidePane.setBounds(5, 10, 400, 700);
-		sidePane.setBackground(Color.gray);
+		//window for the logo
+		leftTopPane.setBounds(5, 10, 400, 400);
+		leftTopPane.setBackground(Color.gray);	
 		
-		JLabel label = new JLabel("Micro Star Cable Company", JLabel.CENTER);
-		sidePane.add(label);
-		setVisible(true);
+		//Insert heading in the top-left pane
+		ImageIcon microImage = new ImageIcon("microImage.jpg");
+		label = new JLabel("Micro Star Cable Company",microImage, SwingConstants.CENTER);
+		label.setBounds(0, 40, 500, 400);
+		leftTopPane.add(label);
 		
+		//Bottom pane 
+		leftBottomPane.setBounds(5, 10, 400, 400);
+		leftBottomPane.setBackground(Color.gray); 
+		final JComboBox internet = new JComboBox();
+	    final JComboBox cable = new JComboBox();
+	    
+	    internet.setBounds(5, 12, 150, 20);
+	    cable.setBounds(150, 12,150,20);
+	    
+	    this.leftBottomPane.add(internet);
+	    this.leftBottomPane.add(cable);
+		
+	
 		//actionListeners for the users
 		this.i1.addActionListener(this);
 		this.i2.addActionListener(this);
@@ -203,30 +219,29 @@ public class MicroMainFrame extends JFrame implements ActionListener{
 		
 		this.setJMenuBar(menuBar);
 		this.add(desktopPane);
-		this.add(sidePane);
+		this.add(leftTopPane);
 	}
 	
 	public void showForm() {
+		//UserLogin();
 		createWindow();
 		setLocationAndSize();
 		addComponentsToFrame();
 	}
-	
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
 		if (e.getSource() == logoutBtn) {
-			
-			System.out.println("Logout Button clicked!");
+			System.out.println("go to the login screen");
 		}
 		else if (e.getSource() == i1) {
-			System.out.println("Create UserView");
-			desktopPane.removeAll();
-			CreateUser f1 = new CreateUser();
-			desktopPane.add(f1).setVisible(true);
-			desktopPane.moveToFront(f1);
-			f1.setSize(desktopPane.getWidth(), desktopPane.getHeight());
-			f1.setLocation(0,0);
+			
+			  System.out.println("Create UserView"); desktopPane.removeAll(); CreateUser f1
+			  = new CreateUser(); desktopPane.add(f1).setVisible(true);
+			  desktopPane.moveToFront(f1); f1.setSize(desktopPane.getWidth(),
+			  desktopPane.getHeight()); f1.setLocation(0,0);
+			 
 		}
 		else if (e.getSource() == i2) {
 			System.out.println("View all user");
@@ -408,12 +423,16 @@ public class MicroMainFrame extends JFrame implements ActionListener{
 				AccFrame5.setLocation(0,0);
 			}
 		
-		
+			/*
+			 * servicesComboBox services = new servicesComboBox();
+			 * leftBottomPane.add(services).setVisible(true);
+			 * leftBottomPane.moveToFront(services);
+			 * services.setSize(leftBottomPane.getWidth(), leftBottomPane.getHeight());
+			 * services.setLocation(0,0);
+			 */
 	}
 	
-	
-	
-	public void clockFeature() {
+	public void clockFeature(){
 		Thread clock = new Thread() {
 			public void run() {
 				try {
@@ -443,13 +462,12 @@ public class MicroMainFrame extends JFrame implements ActionListener{
 		clock.start();
     }
 
-
 	public static void main(String[] args) {
 		new MicroMainFrame();
 
 	}
-
 	
 	
 	
-}
+	
+}//end of mainframe
