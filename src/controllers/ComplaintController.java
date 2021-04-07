@@ -17,6 +17,7 @@ import models.Complaint;
 import models.Response;
 import models.User;
 import utils.ComplaintCategory;
+import utils.ComplaintStatus;
 import utils.ComplaintType;
 import utils.CustomizedException;
 import utils.Role;
@@ -27,7 +28,7 @@ public class ComplaintController {
 		private SessionFactory sessionFactory;
 		private Transaction transaction;
 		private Session session;
-		    private UserController userController;
+		private UserController userController;
 		// traditional connection vars
 		private Connection connect;
 		private Statement statement;
@@ -119,6 +120,7 @@ public class ComplaintController {
 		    String complaintInfo = rs.getString("complaint");
 		    Date complaintDate = rs.getDate("complaint_date");
 		    String complaintType = rs.getString("complaint_type");
+		    String complaintStatus = rs.getString("complaint_status");
 		   
 		   
 		    Complaint complaint = new Complaint();
@@ -156,7 +158,18 @@ public class ComplaintController {
 		default:
 		throw new IllegalArgumentException("Unexpected value: " + complaintType);
 		}
-		
+		      
+		      switch (complaintStatus.toLowerCase()) {
+			   case "resolved":
+			    complaint.setComplaintStatus(ComplaintStatus.RESOLVED);
+			break;
+			case "outstanding":
+				complaint.setComplaintStatus(ComplaintStatus.OUTSTANDING);
+			break;
+			default:
+			throw new IllegalArgumentException("Unexpected value: " + complaintStatus);
+			}
+		      
 		// populate complaintsList to be returned
 		complaintsList.add(complaint);
 		
@@ -201,7 +214,7 @@ public class ComplaintController {
 				    String complaintInfo = rs.getString("complaint");
 				    Date complaintDate = rs.getDate("complaint_date");
 				    String complaintType = rs.getString("complaint_type");
-				   
+				    String complaintStatus = rs.getString("complaint_status");
 				   
 				    Complaint complaint = new Complaint();
 				    User customer = userController.findById(custID);
@@ -238,6 +251,17 @@ public class ComplaintController {
 				default:
 				throw new IllegalArgumentException("Unexpected value: " + complaintType);
 				}
+				      
+				      switch (complaintStatus.toLowerCase()) {
+					   case "resolved":
+					    complaint.setComplaintStatus(ComplaintStatus.RESOLVED);
+					break;
+					case "outstanding":
+						complaint.setComplaintStatus(ComplaintStatus.OUTSTANDING);
+					break;
+					default:
+					throw new IllegalArgumentException("Unexpected value: " + complaintStatus);
+					}
 				
 				// populate complaintsList to be returned
 				complaintsList.add(complaint);
@@ -283,7 +307,7 @@ public class ComplaintController {
 						    String complaintInfo = rs.getString("complaint");
 						    Date complaintDate = rs.getDate("complaint_date");
 						    String complaintType = rs.getString("complaint_type");
-						   
+						    String complaintStatus = rs.getString("complaint_status");
 						   
 						    Complaint complaint = new Complaint();
 						    User customer = userController.findById(custID);
@@ -320,6 +344,17 @@ public class ComplaintController {
 						default:
 						throw new IllegalArgumentException("Unexpected value: " + complaintType);
 						}
+						      
+						      switch (complaintStatus.toLowerCase()) {
+							   case "resolved":
+							    complaint.setComplaintStatus(ComplaintStatus.RESOLVED);
+							break;
+							case "outstanding":
+								complaint.setComplaintStatus(ComplaintStatus.OUTSTANDING);
+							break;
+							default:
+							throw new IllegalArgumentException("Unexpected value: " + complaintStatus);
+							}
 						
 						// populate complaintsList to be returned
 						complaintsList.add(complaint);
@@ -366,7 +401,8 @@ public class ComplaintController {
 						    String complaintInfo = rs.getString("complaint");
 						    Date complaintDate = rs.getDate("complaint_date");
 						    String complaintType = rs.getString("complaint_type");
-						   
+						    String complaintStatus = rs.getString("complaint_status");
+						    
 						   
 						    Complaint complaint = new Complaint();
 						    User customer = userController.findById(custID);
@@ -404,6 +440,17 @@ public class ComplaintController {
 						throw new IllegalArgumentException("Unexpected value: " + complaintType);
 						}
 						
+						      switch (complaintStatus.toLowerCase()) {
+							   case "resolved":
+							    complaint.setComplaintStatus(ComplaintStatus.RESOLVED);
+							break;
+							case "outstanding":
+								complaint.setComplaintStatus(ComplaintStatus.OUTSTANDING);
+							break;
+							default:
+							throw new IllegalArgumentException("Unexpected value: " + complaintStatus);
+							}
+						      
 						// populate complaintsList to be returned
 						complaintsList.add(complaint);
 						
@@ -416,7 +463,6 @@ public class ComplaintController {
 						}
 						
 		
-				
 		
 //		*************************************************************************	
 				
@@ -447,7 +493,8 @@ public class ComplaintController {
 		    String complaintInfo = rs.getString("complaint");
 		    Date complaintDate = rs.getDate("complaint_date");
 		    String complaintType = rs.getString("complaint_type");
-		   
+		    String complaintStatus = rs.getString("complaint_status");
+		    
 		        userController = new UserController();
 		   
 		    complaint = new Complaint();
@@ -489,6 +536,17 @@ public class ComplaintController {
 		throw new IllegalArgumentException("Unexpected value: " + complaintType);
 		}
 		
+		      switch (complaintStatus.toLowerCase()) {
+			   case "resolved":
+			    complaint.setComplaintStatus(ComplaintStatus.RESOLVED);
+			break;
+			case "outstanding":
+				complaint.setComplaintStatus(ComplaintStatus.OUTSTANDING);
+			break;
+			default:
+			throw new IllegalArgumentException("Unexpected value: " + complaintStatus);
+			}
+		      
 		}
 		} catch (SQLException e) {
 		// TODO manage and log exceptions
@@ -529,7 +587,7 @@ public class ComplaintController {
 		    String complaintInfo = rs.getString("complaint");
 		    Date complaintDate = rs.getDate("complaint_date");
 		    String complaintType = rs.getString("complaint_type");
-		   
+		    String complaintStatus = rs.getString("complaint_status");
 		        userController = new UserController();
 		   
 		    complaint = new Complaint();
@@ -570,6 +628,19 @@ public class ComplaintController {
 		default:
 		throw new IllegalArgumentException("Unexpected value: " + complaintType);
 		}
+		      
+		      switch (complaintStatus.toLowerCase()) {
+			   case "resolved":
+			    complaint.setComplaintStatus(ComplaintStatus.RESOLVED);
+			break;
+			case "outstanding":
+				complaint.setComplaintStatus(ComplaintStatus.OUTSTANDING);
+			break;
+			default:
+			throw new IllegalArgumentException("Unexpected value: " + complaintStatus);
+			}
+		      
+		      
 		      ArrayList <Response> responseList = new ArrayList <> ();
 		      ResponseController rc = new ResponseController();
 		      responseList = rc.getResponsesPerComplaint(complaintID);
@@ -607,6 +678,7 @@ public class ComplaintController {
 		complaint.setComplaint(updatedComplaint.getComplaint());
 		// complaint.setComplaintDate(updatedComplaint.getComplaintDate());
 		complaint.setComplaintType(updatedComplaint.getComplaintType());
+		complaint.setComplaintStatus(updatedComplaint.getComplaintStatus());
 		
 		// complete transaction
 		this.transaction.commit();
@@ -698,7 +770,8 @@ public class ComplaintController {
 		    String complaintInfo = rs.getString("complaint");
 		    Date complaintDate = rs.getDate("complaint_date");
 		    String complaintType = rs.getString("complaint_type");
-		   
+		    String complaintStatus = rs.getString("complaint_status");
+		    
 		    userController = new UserController();
 		   
 		    complaint = new Complaint();
@@ -738,6 +811,18 @@ public class ComplaintController {
 		throw new IllegalArgumentException("Unexpected value: " + complaintType);
 		}
 		     
+		      switch (complaintStatus.toLowerCase()) {
+			   case "resolved":
+			    complaint.setComplaintStatus(ComplaintStatus.RESOLVED);
+			break;
+			case "outstanding":
+				complaint.setComplaintStatus(ComplaintStatus.OUTSTANDING);
+			break;
+			default:
+			throw new IllegalArgumentException("Unexpected value: " + complaintStatus);
+			}
+		      
+		      
 		      //populate complaintsList to be returned
 		      userComplaintsList.add(complaint);
 		     

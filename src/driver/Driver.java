@@ -32,7 +32,16 @@ public class Driver {
 
  		new Server();
  		
-		User user = new User("","","","",Role.REPRESENTATIVE);
+		User u1 = new User("Jonathon","Kent","jkent@gmail.com",
+				"forever123",Role.CUSTOMER);
+		UserController ucc = new UserController();
+		
+		try {
+			ucc.createUser(u1);
+		} catch (CustomizedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		ResponseController rc = new ResponseController();
 		
 		java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
@@ -72,7 +81,7 @@ public class Driver {
 		
 		ComplaintController cc1 = new ComplaintController();
 		ArrayList <Complaint> mc = new ArrayList <> ();
-		
+		/*
 		try {
 			mc = cc1.getAllMildComplaints();
 			System.out.println(mc);
@@ -80,7 +89,7 @@ public class Driver {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		*/
 		
 		/*
 		try {

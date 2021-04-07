@@ -15,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import utils.ComplaintCategory;
+import utils.ComplaintStatus;
 import utils.ComplaintType;
 
 
@@ -55,6 +56,9 @@ public class Complaint {
 	@Column(name = "complaint_type")
 	private ComplaintType complaintType;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name = "complaint_status")
+	private ComplaintStatus complaintStatus;
 	
 	public Complaint() {
 		this.custID = new User();
@@ -63,18 +67,20 @@ public class Complaint {
 		this.complaint = "";
 		this.complaintDate =  new Date();
 		this.complaintType = null;
+		this.complaintStatus = ComplaintStatus.OUTSTANDING;
 	}
 	
 		
 	
 	public Complaint(User custID, User empID, ComplaintCategory category, String complaint, Date complaintDate,
-			ComplaintType complaintType) {
+			ComplaintType complaintType, ComplaintStatus complaintStatus) {
 		this.custID = custID;
 		this.empID = empID;
 		this.category = category;
 		this.complaint = complaint;
 		this.complaintDate = complaintDate;
 		this.complaintType = complaintType;
+		this.complaintStatus = complaintStatus;
 	}
 
 
@@ -87,6 +93,7 @@ public class Complaint {
 		this.complaint = c.complaint;
 		this.complaintDate = c.complaintDate;
 		this.complaintType = c.complaintType;
+		this.complaintStatus = c.complaintStatus;
 	}
 
 	public int getComplaintID() {
@@ -153,6 +160,15 @@ public class Complaint {
 	public void setComplaintType(ComplaintType complaintType) {
 		this.complaintType = complaintType;
 	}
+	
+	public ComplaintStatus getComplaintStatus() {
+		return complaintStatus;
+	}
+
+	public void setComplaintStatus(ComplaintStatus complaintStatus) {
+		this.complaintStatus = complaintStatus;
+	}
+	
 
 	@Override
 	public String toString() {
@@ -160,7 +176,8 @@ public class Complaint {
 				"\nempID: " + empID + "\ncategory: "
 				+ category + "\ncomplaint: " + complaint + "\ncomplaintDate: " + complaintDate + 
 				"\ncomplaintType: "
-				+ complaintType + "\n";
+				+ complaintType + "\n"
+				+ complaintStatus+ "\n";
 	}
 	
 	

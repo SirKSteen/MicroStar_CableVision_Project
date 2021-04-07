@@ -23,32 +23,98 @@ public class DisplayAllComplaintsView extends javax.swing.JInternalFrame {
      */
     public DisplayAllComplaintsView() {
         initComponents();
-        addRowsToJTable();
     }
 
-    public void addRowsToJTable() {
+    public void addRowsToJTable(int num) {
     	  DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 //        Grab the returned array list and put it into a variable of type Arraylist
     	  ComplaintController cc = new ComplaintController();
-			try {
-				ArrayList <Complaint> displayList = cc.getAllComplaints();
-				System.out.println("List successfully retrieved!");
-				 Object rowData[] = new Object[7];
-			        for (int i =0; i < displayList.size(); i++ ){
-			            rowData[0] = displayList.get(i).getComplaintID();
-			            rowData[1] = displayList.get(i).getCustID();
-			            rowData[2] = displayList.get(i).getEmpID();
-			            rowData[3] = displayList.get(i).getCategory();
-			            rowData[4] = displayList.get(i).getComplaint();
-			            rowData[5] = displayList.get(i).getComplaintDate();
-			            rowData[6] = displayList.get(i).getComplaintType();
-			         
-			            model.addRow(rowData);
-			        }
-			} catch (CustomizedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+    	  if(num == 0) {
+    		  try {
+  				ArrayList <Complaint> displayList = cc.getAllComplaints();
+  				System.out.println("List successfully retrieved!");
+  				 Object rowData[] = new Object[8];
+  			        for (int i =0; i < displayList.size(); i++ ){
+  			            rowData[0] = displayList.get(i).getComplaintID();
+  			            rowData[1] = displayList.get(i).getCustID();
+  			            rowData[2] = displayList.get(i).getEmpID();
+  			            rowData[3] = displayList.get(i).getCategory();
+  			            rowData[4] = displayList.get(i).getComplaint();
+  			            rowData[5] = displayList.get(i).getComplaintDate();
+  			            rowData[6] = displayList.get(i).getComplaintType();
+  			            rowData[7] = displayList.get(i).getComplaintStatus();
+  			         
+  			            model.addRow(rowData);
+  			        }
+  			} catch (CustomizedException e1) {
+  				// TODO Auto-generated catch block
+  				e1.printStackTrace();
+  			}
+  			
+    	  } else if (num ==1) {
+    		  try {
+  				ArrayList <Complaint> displayList = cc.getAllMildComplaints();
+  				System.out.println("List successfully retrieved!");
+  				 Object rowData[] = new Object[8];
+  			        for (int i =0; i < displayList.size(); i++ ){
+  			            rowData[0] = displayList.get(i).getComplaintID();
+  			            rowData[1] = displayList.get(i).getCustID();
+  			            rowData[2] = displayList.get(i).getEmpID();
+  			            rowData[3] = displayList.get(i).getCategory();
+  			            rowData[4] = displayList.get(i).getComplaint();
+  			            rowData[5] = displayList.get(i).getComplaintDate();
+  			            rowData[6] = displayList.get(i).getComplaintType();
+  			            rowData[7] = displayList.get(i).getComplaintStatus(); 
+  			         
+  			            model.addRow(rowData);
+  			        }
+  			} catch (CustomizedException e1) {
+  				// TODO Auto-generated catch block
+  				e1.printStackTrace();
+  			}
+    	  } else if (num == 2) {
+    		  try {
+  				ArrayList <Complaint> displayList = cc.getAllModerateComplaints();
+  				System.out.println("List successfully retrieved!");
+  				 Object rowData[] = new Object[8];
+  			        for (int i =0; i < displayList.size(); i++ ){
+  			            rowData[0] = displayList.get(i).getComplaintID();
+  			            rowData[1] = displayList.get(i).getCustID();
+  			            rowData[2] = displayList.get(i).getEmpID();
+  			            rowData[3] = displayList.get(i).getCategory();
+  			            rowData[4] = displayList.get(i).getComplaint();
+  			            rowData[5] = displayList.get(i).getComplaintDate();
+  			            rowData[6] = displayList.get(i).getComplaintType();
+  			            rowData[7] = displayList.get(i).getComplaintStatus();
+  			         
+  			            model.addRow(rowData);
+  			        }
+  			} catch (CustomizedException e1) {
+  				// TODO Auto-generated catch block
+  				e1.printStackTrace();
+  			}
+    	  } else if (num == 3) {
+    		  try {
+  				ArrayList <Complaint> displayList = cc.getAllSevereComplaints();
+  				System.out.println("\nList successfully retrieved!");
+  				 Object rowData[] = new Object[8];
+  			        for (int i =0; i < displayList.size(); i++ ){
+  			            rowData[0] = displayList.get(i).getComplaintID();
+  			            rowData[1] = displayList.get(i).getCustID();
+  			            rowData[2] = displayList.get(i).getEmpID();
+  			            rowData[3] = displayList.get(i).getCategory();
+  			            rowData[4] = displayList.get(i).getComplaint();
+  			            rowData[5] = displayList.get(i).getComplaintDate();
+  			            rowData[6] = displayList.get(i).getComplaintType();
+  			            rowData[7] = displayList.get(i).getComplaintStatus();
+  			            
+  			            model.addRow(rowData);
+  			        }
+  			} catch (CustomizedException e1) {
+  				// TODO Auto-generated catch block
+  				e1.printStackTrace();
+  			}
+    	  }
 			
     	 
     }
@@ -64,7 +130,8 @@ public class DisplayAllComplaintsView extends javax.swing.JInternalFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-
+        jTable1.setEnabled(false);
+        jTable1.getTableHeader().setReorderingAllowed(false);
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -72,7 +139,8 @@ public class DisplayAllComplaintsView extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Complaint Id", "Customer Id", "Employee Id", "Complaint Category ", "Complaint ", "Complaint Date", "Complaint Type"
+                "Complaint Id", "Customer Id", "Employee Id", "Complaint Category ", 
+                "Complaint ", "Complaint Date", "Complaint Type", "Complaint Status"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
