@@ -45,7 +45,7 @@ public class ClientHandler implements Runnable {
 		try {
 			initDataStreams();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			// TODO Auto-generated catch block 
 			e.printStackTrace();
 			LOGGER.error(e.getMessage());
 	}
