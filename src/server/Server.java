@@ -13,7 +13,7 @@ public class Server {
 	private Socket connectionSocket;
 	private int clientCount;
 
-	private static final Logger LOG = LogManager.getLogger(Server.class.getName());
+	private static final org.jboss.logging.Logger LOGGER = LogManager.getLogger(Server.class.getName());
 	public Server() {
 		try {
 			this.clientCount = 1;
@@ -32,6 +32,7 @@ public class Server {
 			}
 		} catch (IOException e) {
 			System.out.println("Failed server socket "+e.getLocalizedMessage());
+			LOGGER.info(e.getLocalizedMessage());
 		}
 	
 	}

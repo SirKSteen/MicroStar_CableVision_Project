@@ -71,7 +71,7 @@ public class ComplaintController {
 				System.out.println("\nTransaction unsuccessful! ");
 			}
 		} catch (Exception exception) {
-			System.out.println(exception.getMessage());
+			throw new CustomizedException(exception.getMessage());
 		} finally {
 
 			if (this.session != null) {
@@ -155,8 +155,7 @@ public class ComplaintController {
 
 			}
 		} catch (SQLException e) {
-			// TODO manage and log exceptions
-			e.printStackTrace();
+			throw new CustomizedException(e.getMessage());
 		}
 		return complaintsList;
 	}
@@ -230,8 +229,7 @@ public class ComplaintController {
 
 			}
 		} catch (SQLException e) {
-			// TODO manage and log exceptions
-			e.printStackTrace();
+			throw new CustomizedException(e.getMessage());
 		}
 	    return complaint;
 	}
@@ -272,8 +270,7 @@ public class ComplaintController {
 			}
 			throw new CustomizedException(e.getMessage());
 		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println(e);
+			throw new CustomizedException(e.getMessage());
 		}
 
 		return complaint;
@@ -311,8 +308,7 @@ public class ComplaintController {
 			throw new CustomizedException(e.getMessage());
 		}
 		  catch (Exception e) {
-			// TODO: handle exception
-			System.out.println(e);
+			  throw new CustomizedException(e.getMessage());
 		}
 		
 		return complaint;
@@ -398,8 +394,7 @@ public class ComplaintController {
 		       
 		    }
 		} catch (SQLException e) {
-			// TODO manage and log exceptions
-			e.printStackTrace();
+			throw new CustomizedException(e.getMessage());
 		}
 		
 		return userComplaintsList;

@@ -5,6 +5,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.logging.LogManager;
+
+import org.jboss.logging.Logger;
+
+import com.mysql.cj.log.Log;
 
 import controllers.AccountController;
 import controllers.AuthController;
@@ -28,6 +33,8 @@ public class ClientHandler implements Runnable {
 	private ResponseController responseController;
 	private UserController userController;
 	
+	private static final Logger LOGGER = LogManager.getLogger(Server.class.getName());
+	
 	public ClientHandler(Socket socket) {
 		this.socket = socket;
 		this.authController = new AuthController();
@@ -40,7 +47,7 @@ public class ClientHandler implements Runnable {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+	}
 	}
 	
 	private void initDataStreams() throws IOException {
@@ -61,11 +68,14 @@ public class ClientHandler implements Runnable {
 				processRequest(operation, endPoint);
 			}catch (IOException e) {
 				throw new CustomizedException(e.getMessage());
+				LOGGER.error(e.getMessage());
 			}
 			catch(ClassNotFoundException cnf) {
 				throw new CustomizedException(cnf.getMessage());
+				LOGGER.error(cnf.getMessage());
 			}catch (Exception exc){
 				throw new CustomizedException(exc.getMessage());
+				LOGGER.error(exc.getMessage());
 			}
 		
 	}
@@ -83,6 +93,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(newAccountId);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break;
 			case "updateaccount": 
@@ -93,6 +104,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(updatedAccount);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break;
 			case "findbyid": 
@@ -103,6 +115,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(acctFound);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break;
 			case "deleteaccount": 
@@ -113,6 +126,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(deletedId);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break;
 			case "getallaccounts": 
@@ -122,10 +136,12 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(accountList);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break; 
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + operation.toLowerCase());
+				LOGGER.debug(operation.toLowerCase());
 			}
 			break;
 		//AuthenticationController
@@ -141,6 +157,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(loginSuccess);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break;
 			case "updatepassword":
@@ -153,10 +170,12 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(passwordUpdated);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break;
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + operation.toLowerCase());
+				LOGGER.debug(operation.toLowerCase());
 			}
 			break;
 		case "complaint":
@@ -169,6 +188,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(newComplaintId);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break;
 			case "updatecomplaint": 
@@ -179,6 +199,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(complaintUpdate);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break;
 			case "findbyid": 
@@ -189,6 +210,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnFoundComplaint);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				
 				break;
@@ -200,6 +222,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnDeleteId);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break;
 			case "getallcomplaints": 
@@ -209,6 +232,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnComplaintList);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break;
 			case "assigntechnician": 
@@ -219,10 +243,12 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(c);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break;
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + operation.toLowerCase());
+				LOGGER.debug(operation.toLowerCase());
 			}
 			break;
 			//response 
@@ -236,6 +262,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(addedRespId);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break;
 			case "updateresponse": 
@@ -246,6 +273,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnUpdateId);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break;
 			case "findbyid": 
@@ -256,6 +284,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnFoundResponseId);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break;
 			case "deleteresponse":
@@ -266,6 +295,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnDeleteId);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break;
 			case "getallresponses": 
@@ -275,6 +305,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnAllResponse);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break;
 			case "getresponsespercomplaint": 
@@ -285,10 +316,12 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnComplaint);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break;
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + operation.toLowerCase());
+				LOGGER.debug(operation.toLowerCase());
 			}
 			break;
 		case "user":
@@ -301,6 +334,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnUserId);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break;
 			case "updateuser":
@@ -311,6 +345,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnUserIdUpdate);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break;
 			case "findbyid": 
@@ -321,6 +356,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnFindUser);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break;
 			case "findbyemail": 
@@ -331,6 +367,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnFindByEmail);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break;
 			case "deleteuser": 
@@ -341,6 +378,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnDeleteUser);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break;
 			case "getallusers": 
@@ -350,15 +388,18 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(userList);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					LOGGER.error(e.getMessage());
 				}
 				break;
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + operation.toLowerCase());
+				LOGGER.debug(operation.toLowerCase());
 			}
 			break;
 		
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + endPoint.toLowerCase());
+			LOGGER.debug(endPoint.toLowerCase());
 		}
 	}
 	
