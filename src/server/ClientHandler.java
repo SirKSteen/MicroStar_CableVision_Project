@@ -47,6 +47,7 @@ public class ClientHandler implements Runnable {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			LOGGER.error(e.getMessage());
 	}
 	}
 	
@@ -68,14 +69,14 @@ public class ClientHandler implements Runnable {
 				processRequest(operation, endPoint);
 			}catch (IOException e) {
 				throw new CustomizedException(e.getMessage());
-				LOGGER.error(e.getMessage());
+				
 			}
 			catch(ClassNotFoundException cnf) {
 				throw new CustomizedException(cnf.getMessage());
-				LOGGER.error(cnf.getMessage());
+				
 			}catch (Exception exc){
 				throw new CustomizedException(exc.getMessage());
-				LOGGER.error(exc.getMessage());
+				
 			}
 		
 	}
@@ -93,7 +94,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(newAccountId);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+				
 				}
 				break;
 			case "updateaccount": 
@@ -104,7 +105,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(updatedAccount);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+					
 				}
 				break;
 			case "findbyid": 
@@ -115,7 +116,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(acctFound);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+					
 				}
 				break;
 			case "deleteaccount": 
@@ -126,7 +127,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(deletedId);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+					
 				}
 				break;
 			case "getallaccounts": 
@@ -136,7 +137,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(accountList);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+					
 				}
 				break; 
 			default:
@@ -157,7 +158,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(loginSuccess);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+					
 				}
 				break;
 			case "updatepassword":
@@ -170,7 +171,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(passwordUpdated);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+					
 				}
 				break;
 			default:
@@ -188,7 +189,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(newComplaintId);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+					
 				}
 				break;
 			case "updatecomplaint": 
@@ -199,7 +200,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(complaintUpdate);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+					
 				}
 				break;
 			case "findbyid": 
@@ -210,7 +211,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnFoundComplaint);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+					
 				}
 				
 				break;
@@ -222,7 +223,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnDeleteId);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+					
 				}
 				break;
 			case "getallcomplaints": 
@@ -232,7 +233,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnComplaintList);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+					
 				}
 				break;
 			case "assigntechnician": 
@@ -243,7 +244,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(c);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+					
 				}
 				break;
 			default:
@@ -262,7 +263,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(addedRespId);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+					
 				}
 				break;
 			case "updateresponse": 
@@ -273,7 +274,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnUpdateId);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+					
 				}
 				break;
 			case "findbyid": 
@@ -284,7 +285,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnFoundResponseId);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+					
 				}
 				break;
 			case "deleteresponse":
@@ -295,7 +296,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnDeleteId);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+					
 				}
 				break;
 			case "getallresponses": 
@@ -305,7 +306,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnAllResponse);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+					
 				}
 				break;
 			case "getresponsespercomplaint": 
@@ -316,7 +317,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnComplaint);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+					
 				}
 				break;
 			default:
@@ -334,7 +335,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnUserId);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+					
 				}
 				break;
 			case "updateuser":
@@ -345,7 +346,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnUserIdUpdate);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+				
 				}
 				break;
 			case "findbyid": 
@@ -356,7 +357,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnFindUser);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+					
 				}
 				break;
 			case "findbyemail": 
@@ -367,7 +368,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnFindByEmail);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+					
 				}
 				break;
 			case "deleteuser": 
@@ -378,7 +379,7 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(returnDeleteUser);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
+					
 				}
 				break;
 			case "getallusers": 
@@ -388,7 +389,6 @@ public class ClientHandler implements Runnable {
 					this.objectOutStream.writeObject(userList);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
-					LOGGER.error(e.getMessage());
 				}
 				break;
 			default:
@@ -415,16 +415,19 @@ public class ClientHandler implements Runnable {
 				this.objectOutStream.writeObject("error");
 				this.objectOutStream.writeObject(e);
 			} catch (IOException e1) {
+				LOGGER.error(e.getMessage());
 				e1.printStackTrace();
 			}
 		} catch (Exception exc) {
 			CustomizedException e = new CustomizedException(exc.getMessage());
+			LOGGER.error(exc.getMessage());
 			try {
 				this.objectOutStream.writeObject("error");
 				this.objectOutStream.writeObject(e);
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
+				
 			}
 		}
 		
