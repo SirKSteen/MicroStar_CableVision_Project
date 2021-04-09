@@ -142,7 +142,7 @@ public class ClientHandler implements Runnable {
 				break; 
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + operation.toLowerCase());
-				LOGGER.debug(operation.toLowerCase());
+			
 			}
 			break;
 		//AuthenticationController
@@ -176,7 +176,7 @@ public class ClientHandler implements Runnable {
 				break;
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + operation.toLowerCase());
-				LOGGER.debug(operation.toLowerCase());
+				
 			}
 			break;
 		case "complaint":
@@ -249,7 +249,7 @@ public class ClientHandler implements Runnable {
 				break;
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + operation.toLowerCase());
-				LOGGER.debug(operation.toLowerCase());
+				
 			}
 			break;
 			//response 
@@ -322,7 +322,7 @@ public class ClientHandler implements Runnable {
 				break;
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + operation.toLowerCase());
-				LOGGER.debug(operation.toLowerCase());
+				
 			}
 			break;
 		case "user":
@@ -393,13 +393,13 @@ public class ClientHandler implements Runnable {
 				break;
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + operation.toLowerCase());
-				LOGGER.debug(operation.toLowerCase());
+				
 			}
 			break;
 		
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + endPoint.toLowerCase());
-			LOGGER.debug(endPoint.toLowerCase());
+			
 		}
 	}
 	
