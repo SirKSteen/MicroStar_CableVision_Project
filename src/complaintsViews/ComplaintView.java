@@ -4,6 +4,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 import java.sql.Connection;
 import java.sql.Statement;
 
@@ -62,7 +66,7 @@ public class ComplaintView extends JInternalFrame implements ActionListener{
 //    to send the date at which the form complaint form
 //    was filled out
 	
-    
+    /*
   //hibernate session config
   	private SessionFactory sessionFactory;
   	private Transaction transaction;
@@ -72,9 +76,9 @@ public class ComplaintView extends JInternalFrame implements ActionListener{
   	private Connection connect;
   	private Statement statement;
   	private String sqlQuery;
+    */
     
-    
-	
+
 	public ComplaintView() {
 		super();
 //		Labels
@@ -97,7 +101,7 @@ public class ComplaintView extends JInternalFrame implements ActionListener{
 	    this.custIdEmptyLabel = new JLabel("Error message");
 		this.complaintEmptyLabel = new JLabel("Error message");
 		
-		
+		/*
 		this.sessionFactory = null;
 		this.transaction = null;
 		this.session = null;
@@ -105,7 +109,8 @@ public class ComplaintView extends JInternalFrame implements ActionListener{
 		this.statement = null;
 		this.sqlQuery = "";
 		this.statement = null;
-	    
+	    */
+		
 	    showForm();
 	}
 
@@ -211,6 +216,8 @@ public class ComplaintView extends JInternalFrame implements ActionListener{
 			
 			if (!custIdText.equals("") && !complaintDetails.equals("")) {
 //				System.out.println("Both are not Empty");
+				
+				
 				Complaint complaint = new Complaint();
 				UserController uc = new UserController();
 				ComplaintController cc = new ComplaintController();
@@ -226,6 +233,7 @@ public class ComplaintView extends JInternalFrame implements ActionListener{
 				complaint.setCustID(userId);
 				complaint.setComplaint(this.complaintTextArea.getText());
 				complaint.setEmpID(null);
+				
 
 				switch(((String)this.categoryComboBox.getSelectedItem()).toLowerCase()){
 					case "mild":
@@ -288,6 +296,9 @@ public class ComplaintView extends JInternalFrame implements ActionListener{
           			    JOptionPane.ERROR_MESSAGE);
 			}
 	
+			
+			
+			
 		}else if(e.getSource() == this.resetButton) {
 			this.reset();
 			System.out.println("Reset button clicked");

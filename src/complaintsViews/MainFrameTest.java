@@ -1,3 +1,7 @@
+
+
+
+
 package complaintsViews;
 
 import java.awt.Color;
@@ -43,7 +47,7 @@ public class MainFrameTest extends JFrame implements ActionListener{
 		i2001 = new JMenuItem("Mild");
 		i2002 = new JMenuItem("Moderate"); 
 		i2003 = new JMenuItem("Severe");
-		i3 = new JMenuItem("Get Complaints Per Customer");
+		i3 = new JMenuItem("View All Complaints");
 		i4 = new JMenuItem("Find Complaint By Id ");
 		i5 = new JMenuItem("Update a Complaint");
 		i6 = new JMenuItem("Assign Technician");
@@ -179,12 +183,16 @@ public class MainFrameTest extends JFrame implements ActionListener{
 		else if (e.getSource() == i3) {
 			System.out.println("\nGet Complaints Per Customer clicked!");
 			desktopPane.removeAll();
+			GetComplaintsPerUser gpu = new GetComplaintsPerUser();
+			desktopPane.add(gpu).setVisible(true);
+			desktopPane.moveToFront(gpu);
+			gpu.setSize(desktopPane.getWidth(), desktopPane.getHeight());
+			gpu.setLocation(0,0);
 
 		}
 		else if (e.getSource() == i4) {
 			System.out.println("\nFind Complaint By Id clicked!");
 			desktopPane.removeAll();
-			new SearchComplaint();
 			FindComplaintById fbi = new FindComplaintById();
 			desktopPane.add(fbi).setVisible(true);
 			desktopPane.moveToFront(fbi);

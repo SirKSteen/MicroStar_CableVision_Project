@@ -213,6 +213,79 @@ public class ClientHandler implements Runnable {
 					throw new CustomizedException(e.getMessage());
 				}
 				break;
+			case "getallmildcomplaints": 
+				try {
+					ArrayList<Complaint> returnComplaintList = this.complaintController.getAllMildComplaints();
+					this.objectOutStream.writeObject("success");
+					this.objectOutStream.writeObject(returnComplaintList);
+				} catch (Exception e) {
+					throw new CustomizedException(e.getMessage());
+				}
+				break;
+			case "getallmoderatecomplaints": 
+				try {
+					ArrayList<Complaint> returnComplaintList = this.complaintController.getAllModerateComplaints();
+					this.objectOutStream.writeObject("success");
+					this.objectOutStream.writeObject(returnComplaintList);
+				} catch (Exception e) {
+					throw new CustomizedException(e.getMessage());
+				}
+				break;
+			case "getallseverecomplaints": 
+				try {
+					ArrayList<Complaint> returnComplaintList = this.complaintController.getAllSevereComplaints();
+					this.objectOutStream.writeObject("success");
+					this.objectOutStream.writeObject(returnComplaintList);
+				} catch (Exception e) {
+					throw new CustomizedException(e.getMessage());
+				}
+				break;
+			case "getallusercomplaints": 
+				try {
+					int userId = (int)this.objectInStream.readObject();
+					ArrayList<Complaint> returnComplaintList = this.complaintController.getComplaintsPerUser(userId);
+					this.objectOutStream.writeObject("success");
+					this.objectOutStream.writeObject(returnComplaintList);
+				} catch (Exception e) {
+					throw new CustomizedException(e.getMessage());
+				}
+				break;	
+			case "getallresolvedcablecomplaints": 
+				try {
+					ArrayList<Complaint> returnComplaintList = this.complaintController.getAllSevereComplaints();
+					this.objectOutStream.writeObject("success");
+					this.objectOutStream.writeObject(returnComplaintList);
+				} catch (Exception e) {
+					throw new CustomizedException(e.getMessage());
+				}
+				break;
+			case "getallresolvedbroadbandcomplaints": 
+				try {
+					ArrayList<Complaint> returnComplaintList = this.complaintController.getAllSevereComplaints();
+					this.objectOutStream.writeObject("success");
+					this.objectOutStream.writeObject(returnComplaintList);
+				} catch (Exception e) {
+					throw new CustomizedException(e.getMessage());
+				}
+				break;
+			case "getalloutstandingcablecomplaints": 
+				try {
+					ArrayList<Complaint> returnComplaintList = this.complaintController.getAllSevereComplaints();
+					this.objectOutStream.writeObject("success");
+					this.objectOutStream.writeObject(returnComplaintList);
+				} catch (Exception e) {
+					throw new CustomizedException(e.getMessage());
+				}
+				break;
+			case "getalloutstandingbroadbandcomplaints": 
+				try {
+					ArrayList<Complaint> returnComplaintList = this.complaintController.getAllSevereComplaints();
+					this.objectOutStream.writeObject("success");
+					this.objectOutStream.writeObject(returnComplaintList);
+				} catch (Exception e) {
+					throw new CustomizedException(e.getMessage());
+				}
+				break;
 			case "assigntechnician": 
 				try {
 					Complaint techComplaint = (Complaint)this.objectInStream.readObject();

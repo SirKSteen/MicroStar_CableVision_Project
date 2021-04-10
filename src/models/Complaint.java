@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -27,7 +28,12 @@ import utils.ComplaintType;
 
 @Entity
 @Table(name = "Complaints") //reference the user table in database. 
-public class Complaint {
+public class Complaint implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,6 +66,10 @@ public class Complaint {
 	@Column(name = "complaint_status")
 	private ComplaintStatus complaintStatus;
 	
+	
+	
+	
+	
 	public Complaint() {
 		this.custID = new User();
 		this.empID = new User();
@@ -73,7 +83,7 @@ public class Complaint {
 		
 	
 	public Complaint(User custID, User empID, ComplaintCategory category, String complaint, Date complaintDate,
-			ComplaintType complaintType, ComplaintStatus complaintStatus) {
+			ComplaintType complaintType, ComplaintStatus complaintStatus, String contactNum) {
 		this.custID = custID;
 		this.empID = empID;
 		this.category = category;
@@ -81,6 +91,7 @@ public class Complaint {
 		this.complaintDate = complaintDate;
 		this.complaintType = complaintType;
 		this.complaintStatus = complaintStatus;
+		
 	}
 
 
@@ -94,6 +105,7 @@ public class Complaint {
 		this.complaintDate = c.complaintDate;
 		this.complaintType = c.complaintType;
 		this.complaintStatus = c.complaintStatus;
+		
 	}
 
 	public int getComplaintID() {
@@ -109,25 +121,17 @@ public class Complaint {
 		return custID;
 	}
 
-
-
 	public void setCustID(User custID) {
 		this.custID = custID;
 	}
-
-
 
 	public User getEmpID() {
 		return empID;
 	}
 
-
-
 	public void setEmpID(User empID) {
 		this.empID = empID;
 	}
-
-
 
 	public ComplaintCategory getCategory() {
 		return category;
@@ -169,6 +173,8 @@ public class Complaint {
 		this.complaintStatus = complaintStatus;
 	}
 	
+	
+
 
 	@Override
 	public String toString() {

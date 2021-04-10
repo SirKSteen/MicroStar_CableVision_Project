@@ -29,7 +29,7 @@ public class Driver {
 //		User user = new User("","","","",Role.REPRESENTATIVE);
 //		ResponseController rc = new ResponseController();
 //		
-
+/*
  		new Server();
  		
 		User u1 = new User("Jonathon","Kent","jkent@gmail.com",
@@ -100,9 +100,28 @@ public class Driver {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+*/
+
+		new Server();
+		
+		/*
+		java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
+		
+		try {
+			Complaint fcomp = cc1.findById(35);
+			Response r1 = new Response(
+					fcomp,
+					sqlDate,
+					"Sample response 7"
+					);
+			ResponseController rc = new ResponseController();
+			rc.addResponse(r1);
+		} catch (CustomizedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		*/
 		
-
 		
 			
 		

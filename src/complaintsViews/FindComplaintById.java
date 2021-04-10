@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -25,7 +26,7 @@ import utils.CustomizedException;
  *
  * @author Steen
  */
-public class FindComplaintById extends JFrame {
+public class FindComplaintById extends JInternalFrame {
 
     /**
 	 * 
@@ -44,7 +45,6 @@ public class FindComplaintById extends JFrame {
  
 
   	  DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-//      Grab the returned array list and put it into a variable of type Arraylist
   	  ComplaintController cc = new ComplaintController();
   	  int input = in;
 				Complaint complaint = cc.findById(input);
@@ -86,7 +86,9 @@ public class FindComplaintById extends JFrame {
         jTextField2 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-
+        jTable1.setEnabled(false);
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
         jFrame1Layout.setHorizontalGroup(
@@ -102,7 +104,7 @@ public class FindComplaintById extends JFrame {
         setTitle("Search Complaint");
         setBackground(new java.awt.Color(255, 255, 255));
         setBounds(new java.awt.Rectangle(100, 100, 0, 0));
-        setPreferredSize(new java.awt.Dimension(820, 620));
+        setPreferredSize(new java.awt.Dimension(870, 450));
 
         jLabel2.setText("Enter Complaint ID to search below");
 
@@ -146,23 +148,25 @@ public class FindComplaintById extends JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(328, 328, 328)
+                        .addGap(331, 331, 331)
                         .addComponent(jLabel2))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(351, 351, 351)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(331, Short.MAX_VALUE))
+                        .addGap(393, 393, 393)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(371, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addContainerGap()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
+
+
 
 
         pack();

@@ -14,11 +14,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "Responses") // reference the user table in database.
-public class Response {
+public class Response implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/*
 	 * use annotations to specify id column and set it to auto generate ID's. we
