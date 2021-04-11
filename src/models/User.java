@@ -22,6 +22,11 @@ import utils.Role;
 @Table(name = "Users") // reference the user table in database.
 public class User implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/*
 	 * use annotations to specify id column and set it to auto generate ID's. we
 	 * don't have to worry about keeping track of ID's for new users.
