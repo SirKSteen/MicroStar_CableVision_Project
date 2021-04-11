@@ -33,7 +33,7 @@ public class ClientHandler implements Runnable {
 	private ResponseController responseController;
 	private UserController userController;
 	
-	private static final Logger LOGGER = LogManager.getLogger(Server.class.getName());
+	private static final Logger LOGGER = LogManager.getLogger(ClientHandler.class.getName());
 	
 	public ClientHandler(Socket socket) {
 		this.socket = socket;
@@ -45,9 +45,7 @@ public class ClientHandler implements Runnable {
 		try {
 			initDataStreams();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block 
-			e.printStackTrace();
-			LOGGER.error(e.getMessage());
+			LOGGER.fatal(e.getMessage());
 	}
 	}
 	
@@ -57,7 +55,7 @@ public class ClientHandler implements Runnable {
 			this.objectInStream = new ObjectInputStream(this.socket.getInputStream());
 
 		} catch (IOException ex) {
-			ex.printStackTrace();
+			LOGGER.fatal(ex.getMessage());
 		}
 	}
 	
@@ -441,7 +439,6 @@ public class ClientHandler implements Runnable {
 				this.objectOutStream.writeObject(e);
 			} catch (IOException e1) {
 				LOGGER.error(e.getMessage());
-				e1.printStackTrace();
 			}
 		} catch (Exception exc) {
 			CustomizedException e = new CustomizedException(exc.getMessage());
@@ -450,8 +447,7 @@ public class ClientHandler implements Runnable {
 				this.objectOutStream.writeObject("error");
 				this.objectOutStream.writeObject(e);
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				LOGGER.error(exc.getMessage());
 				
 			}
 		}
