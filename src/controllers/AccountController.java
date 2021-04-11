@@ -71,11 +71,9 @@ public class AccountController {
 
 			if (this.transaction != null) {
 				this.transaction.rollback();
-				e.printStackTrace();
-				System.out.println("transaction incomplete");
+				throw new CustomizedException(e.getMessage());
 			}
 		} catch (Exception exception) {
-			System.out.println(exception.getMessage());
 			throw new CustomizedException(exception.getMessage());
 		} 
 		return acct_id;
@@ -168,7 +166,7 @@ public class AccountController {
 			accountsList.add(account);
 			}
 		}catch (SQLException e) {
-			e.printStackTrace();
+			throw new CustomizedException(e.getMessage());
 		}
 		
 		return accountsList;
@@ -252,7 +250,7 @@ public class AccountController {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new CustomizedException(e.getMessage());
 		}
 
 		return account;
@@ -309,7 +307,7 @@ public class AccountController {
 				System.out.println(result + " row(s) affected. Delete Successful");
 				
 			}catch (SQLException e) {
-				e.printStackTrace();
+				throw new CustomizedException(e.getMessage());
 			}
 			return result;
 		}		
