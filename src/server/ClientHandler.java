@@ -27,14 +27,19 @@ public class ClientHandler implements Runnable {
 	private ComplaintController complaintController;
 	private ResponseController responseController;
 	private UserController userController;
+	private ArrayList<ClientHandler> clientList;
+	private String name;
 	
-	public ClientHandler(Socket socket) {
+	public ClientHandler(Socket socket, ArrayList<ClientHandler> clientList, String name) {
 		this.socket = socket;
 		this.authController = new AuthController();
 		this.accountController = new AccountController();
 		this.complaintController = new ComplaintController();
 		this.responseController = new ResponseController();
 		this.userController = new UserController();
+		this.clientList = clientList;
+		this.name = name;
+		
 		try {
 			initDataStreams();
 		} catch (IOException e) {
@@ -56,11 +61,9 @@ public class ClientHandler implements Runnable {
 	private void acceptAndProcessRequest() throws CustomizedException {
 		String operation = "",endPoint = "";
 			try {
-				while(true) {
-					operation = (String)this.objectInStream.readObject();
-					endPoint = (String)this.objectInStream.readObject();
-					processRequest(operation, endPoint);
-				}
+				operation = (String)this.objectInStream.readObject();
+				endPoint = (String)this.objectInStream.readObject();
+				processRequest(operation, endPoint);
 			}catch (IOException e) {
 				throw new CustomizedException(e.getMessage());
 			}
@@ -306,7 +309,7 @@ public class ClientHandler implements Runnable {
 			case "addresponse": 
 				try {
 					Response responseToAdd = (Response)this.objectInStream.readObject(); 
-					Response addedRespId = this.responseController.addResponse(responseToAdd);
+					int addedRespId = this.responseController.addResponse(responseToAdd);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(addedRespId);
 				} catch (Exception e) {
@@ -440,8 +443,24 @@ public class ClientHandler implements Runnable {
 				throw new IllegalArgumentException("Unexpected value: " + operation.toLowerCase());
 			}
 			break;
+
 		
 		
+
+		case "chat": 
+			try {
+				String message = (String)this.objectInStream.readObject();
+				for (ClientHandler mc : clientList)
+				{
+					System.out.println(mc.name);
+					mc.objectOutStream.writeObject("success");
+					mc.objectOutStream.writeObject(this.name+" : "+message);
+				}
+			} catch (Exception e) {
+				throw new CustomizedException(e.getMessage());
+			}
+			break;
+
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + endPoint.toLowerCase());
 		}

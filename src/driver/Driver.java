@@ -1,35 +1,5 @@
 package driver;
 
-import java.awt.Color;
-import java.util.ArrayList;
-
-import javax.swing.JOptionPane;
-
-import controllers.ComplaintController;
-import controllers.ResponseController;
-import controllers.UserController;
-import models.Complaint;
-import models.Response;
-import models.User;
-import utils.ComplaintCategory;
-import utils.ComplaintStatus;
-import utils.ComplaintType;
-import utils.CustomizedException;
-
-import utils.Role;
-
-
-import server.Server;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-
-
-public class Driver {
-	private static final Logger LOG = LogManager.getLogger(Driver.class.getName());
-
-	public static void main(String[] args) {
 
 //
 //		User user = new User("","","","",Role.REPRESENTATIVE);
@@ -44,10 +14,35 @@ public class Driver {
 		
 		try {
 			ucc.createUser(u1);
+=======
+
+import server.Server;
+
+
+public class Driver {
+
+		AuthController ac = new AuthController();
+		
+		try {
+			boolean t = ac.updatePassword(1700, "secrets","secret");
+>>>>>>> develop
 		} catch (CustomizedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+<<<<<<< HEAD
+=======
+		
+		LOG.debug("Debug Message Logged"); 
+        LOG.fatal("Sample fatal message");
+        LOG.info("Info Message Logged");
+        LOG.error("Error Message Logged");
+        LOG.warn("Test Warn message");
+        LOG.trace("TRACE MESSAGE");
+        
+
+		User user = new User("","","","",Role.REPRESENTATIVE);
+>>>>>>> develop
 		ResponseController rc = new ResponseController();
 		
 		java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
@@ -177,7 +172,10 @@ public class Driver {
 		
 	}	
 	
+	public static void main(String[] args) {
 
-}
+ 		new Server();
+ 		
+	}
 
 

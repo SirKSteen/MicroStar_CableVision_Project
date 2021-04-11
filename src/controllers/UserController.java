@@ -86,13 +86,7 @@ public class UserController {
 				throw new CustomizedException(e.getMessage());
 
 			}
-		} finally {
-
-			if (this.session != null) {
-				this.session.close();
-			}
-
-		}
+		} 
 
 		return userId;
 	}

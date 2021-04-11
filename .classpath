@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+<<<<<<< HEAD
 	<classpathentry kind="src" path="src"/>
+=======
+<<<<<<< HEAD
+	<classpathentry excluding="loggers/" kind="src" path="src"/>
+>>>>>>> develop
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="lib" path="C:/hibernate-release-5.4.29.Final/lib/required/antlr-2.7.7.jar"/>
 	<classpathentry kind="lib" path="C:/hibernate-release-5.4.29.Final/lib/required/byte-buddy-1.10.21.jar"/>
@@ -24,6 +29,27 @@
 	<classpathentry kind="lib" path="C:/mysql-connector-java-8.0.23/mysql-connector-java-8.0.23.jar"/>
 	<classpathentry kind="lib" path="C:/apache-log4j-2.12.1-bin/log4j-api-2.12.1.jar"/>
 	<classpathentry kind="lib" path="C:/apache-log4j-2.12.1-bin/log4j-core-2.12.1.jar"/>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="properties"/>
+=======
+	<classpathentry kind="lib" path="C:/apache-log4j-2.12.1-bin/log4j-jdbc-dbcp2-2.12.1.jar"/>
+	<classpathentry kind="lib" path="properties"/>
+=======
+	<classpathentry excluding="src/|properties/" kind="src" path=""/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-14">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="properties"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Hibernate"/>
+	<classpathentry kind="lib" path="E:/Program Files/apache-log4j-2.12.1/log4j-api-2.12.1.jar"/>
+	<classpathentry kind="lib" path="E:/Program Files/apache-log4j-2.12.1/log4j-core-2.12.1.jar"/>
+	<classpathentry kind="lib" path="E:/Program Files/apache-log4j-2.12.1/log4j-jdbc-dbcp2-2.12.1.jar"/>
+	<classpathentry kind="lib" path="E:/User/Patrick/Downloads/DOWNLOADS/jbcrypt.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/MySQL/Connector J 8.0/mysql-connector-java-8.0.23.jar"/>
+>>>>>>> ccca32665559bcb7da13f91c4ec4221b311ef750
+>>>>>>> develop
 	<classpathentry kind="output" path="bin"/>
 </classpath>
