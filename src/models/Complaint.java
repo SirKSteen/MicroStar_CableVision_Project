@@ -17,8 +17,6 @@ import javax.persistence.Table;
 import utils.ComplaintCategory;
 import utils.ComplaintType;
 
-
-
 /*This class will serve as the complaints domain object.
  * it will map to the complaints table in the mysql database
  * 
@@ -44,29 +42,27 @@ public class Complaint {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "complaint_category")
 	private ComplaintCategory category;
-	
+
 	@Column(name = "complaint")
 	private String complaint;
-	
+
 	@Column(name = "complaint_date")
 	private Date complaintDate;
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "complaint_type")
 	private ComplaintType complaintType;
 
-	
 	public Complaint() {
 		this.custID = new User();
 		this.empID = new User();
 		this.category = null;
 		this.complaint = "";
-		this.complaintDate =  new Date();
+		this.complaintDate = new Date();
 		this.complaintType = null;
 	}
-	
-		
-	
+
+			
 	public Complaint(User custID, User empID, ComplaintCategory category, String complaint, Date complaintDate,
 			ComplaintType complaintType) {
 		this.custID = custID;
@@ -78,8 +74,7 @@ public class Complaint {
 	}
 
 
-
-	public Complaint(final Complaint c ) {
+	public Complaint(final Complaint c) {
 		this.complaintID = c.complaintID;
 		this.custID = c.custID;
 		this.empID = c.empID;
@@ -156,13 +151,9 @@ public class Complaint {
 
 	@Override
 	public String toString() {
-		return "\nComplaints \ncomplaintID: " + complaintID + "\ncustID: " + custID +
-				"\nempID: " + empID + "\ncategory: "
-				+ category + "\ncomplaint: " + complaint + "\ncomplaintDate: " + complaintDate + 
-				"\ncomplaintType: "
-				+ complaintType + "\n";
+		return "\nComplaints \ncomplaintID: " + complaintID + "\ncustID: " + custID + "\nempID: " + empID
+				+ "\ncategory: " + category + "\ncomplaint: " + complaint + "\ncomplaintDate: " + complaintDate
+				+ "\ncomplaintType: " + complaintType + "\n";
 	}
-	
-	
-	
+
 }

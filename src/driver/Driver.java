@@ -1,5 +1,6 @@
 package driver;
 
+<<<<<<< HEAD
 
 import java.util.ArrayList;
 
@@ -21,10 +22,10 @@ import controllers.AuthController;
 
 
 
-public class Driver {
-	private static final Logger LOG = LogManager.getLogger(Driver.class.getName());
-	public static void main(String[] args) {
+import server.Server;
 
+
+public class Driver {
 
 		AuthController ac = new AuthController();
 		
@@ -134,8 +135,10 @@ public class Driver {
 		System.out.println(complaintsResult);
 	}
 
+	public static void main(String[] args) {
+
+ 		new Server();
+ 		
+	}
 }
-
-
-
 

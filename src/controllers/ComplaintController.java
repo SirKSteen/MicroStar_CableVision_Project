@@ -18,20 +18,20 @@ import models.User;
 import utils.ComplaintCategory;
 import utils.ComplaintType;
 import utils.CustomizedException;
+import utils.Role;
 
 public class ComplaintController {
 
-	//hibernate session config
+	// hibernate session config
 	private SessionFactory sessionFactory;
 	private Transaction transaction;
 	private Session session;
-	
-	//traditional connection vars
+    private UserController userController;
+	// traditional connection vars
 	private Connection connect;
 	private Statement statement;
 	private String sqlQuery;
-	
-	
+
 	public ComplaintController() {
 		this.sessionFactory = null;
 		this.transaction = null;
@@ -40,67 +40,66 @@ public class ComplaintController {
 		this.statement = null;
 		this.sqlQuery = "";
 		this.statement = null;
+		this.userController = null;
 	}
 
 //	Method to ADD complaints
 	public int addComplaint(Complaint complaint) throws CustomizedException {
-		
-		 int complaintId = -1;
-		   try{
-			   
-			   //returns a configured session factory based on hibernate cfg file
-			   //get a hibernate configured session factory and store it into this instance session factory
-			   this.sessionFactory = HibernateConnectorSessionFactory.getHibernateSessionFactory();
-			   //open a session to carry out transactions. a session is needed for every transaction
-			   this.session = this.sessionFactory.openSession();
-			  
-			   //create transaction
-			   
-			   this.transaction = this.session.beginTransaction();
-			    complaintId = (int) this.session.save(complaint);
-			  
-			  this.transaction.commit();
-			   System.out.println("\nTransaction successful!");
-		    }catch (HibernateException e) {
-		       if (this.transaction!=null) {
-		    	   this.transaction.rollback();
-			       e.printStackTrace(); 
-			       System.out.println("\nTransaction unsuccessful! ");
-		       } 
-		    }catch (Exception exception){
-		    	System.out.println(exception.getMessage());
-		    }finally {
-		    	
-		    	if(this.session != null) {
-		    		  this.session.close(); 
-		    	}
-		     
-		    }
-		   
-		   return complaintId;
-}
-	
-	
 
+		int complaintId = -1;
+		try {
 
-	
+			// returns a configured session factory based on hibernate cfg file
+			// get a hibernate configured session factory and store it into this instance
+			// session factory
+			this.sessionFactory = HibernateConnectorSessionFactory.getHibernateSessionFactory();
+			// open a session to carry out transactions. a session is needed for every
+			// transaction
+			this.session = this.sessionFactory.openSession();
+
+			// create transaction
+
+			this.transaction = this.session.beginTransaction();
+			complaintId = (int) this.session.save(complaint);
+
+			this.transaction.commit();
+			System.out.println("\nTransaction successful!");
+		} catch (HibernateException e) {
+			if (this.transaction != null) {
+				this.transaction.rollback();
+				e.printStackTrace();
+				System.out.println("\nTransaction unsuccessful! ");
+			}
+		} catch (Exception exception) {
+			System.out.println(exception.getMessage());
+		} finally {
+
+			if (this.session != null) {
+				this.session.close();
+			}
+
+		}
+
+		return complaintId;
+	}
+
 //	Method to  READ all the complaints 
 	public ArrayList<Complaint> getAllComplaints() throws CustomizedException {
-		ArrayList<Complaint> complaintsList= new ArrayList<>();
-		
-	    try {
-	    	//get instance of single database connection
-	    	this.connect = TraditionalDatabaseConnectorFactory.getDatabaseConnection();
-	    	
-	    	//initialize statement that will be used to execute sql query
+		ArrayList<Complaint> complaintsList = new ArrayList<>();
+
+		try {
+			// get instance of single database connection
+			this.connect = TraditionalDatabaseConnectorFactory.getDatabaseConnection();
+
+			// initialize statement that will be used to execute sql query
 			this.statement = this.connect.createStatement();
-			
-			//create sql query
-			this.sqlQuery = "SELECT complaint_id,cust_id, emp_id, complaint_category, complaint,"
-					+ "complaint_date, complaint_type FROM complaints";
-			
-		    //execute sql query on statement and a ResultSet is returned
-		    ResultSet rs = this.statement.executeQuery(this.sqlQuery);
+
+			// create sql query
+			this.sqlQuery = "SELECT * FROM micro_star.complaints";
+
+			// execute sql query on statement and a ResultSet is returned
+			ResultSet rs = this.statement.executeQuery(this.sqlQuery);
+			userController = new UserController();
 
 		    //move cursor to beginning of row if it exists
 		    while(rs.next()){
@@ -113,12 +112,15 @@ public class ComplaintController {
 		    	Date complaintDate = rs.getDate("complaint_date");
 		    	String complaintType = rs.getString("complaint_type");
 		    	
-		    	Complaint complaint = new Complaint();
-		    	User user = new User();
 		    	
+		    	Complaint complaint = new Complaint();
+		    	User customer = userController.findById(custID);
+		    	User employee = userController.findById(empID);
+		    	
+		
 		    	complaint.setComplaintID(complaintID);
-		    	complaint.setCustID(user);
-		    	complaint.setEmpID(user);
+		    	complaint.setCustID(customer);
+		    	complaint.setEmpID(employee);
 		    	
 		       switch (complaintCat.toLowerCase()) {
 			    case "mild": 
@@ -144,37 +146,33 @@ public class ComplaintController {
 				case "cable":
 					complaint.setComplaintType(ComplaintType.CABLE);
 					break;
-			default:
-				throw new IllegalArgumentException("Unexpected value: " + complaintType);
+				default:
+					throw new IllegalArgumentException("Unexpected value: " + complaintType);
+				}
+
+				// populate complaintsList to be returned
+				complaintsList.add(complaint);
+
 			}
-		       
-		       //populate complaintsList to be returned
-		       complaintsList.add(complaint);
-		       
-		    }
 		} catch (SQLException e) {
 			// TODO manage and log exceptions
 			e.printStackTrace();
 		}
-	    
-	    return complaintsList;
+		return complaintsList;
 	}
-	
-	
-	
 
-	/* Method to  READ one complaint. Returns a single complaint. */
+	/* Method to READ one complaint. Returns a single complaint. */
 	public Complaint findById(int complaintID) throws CustomizedException {
-		
+
 		Complaint complaint = null;
-		
+
 		try {
-			
-			//retrieve complaints using traditional database connectivity
+
+			// retrieve complaints using traditional database connectivity
 			this.connect = TraditionalDatabaseConnectorFactory.getDatabaseConnection();
 			this.statement = this.connect.createStatement();
 			//create sql query
-			this.sqlQuery = "SELECT * FROM complaints WHERE complaint_id="+complaintID;		    
+			this.sqlQuery = "SELECT * FROM micro_star.complaints WHERE complaint_id="+complaintID;		    
 		    ResultSet rs = this.statement.executeQuery(this.sqlQuery);
 		    
 		  //Read result values and create complaints objects
@@ -183,20 +181,25 @@ public class ComplaintController {
 			    int complaintID1 = rs.getInt("complaint_id");
 		    	int custID = rs.getInt("cust_id");
 		    	int empID= rs.getInt("emp_id");
+		    	
 		    	String complaintCat = rs.getString("complaint_category"); 
 		    	String complaintInfo = rs.getString("complaint");
 		    	Date complaintDate = rs.getDate("complaint_date");
 		    	String complaintType = rs.getString("complaint_type");
 		    	
-		       
-		       //create complaints objects using data retrieved from columns.
+		         userController = new UserController();
+		    
 		    	complaint = new Complaint();
-		    	User user = new User();
+		    	
+		    	//get users from database
+		    	User customer = userController.findById(custID);;
+		    	User employee = userController.findById(empID);
+		    	
+		    	complaint.setCustID(customer);
+		    	complaint.setEmpID(employee);
 		    	
 		    	complaint.setComplaintID(complaintID1);
-		    	complaint.setCustID(user);
-		    	complaint.setEmpID(user);
-		    	
+		   
 		       switch (complaintCat.toLowerCase()) {
 			    case "mild": 
 			    	complaint.setCategory(ComplaintCategory.MILD);
@@ -221,16 +224,15 @@ public class ComplaintController {
 				case "cable":
 					complaint.setComplaintType(ComplaintType.CABLE);
 					break;
-			default:
-				throw new IllegalArgumentException("Unexpected value: " + complaintType);
+				default:
+					throw new IllegalArgumentException("Unexpected value: " + complaintType);
+				}
+
 			}
-		           
-		    }
 		} catch (SQLException e) {
 			// TODO manage and log exceptions
 			e.printStackTrace();
 		}
-	    
 	    return complaint;
 	}
 	
@@ -241,7 +243,7 @@ public class ComplaintController {
 	/*Method to UPDATE a complaint*/
 	public Complaint updateComplaints(Complaint updatedComplaint) throws CustomizedException {
 		Complaint complaint = null;
-	
+
 		try {
 			this.sessionFactory = HibernateConnectorSessionFactory.getHibernateSessionFactory();
 			this.session = this.sessionFactory.openSession();
@@ -257,29 +259,26 @@ public class ComplaintController {
 			complaint.setComplaint(updatedComplaint.getComplaint());
 //			complaint.setComplaintDate(updatedComplaint.getComplaintDate());
 			complaint.setComplaintType(updatedComplaint.getComplaintType());
-			
-			//complete transaction
-		     this.transaction.commit();
-		    System.out.println("Complaint successfully updated");
+
+			// complete transaction
+			this.transaction.commit();
+			System.out.println("Complaint successfully updated");
 		} catch (HibernateException e) {
 			// TODO: handle exception
 			System.out.println(e);
-			if(this.transaction != null) {
+			if (this.transaction != null) {
 				this.transaction.rollback();
 				System.out.println("Rollback complete!");
 			}
 			throw new CustomizedException(e.getMessage());
-		}
-		  catch (Exception e) {
+		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println(e);
 		}
-		
+
 		return complaint;
 	}
-	
-	
-	
+
 	public Complaint assignTechnician(Complaint assignComplaint) throws CustomizedException {
 		Complaint complaint = null;
 	
@@ -322,11 +321,12 @@ public class ComplaintController {
 	
 //	Method to accept a user id and returns an ArrayList of complaints
 //	that are tied to that specific User
-	public ArrayList <Complaint> getComplaintsPerUser(int userID) {
+	public ArrayList <Complaint> getComplaintsPerUser(int userID) throws CustomizedException {
 		
 		ArrayList<Complaint> userComplaintsList = new ArrayList <>();
 		Complaint complaint = null;
-		User user = null;
+		User customer = null;
+		User employee = null;
 		
 		try {
 	    	//get instance of single database connection
@@ -354,12 +354,16 @@ public class ComplaintController {
 		    	Date complaintDate = rs.getDate("complaint_date");
 		    	String complaintType = rs.getString("complaint_type");
 		    	
-		     	complaint = new Complaint();
-		    	user = new User();
+		    	userController = new UserController();
+			    
+		    	complaint = new Complaint();
 		    	
-		    	complaint.setComplaintID(complaintID);
-		    	complaint.setCustID(user);
-		    	complaint.setEmpID(user);
+		    	//get users from database
+		    	customer = userController.findById(custID);;
+		    	employee = userController.findById(empID);
+		    	
+		    	complaint.setCustID(customer);
+		    	complaint.setEmpID(employee);
 		    	
 		       switch (complaintCat.toLowerCase()) {
 			    case "mild": 
@@ -402,23 +406,21 @@ public class ComplaintController {
 	}
 	
 	
-	
-	
+
 	/*Method to delete a complaint*/
 	public int deleteComplaint(int complaintId) throws CustomizedException {
 		int result = -1;
-		//delete complaint using traditional connectivity
+		// delete complaint using traditional connectivity
 		try {
 			this.connect = TraditionalDatabaseConnectorFactory.getDatabaseConnection();
 			this.statement = this.connect.createStatement();
-		  result = this.statement.executeUpdate("DELETE FROM complaints " +
-	                   "WHERE complaint_id ="+complaintId);
-		  
-		System.out.println(result + " row(s) affected. delete successful");
-		
-			if(result > 0) {
+			result = this.statement.executeUpdate("DELETE FROM complaints " + "WHERE complaint_id =" + complaintId);
+
+			System.out.println(result + " row(s) affected. delete successful");
+
+			if (result > 0) {
 				throw new CustomizedException("Complaint deleted.");
-			}else if(result == 0) {
+			} else if (result == 0) {
 				throw new CustomizedException("No complaint with given ID found");
 			}
 		} catch (SQLException e) {
@@ -427,39 +429,8 @@ public class ComplaintController {
 		} catch (CustomizedException e) {
 			throw new CustomizedException(e.getMessage());
 		}
-		
+
 		return result;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

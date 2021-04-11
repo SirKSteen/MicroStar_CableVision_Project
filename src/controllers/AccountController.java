@@ -20,19 +20,17 @@ import utils.PaymentStatus;
 import utils.Role;
 
 public class AccountController {
-	
-	//hibernate session varibles
+
+	// hibernate session varibles
 	private SessionFactory sessionFactory;
 	private Transaction transaction;
 	private Session session;
-	
-	
-	//traditional connection varibles 
+
+	// traditional connection varibles
 	private Connection connect;
 	private Statement statement;
 	private String sqlQuery;
-	
-	
+
 	public AccountController() {
 		this.sessionFactory = null;
 		this.transaction = null;
@@ -41,89 +39,83 @@ public class AccountController {
 		this.statement = null;
 		this.sqlQuery = "";
 	}
-	
+
 	/*
 	 * Method to add an account using hibernate
 	 */
-	
 	public int createAccount(Account account) throws CustomizedException{
 		
 		int acct_id = -1; 
 		
 		try {
-			
-		
-		//returns a configured session factory based on hibernate cfg file
-		   //get a hibernate configured session factory and store it into this instance session factory
-		this.sessionFactory = HibernateConnectorSessionFactory.getHibernateSessionFactory();
-		
-		//open a session to carry out transactions. a session is needed for every transaction
-		this.session = this.sessionFactory.openSession();
-		
-	// creation for transaction
-		
-		this.transaction = this.session.beginTransaction();
-		 
-		acct_id = (int) this.session.save(account);
-		
-		this.transaction.commit();
-		
-		System.out.println("Transaction completed");
-		}catch (HibernateException e) {
-			
+
+			// returns a configured session factory based on hibernate cfg file
+			// get a hibernate configured session factory and store it into this instance
+			// session factory
+			this.sessionFactory = HibernateConnectorSessionFactory.getHibernateSessionFactory();
+
+			// open a session to carry out transactions. a session is needed for every
+			// transaction
+			this.session = this.sessionFactory.openSession();
+
+			// creation for transaction
+
+			this.transaction = this.session.beginTransaction();
+
+			acct_id = (int) this.session.save(account);
+
+			this.transaction.commit();
+
+			System.out.println("Transaction completed");
+		} catch (HibernateException e) {
+
 			if (this.transaction != null) {
 				this.transaction.rollback();
 				e.printStackTrace();
 				System.out.println("transaction incomplete");
 			}
-		}catch (Exception exception) {
+		} catch (Exception exception) {
 			System.out.println(exception.getMessage());
-		}finally {
-			
-			if(this.session != null) {
-				this.session.close();
-			}
-		}
+			throw new CustomizedException(exception.getMessage());
+		} 
 		return acct_id;
-		
+
 	}
-	
-	
-	
+		
 	public ArrayList<Account> getAllAccounts() throws CustomizedException{
-		
+
 		ArrayList<Account> accountsList = new ArrayList<Account>();
-		
+
 		try {
-			
-			//to get instance for single database connection
+
+			// to get instance for single database connection
 			this.connect = TraditionalDatabaseConnectorFactory.getDatabaseConnection();
-			
-			//initialize statement that will be used to execute sql query
+
+			// initialize statement that will be used to execute sql query
 			this.statement = this.connect.createStatement();
-			
-			//create sql query
-			this.sqlQuery = "SELECT * FROM Accounts INNER JOIN Users ON Accounts.user_id=Users.user_id";					
-			//execute sql query on statement and a ResultSet is returned
-			
+
+			// create sql query
+			this.sqlQuery = "SELECT * FROM Accounts INNER JOIN Users ON Accounts.user_id=Users.user_id";
+			// execute sql query on statement and a ResultSet is returned
+
 			ResultSet rs = this.statement.executeQuery(this.sqlQuery);
-			
-			//move cursor to beginning of row if it exists 
-			while(rs.next()) {
-				
-				//retrieve by column name 
+
+			// move cursor to beginning of row if it exists
+			while (rs.next()) {
+
+				// retrieve by column name
 				int id = rs.getInt("acct_id");
 				String paymentStatus = rs.getString("payment_status");
 				float amountDue = rs.getFloat("amt_due");
 				int userId = rs.getInt("user_id");
-				String firstName= rs.getString("first_name");
-				String lastName= rs.getString("last_name");
+				String firstName = rs.getString("first_name");
+				String lastName = rs.getString("last_name");
 				String email = rs.getString("email");
 				String role = rs.getString("user_role");
 				String password = rs.getString("password");
-			
-				
-				
+
+				// create user objects using data retrieved from columns
+
 			//create user objects using data retrieved from columns
 		
 				 User user = new User();
@@ -213,34 +205,33 @@ public class AccountController {
 				
 				//create user objects using data retrieved from columns
 				User user = new User();
-				  
-			       user.setUserId(userId);
-			       user.setFirstName(firstName);
-			       user.setLastName(lastName);
-			       user.setEmail(email);
-			       user.setPassword(password);
-			       switch (role.toLowerCase()) {
-				    case "customer": 
+
+				user.setUserId(userId);
+				user.setFirstName(firstName);
+				user.setLastName(lastName);
+				user.setEmail(email);
+				user.setPassword(password);
+				switch (role.toLowerCase()) {
+				case "customer":
 					user.setRole(Role.CUSTOMER);
 					break;
-					case "representative":
-						user.setRole(Role.REPRESENTATIVE);
-						break;
-					case "technician":
-						user.setRole(Role.TECHNICIAN);
-						break;
+				case "representative":
+					user.setRole(Role.REPRESENTATIVE);
+					break;
+				case "technician":
+					user.setRole(Role.TECHNICIAN);
+					break;
 				default:
 					throw new IllegalArgumentException("Unexpected value: " + role);
 				}
-				
-				account = new Account();
-				
+
+			    account = new Account();
 				account.setAcct_id(id);
 				account.setAmt_due(amountDue);
 				account.setUser(user);
-				
+
 				switch (paymentStatus.toLowerCase()) {
-				
+
 				case "cancelled":
 					account.setPayment_status(PaymentStatus.CANCELLED);
 					break;
@@ -259,18 +250,17 @@ public class AccountController {
 				default:
 					throw new IllegalArgumentException("Unexpected value:" + paymentStatus);
 				}
-				
 			}
-			
-		}catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
-			
 		}
+
 		return account;
 	}
-				
+
+					
 		//Method to UPDATE a user		
-		public Account updateAccount(Account updatedAccount) throws CustomizedException{
+	public Account updateAccount(Account updatedAccount) throws CustomizedException{
 			
 			Account account = null;
 			
@@ -299,12 +289,10 @@ public class AccountController {
 					System.out.println("rollback completed");
 				}
 			}
-			catch (Exception e) {
-				System.out.println(e);
-		}
-		return account;	
-	}
-	
+			return account;
+		} 
+		
+
 		//Method to delete an account
 		
 		public int deleteAccounts(int acct_id) throws CustomizedException{
@@ -326,5 +314,4 @@ public class AccountController {
 			return result;
 		}		
 	
-
 }
