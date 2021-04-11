@@ -15,6 +15,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import factories.HibernateConnectorSessionFactory;
 import factories.TraditionalDatabaseConnectorFactory;
 import models.User;
+import utils.ComplaintStatus;
 import utils.CustomizedException;
 import utils.EmailValidator;
 import utils.Role;
@@ -157,6 +158,58 @@ public class UserController {
 		return userList;
 	}
 
+	
+	/* Method to READ all the users */
+	public ArrayList<User> getAllTechnicians() throws CustomizedException {
+		ArrayList<User> userList = new ArrayList<User>();
+
+		try {
+			// get instance of single database connection
+			this.connect = TraditionalDatabaseConnectorFactory.getDatabaseConnection();
+
+			// initialize statement that will be used to execute sql query
+			this.statement = this.connect.createStatement();
+
+			// create sql query
+			this.sqlQuery = "SELECT user_id, first_name,"
+					+ "last_name, email, contact_number"
+					+ " FROM users WHERE user_role ="+
+			"'" + Role.TECHNICIAN + "'";
+			// execute sql query on statement and a ResultSet is returned
+			ResultSet rs = this.statement.executeQuery(this.sqlQuery);
+
+			// move cursor to beginning of row if it exists
+			while (rs.next()) {
+				// Retrieve by column name
+				int id = rs.getInt("user_id");
+				String firstName = rs.getString("first_name");
+				String lastName = rs.getString("last_name");
+				String email = rs.getString("email");
+				String contactNum = rs.getString("contact_number");
+				
+				// create user objects using data retrieved from columns.
+				User user = new User();
+
+				user.setUserId(id);
+				user.setFirstName(firstName);
+				user.setLastName(lastName);
+				user.setEmail(email);
+				user.setContactNum(contactNum);
+				
+				// populate userList to be returned
+				userList.add(user);
+
+			}
+		} catch (SQLException e) {
+			// TODO manage and log exceptions
+			e.printStackTrace();
+			throw new CustomizedException(e.getMessage());
+		}
+
+		return userList;
+	}
+	
+	
 	/* Method to READ one user. Returns a single user. */
 	public User findById(int userId) throws CustomizedException {
 

@@ -1066,12 +1066,12 @@ public class ComplaintController {
 		//with the matching ID and create an object from the values
 		complaint = (Complaint)this.session.get(Complaint.class,
 		updatedComplaint.getComplaintID());
-		// complaint.setCustID(updatedComplaint.getCustID());
-		// complaint.setEmpID(updatedComplaint.getEmpID());
-		complaint.setCategory(updatedComplaint.getCategory());
-		complaint.setComplaint(updatedComplaint.getComplaint());
-		// complaint.setComplaintDate(updatedComplaint.getComplaintDate());
-		complaint.setComplaintType(updatedComplaint.getComplaintType());
+		// 	complaint.setCustID(updatedComplaint.getCustID());
+		// 	complaint.setEmpID(updatedComplaint.getEmpID());
+		//	complaint.setCategory(updatedComplaint.getCategory());
+		//	complaint.setComplaint(updatedComplaint.getComplaint());
+		// 	complaint.setComplaintDate(updatedComplaint.getComplaintDate());
+		//	complaint.setComplaintType(updatedComplaint.getComplaintType());
 		complaint.setComplaintStatus(updatedComplaint.getComplaintStatus());
 		
 		// complete transaction

@@ -427,10 +427,20 @@ public class ClientHandler implements Runnable {
 					throw new CustomizedException(e.getMessage());
 				}
 				break;
+			case "getalltechnicians": 
+				try {
+					ArrayList<User> userList = this.userController.getAllTechnicians();
+					this.objectOutStream.writeObject("success");
+					this.objectOutStream.writeObject(userList);
+				} catch (Exception e) {
+					throw new CustomizedException(e.getMessage());
+				}
+				break;
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + operation.toLowerCase());
 			}
 			break;
+		
 		
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + endPoint.toLowerCase());

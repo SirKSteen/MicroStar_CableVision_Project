@@ -3,6 +3,8 @@ package driver;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import controllers.ComplaintController;
 import controllers.ResponseController;
 import controllers.UserController;
@@ -10,6 +12,7 @@ import models.Complaint;
 import models.Response;
 import models.User;
 import utils.ComplaintCategory;
+import utils.ComplaintStatus;
 import utils.ComplaintType;
 import utils.CustomizedException;
 
@@ -20,6 +23,8 @@ import server.Server;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import complaintsViews.NewJFrame;
 
 public class Driver {
 	private static final Logger LOG = LogManager.getLogger(Driver.class.getName());
@@ -102,9 +107,53 @@ public class Driver {
 			e.printStackTrace();
 		}
 */
-
+		
 		new Server();
 		
+		/*
+		int compIdGlobal = 27;
+		String newStatus = "RESOLVED";
+		String r1 = "RESOLVED";
+   		String o1 = "OUTSTANDING";
+   	
+		try {
+			Complaint oldComplaint =  cc1.findById(compIdGlobal);
+			System.out.println("Complaint found:\n"+oldComplaint);
+			System.out.println("\nConfirming new status: "+newStatus);
+			
+			if(newStatus.equals(r1)) {
+				System.out.println("\nUpdating complaint status to RESOLVED");
+				oldComplaint.setComplaintStatus(ComplaintStatus.RESOLVED);
+				System.out.println("\nStatus set completed\n");
+				
+				Complaint newComplaint = cc1.updateComplaints(oldComplaint);
+				System.out.println("Updated Complaint details: \n"+newComplaint);
+				System.out.println("Successful!");
+			}
+			
+		} catch (CustomizedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
+				
+				/*
+				Complaint oldComplaint = cc.findById(compIdGlobal);
+			System.out.println("Complaint found:\n"+oldComplaint);
+			System.out.println("\nConfirming new status: "+newStatus);
+			
+			if(newStatus.equals(r1)) {
+				System.out.println("Updating complaint status to RESOLVED");
+				oldComplaint.setComplaintStatus(ComplaintStatus.RESOLVED);
+				System.out.println("Status set completed\n");
+				
+				Complaint newComplaint = cc.updateComplaint(oldComplaint);
+				System.out.println("Updated Complaint details: \n"+newComplaint);
+				JOptionPane.showMessageDialog(NewJFrame.this,
+	     			  	"Update successful!",
+	     			    "Complaint View Tip",
+	     			    JOptionPane.INFORMATION_MESSAGE);
+				*/
 		/*
 		java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
 		
