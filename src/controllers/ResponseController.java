@@ -112,8 +112,7 @@ public class ResponseController {
 			}
 			throw new CustomizedException(e.getMessage());
 		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println(e);
+			throw new CustomizedException(e.getMessage());
 		}
 
 		return response;
@@ -287,8 +286,7 @@ public class ResponseController {
 
 			}
 		} catch (SQLException e) {
-			// TODO manage and log exceptions
-			e.printStackTrace();
+			throw new CustomizedException(e.getMessage());
 		}
 
 		return responsesList;
@@ -370,9 +368,7 @@ public class ResponseController {
 				response.setComplaint_id(complaint);
 			}
 		} catch (SQLException e) {
-			// TODO manage and log exceptions
-			e.printStackTrace();
-		}
+			throw new CustomizedException(e.getMessage());		}
 
 		return response;
 	}
@@ -394,8 +390,7 @@ public class ResponseController {
 				throw new CustomizedException("No repsonse with given ID found");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new CustomizedException(e.getMessage());
 		} catch (CustomizedException e) {
 			throw new CustomizedException(e.getMessage());
 		}

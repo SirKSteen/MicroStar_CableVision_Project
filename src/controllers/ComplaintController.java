@@ -20,7 +20,6 @@ import utils.ComplaintCategory;
 import utils.ComplaintStatus;
 import utils.ComplaintType;
 import utils.CustomizedException;
-import utils.Role;
 
 public class ComplaintController {
 
@@ -50,42 +49,40 @@ public class ComplaintController {
 		
 		int complaintId = -1;
 		try {
-		
-		// returns a configured session factory based on hibernate cfg file
-		// get a hibernate configured session factory and store it into this instance
-		// session factory
-		this.sessionFactory = HibernateConnectorSessionFactory.getHibernateSessionFactory();
-		// open a session to carry out transactions. a session is needed for every
-		// transaction
-		this.session = this.sessionFactory.openSession();
-		
-		// create transaction
-		
-		this.transaction = this.session.beginTransaction();
-		complaintId = (int) this.session.save(complaint);
-		
-		this.transaction.commit();
-		System.out.println("\nTransaction successful!");
+
+			// returns a configured session factory based on hibernate cfg file
+			// get a hibernate configured session factory and store it into this instance
+			// session factory
+			this.sessionFactory = HibernateConnectorSessionFactory.getHibernateSessionFactory();
+			// open a session to carry out transactions. a session is needed for every
+			// transaction
+			this.session = this.sessionFactory.openSession();
+
+			// create transaction
+
+			this.transaction = this.session.beginTransaction();
+			complaintId = (int) this.session.save(complaint);
+
+			this.transaction.commit();
+			System.out.println("\nTransaction successful!");
 		} catch (HibernateException e) {
-		if (this.transaction != null) {
-		this.transaction.rollback();
-		e.printStackTrace();
-		System.out.println("\nTransaction unsuccessful! ");
-		}
+			if (this.transaction != null) {
+				this.transaction.rollback();
+				e.printStackTrace();
+				System.out.println("\nTransaction unsuccessful! ");
+			}
 		} catch (Exception exception) {
-		System.out.println(exception.getMessage());
+			throw new CustomizedException(exception.getMessage());
 		} finally {
-		
-		if (this.session != null) {
-		this.session.close();
+
+			if (this.session != null) {
+				this.session.close();
+			}
+
 		}
-		
-		}
-		
+
 		return complaintId;
-		}
-		
-		
+	}
 		
 		
 //		*************************************************************************	
@@ -175,11 +172,10 @@ public class ComplaintController {
 		
 		}
 		} catch (SQLException e) {
-		// TODO manage and log exceptions
-		e.printStackTrace();
+			throw new CustomizedException(e.getMessage());
 		}
 		return complaintsList;
-		}
+	}
 		
 		
 //		*************************************************************************	
@@ -943,8 +939,8 @@ public class ComplaintController {
 		      
 		}
 		} catch (SQLException e) {
-		// TODO manage and log exceptions
-		e.printStackTrace();
+
+			throw new CustomizedException(e.getMessage());
 		}
 		   return complaint;
 		}
@@ -1086,8 +1082,7 @@ public class ComplaintController {
 		}
 		throw new CustomizedException(e.getMessage());
 		} catch (Exception e) {
-		// TODO: handle exception
-		System.out.println(e);
+			throw new CustomizedException(e.getMessage());
 		}
 		
 		return complaint;
@@ -1122,11 +1117,9 @@ public class ComplaintController {
 		this.transaction.rollback();
 		System.out.println("Rollback complete!");
 		}
-		throw new CustomizedException(e.getMessage());
-		}
-		 catch (Exception e) {
-		// TODO: handle exception
-		System.out.println(e);
+		}catch (Exception e) {
+			  throw new CustomizedException(e.getMessage());
+
 		}
 		return complaint;
 		}
@@ -1223,8 +1216,7 @@ public class ComplaintController {
 		     
 		   }
 		} catch (SQLException e) {
-		// TODO manage and log exceptions
-		e.printStackTrace();
+			throw new CustomizedException(e.getMessage());
 		}
 		return userComplaintsList;
 		}
