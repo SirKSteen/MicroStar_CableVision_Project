@@ -24,7 +24,7 @@ import server.Server;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import complaintsViews.NewJFrame;
+
 
 public class Driver {
 	private static final Logger LOG = LogManager.getLogger(Driver.class.getName());
