@@ -48,7 +48,7 @@ public class ClientHandler implements Runnable {
 		try {
 			initDataStreams();
 		} catch (IOException e) {
-			LOGGER.fatal(e.getMessage());
+			LOGGER.fatal(e);
 	}
 	}
 	
@@ -58,7 +58,7 @@ public class ClientHandler implements Runnable {
 			this.objectInStream = new ObjectInputStream(this.socket.getInputStream());
 
 		} catch (IOException ex) {
-			LOGGER.fatal(ex.getMessage());
+			LOGGER.fatal(ex);
 		}
 	}
 	
@@ -536,16 +536,16 @@ public class ClientHandler implements Runnable {
 				this.objectOutStream.writeObject("error");
 				this.objectOutStream.writeObject(e);
 			} catch (IOException e1) {
-				LOGGER.error(e.getMessage());
+				LOGGER.error(e);
 			}
 		} catch (Exception exc) {
 			CustomizedException e = new CustomizedException(exc.getMessage());
-			LOGGER.error(exc.getMessage());
+			LOGGER.error(exc);
 			try {
 				this.objectOutStream.writeObject("error");
 				this.objectOutStream.writeObject(e);
 			} catch (IOException e1) {
-				LOGGER.error(exc.getMessage());
+				LOGGER.error(exc);
 				
 			}
 		}
