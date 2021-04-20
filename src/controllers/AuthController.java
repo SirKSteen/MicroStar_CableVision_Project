@@ -37,7 +37,6 @@ public class AuthController {
 
 			}
 		} else {
-			System.out.println("user not found");
 			throw new CustomizedException("user not found");
 		}
 

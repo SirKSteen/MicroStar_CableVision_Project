@@ -545,7 +545,7 @@ public class ClientHandler implements Runnable {
 				this.objectOutStream.writeObject("error");
 				this.objectOutStream.writeObject(e);
 			} catch (IOException e1) {
-				LOGGER.error(exc);
+				LOGGER.error(e1);
 				
 			}
 		}
