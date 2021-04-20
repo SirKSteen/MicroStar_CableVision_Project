@@ -16,28 +16,29 @@ public class Server {
 	private int clientCount;
 	private ArrayList<ClientHandler> clientList;
 
-	private static final Logger LOG = LogManager.getLogger(Server.class.getName());
+	private static final Logger LOGGER = LogManager.getLogger(Server.class.getName());
 	public Server() {
 		try {
 			this.clientCount = 1;
 			this.serverSocket = new ServerSocket(5000);
 			this.clientList = new ArrayList<>();
-			System.out.println("Server started on port 5000\t"+LocalDateTime.now());
+			LOGGER.info("Server started on port 5000");
 			while(true) {
 				try {
-					this.connectionSocket = this.serverSocket.accept();
-					System.out.println("Starting a new thread for client "+this.clientCount++ +"\t"+LocalDateTime.now()+"\t");
+					
+					this.connectionSocket = this.serverSocket.accept();					
 					ClientHandler clientHandler = new ClientHandler(connectionSocket,clientList,"client "+this.clientCount);
+					LOGGER.info("Starting a new thread for request "+clientCount);
 					Thread clientTread = new Thread(clientHandler);
 					clientList.add(clientHandler);
 					clientTread.start();
+					this.clientCount++;
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					LOGGER.fatal(e.getMessage());
 				}
 			}
 		} catch (IOException e) {
-			System.out.println("Failed server socket "+e.getLocalizedMessage());
+			LOGGER.fatal(e.getMessage());
 		}
 	
 	}

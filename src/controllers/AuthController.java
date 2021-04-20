@@ -32,13 +32,11 @@ public class AuthController {
 					throw new CustomizedException("User is not registered as " + role);
 				}
 			} catch (CustomizedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
 				throw new CustomizedException(e.getMessage());
 
 			}
 		} else {
-			System.out.println("user not found");
 			throw new CustomizedException("user not found");
 		}
 
@@ -60,7 +58,7 @@ public class AuthController {
 				// update user in database
 				this.userController.updateUser(this.user);
 			} catch (CustomizedException e) {
-				// TODO Auto-generated catch block
+				
 				throw new CustomizedException(e.getMessage());
 			}
 

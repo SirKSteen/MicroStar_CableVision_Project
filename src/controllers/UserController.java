@@ -81,8 +81,6 @@ public class UserController {
 		} catch (HibernateException e) {
 			if (this.transaction != null) {
 				this.transaction.rollback();
-				e.printStackTrace();
-				System.out.println("transaction incomplete ");
 				throw new CustomizedException(e.getMessage());
 
 			}
@@ -144,8 +142,7 @@ public class UserController {
 
 			}
 		} catch (SQLException e) {
-			// TODO manage and log exceptions
-			e.printStackTrace();
+			
 			throw new CustomizedException(e.getMessage());
 		}
 
@@ -252,8 +249,7 @@ public class UserController {
 
 			}
 		} catch (SQLException e) {
-			// TODO manage and log exceptions
-			e.printStackTrace();
+			
 			throw new CustomizedException(e.getMessage());
 		}
 
@@ -277,8 +273,6 @@ public class UserController {
 				throw new CustomizedException("User already exists.");
 			}
 		} catch (SQLException e) {
-			// TODO manage and log exceptions
-			e.printStackTrace();
 			throw new CustomizedException(e.getMessage());
 		}
 
@@ -316,7 +310,6 @@ public class UserController {
 
 			throw new CustomizedException(e.getMessage());
 		} catch (Exception e) {
-			// TODO: handle exception
 			System.out.println(e);
 		}
 
@@ -340,8 +333,7 @@ public class UserController {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
 			throw new CustomizedException(e.getMessage());
 		} catch (CustomizedException ce) {
 			throw new CustomizedException(ce.getMessage());

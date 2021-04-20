@@ -5,7 +5,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import controllers.AccountController;
 import controllers.AuthController;
 import controllers.ComplaintController;
@@ -19,6 +20,9 @@ import utils.CustomizedException;
 import utils.Role;
 
 public class ClientHandler implements Runnable {
+	
+	private static final Logger LOGGER = LogManager.getLogger(Server.class.getName());
+	
 	private Socket socket;
 	private ObjectOutputStream objectOutStream;
 	private ObjectInputStream objectInStream;
@@ -29,6 +33,7 @@ public class ClientHandler implements Runnable {
 	private UserController userController;
 	private ArrayList<ClientHandler> clientList;
 	private String name;
+	
 	
 	public ClientHandler(Socket socket, ArrayList<ClientHandler> clientList, String name) {
 		this.socket = socket;
@@ -43,9 +48,8 @@ public class ClientHandler implements Runnable {
 		try {
 			initDataStreams();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			LOGGER.fatal(e);
+	}
 	}
 	
 	private void initDataStreams() throws IOException {
@@ -54,7 +58,7 @@ public class ClientHandler implements Runnable {
 			this.objectInStream = new ObjectInputStream(this.socket.getInputStream());
 
 		} catch (IOException ex) {
-			ex.printStackTrace();
+			LOGGER.fatal(ex);
 		}
 	}
 	
@@ -66,11 +70,14 @@ public class ClientHandler implements Runnable {
 				processRequest(operation, endPoint);
 			}catch (IOException e) {
 				throw new CustomizedException(e.getMessage());
+				
 			}
 			catch(ClassNotFoundException cnf) {
 				throw new CustomizedException(cnf.getMessage());
+				
 			}catch (Exception exc){
 				throw new CustomizedException(exc.getMessage());
+				
 			}
 		
 	}
@@ -86,8 +93,10 @@ public class ClientHandler implements Runnable {
 					int newAccountId = accountController.createAccount(acctToCreate);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(newAccountId);
+					LOGGER.info("Account was created successfully");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+				
 				}
 				break;
 			case "updateaccount": 
@@ -96,8 +105,10 @@ public class ClientHandler implements Runnable {
 					Account updatedAccount = accountController.updateAccount(accToUpdate);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(updatedAccount);
+					LOGGER.info("Account has been updated successfully");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					
 				}
 				break;
 			case "findbyid": 
@@ -106,8 +117,10 @@ public class ClientHandler implements Runnable {
 					Account acctFound = accountController.findById(acctIdToFind);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(acctFound);
+					LOGGER.info("Account found successfully");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					
 				}
 				break;
 			case "deleteaccount": 
@@ -116,8 +129,10 @@ public class ClientHandler implements Runnable {
 					int deletedId = accountController.deleteAccounts(deleteAcctId);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(deletedId);
+					LOGGER.info("Account has been deleted successfully");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					
 				}
 				break;
 			case "getallaccounts": 
@@ -125,12 +140,15 @@ public class ClientHandler implements Runnable {
 					ArrayList<Account> accountList = this.accountController.getAllAccounts();
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(accountList);
+					LOGGER.info("Account list retrieved successfully");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					
 				}
 				break; 
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + operation.toLowerCase());
+			
 			}
 			break;
 		//AuthenticationController
@@ -144,8 +162,10 @@ public class ClientHandler implements Runnable {
 					boolean loginSuccess = this.authController.login(loginUserId, password, role);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(loginSuccess);
+					LOGGER.info("Login successfull");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					
 				}
 				break;
 			case "updatepassword":
@@ -156,12 +176,15 @@ public class ClientHandler implements Runnable {
 					boolean passwordUpdated = this.authController.updatePassword(updatePasswordUserId, oldPassword, newPassword);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(passwordUpdated);
+					LOGGER.info("Password updated successfully");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					
 				}
 				break;
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + operation.toLowerCase());
+				
 			}
 			break;
 		case "complaint":
@@ -172,8 +195,10 @@ public class ClientHandler implements Runnable {
 					int newComplaintId = this.complaintController.addComplaint(complaint);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(newComplaintId);
+					LOGGER.info("New complaint created successfully");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					
 				}
 				break;
 			case "updatecomplaint": 
@@ -182,9 +207,12 @@ public class ClientHandler implements Runnable {
 					Complaint complaintUpdate = this.complaintController.updateComplaints(complaintId);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(complaintUpdate);
-					System.out.println(complaintUpdate);
+
+					LOGGER.info("Complaint updated successfully");
+
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					
 				}
 				break;
 			case "findbyid": 
@@ -193,8 +221,10 @@ public class ClientHandler implements Runnable {
 					Complaint returnFoundComplaint = this.complaintController.findById(comIdToFind);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(returnFoundComplaint);
+					LOGGER.info("Complaint found successfully by ID");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					
 				}
 				
 				break;
@@ -204,8 +234,10 @@ public class ClientHandler implements Runnable {
 					int returnDeleteId = this.complaintController.deleteComplaint(deleteId);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(returnDeleteId);
+					LOGGER.info("Complaint has being deleted successfully");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					
 				}
 				break;
 			case "getallcomplaints": 
@@ -213,8 +245,10 @@ public class ClientHandler implements Runnable {
 					ArrayList<Complaint> returnComplaintList = this.complaintController.getAllComplaints();
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(returnComplaintList);
+					LOGGER.info("Complaint list has been retrieved successfully");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					
 				}
 				break;
 			case "getallmildcomplaints": 
@@ -296,12 +330,15 @@ public class ClientHandler implements Runnable {
 					Complaint c = this.complaintController.assignTechnician(techComplaint);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(c);
+					LOGGER.info("Technician complaint has been made and one will be assigned to you soon");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					
 				}
 				break;
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + operation.toLowerCase());
+				
 			}
 			break;
 			//response 
@@ -313,8 +350,10 @@ public class ClientHandler implements Runnable {
 					int addedRespId = this.responseController.addResponse(responseToAdd);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(addedRespId);
+					LOGGER.info("Thank You! Response has been added successfully");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					
 				}
 				break;
 			case "updateresponse": 
@@ -323,8 +362,10 @@ public class ClientHandler implements Runnable {
 					Response returnUpdateId = this.responseController.updateResponse(updateId);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(returnUpdateId);
+					LOGGER.info("Response updated successfully");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					
 				}
 				break;
 			case "findbyid": 
@@ -333,8 +374,10 @@ public class ClientHandler implements Runnable {
 					Response returnFoundResponseId = this.responseController.findById(findResponseId);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(returnFoundResponseId);
+					LOGGER.info("Response found successfully by ID");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					
 				}
 				break;
 			case "deleteresponse":
@@ -343,8 +386,10 @@ public class ClientHandler implements Runnable {
 					int returnDeleteId = this.responseController.deleteResponse(deleteResponseId);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(returnDeleteId);
+					LOGGER.info("Complaint has being deleted successfully");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					
 				}
 				break;
 			case "getallresponses": 
@@ -352,8 +397,10 @@ public class ClientHandler implements Runnable {
 					ArrayList<Response> returnAllResponse = this.responseController.getAllResponses();
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(returnAllResponse);
+					LOGGER.info("All responses has being deleted successfully");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					
 				}
 				break;
 			case "getresponsespercomplaint": 
@@ -362,12 +409,15 @@ public class ClientHandler implements Runnable {
 					ArrayList<Response> returnComplaint = this.responseController.getResponsesPerComplaint(complaintId);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(returnComplaint);
+					LOGGER.info("Complaint made by reponser has been retrieved");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					
 				}
 				break;
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + operation.toLowerCase());
+				
 			}
 			break;
 		case "user":
@@ -378,8 +428,10 @@ public class ClientHandler implements Runnable {
 					int returnUserId = this.userController.createUser(user);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(returnUserId);
+					LOGGER.info("New user added successfully");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					
 				}
 				break;
 			case "updateuser":
@@ -388,8 +440,10 @@ public class ClientHandler implements Runnable {
 					User returnUserIdUpdate = this.userController.updateUser(userIdUpdate);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(returnUserIdUpdate);
+					LOGGER.info("User info updated successfully");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+				
 				}
 				break;
 			case "findbyid": 
@@ -398,8 +452,10 @@ public class ClientHandler implements Runnable {
 					User returnFindUser = this.userController.findById(userId);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(returnFindUser);
+					LOGGER.info("User found successfully by ID");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					
 				}
 				break;
 			case "findbyemail": 
@@ -408,8 +464,10 @@ public class ClientHandler implements Runnable {
 					boolean returnFindByEmail = this.userController.findByEmail(findByEmail);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(returnFindByEmail);
+					LOGGER.info("Response found successfully by email");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					
 				}
 				break;
 			case "deleteuser": 
@@ -418,8 +476,10 @@ public class ClientHandler implements Runnable {
 					int returnDeleteUser= this.userController.deleteUser(deleteUser);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(returnDeleteUser);
+					LOGGER.info("User has being deleted successfully");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
+					
 				}
 				break;
 			case "getallusers": 
@@ -427,6 +487,7 @@ public class ClientHandler implements Runnable {
 					ArrayList<User> userList = this.userController.getAllUsers();
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(userList);
+					LOGGER.info("User list has been retrieved successfully");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
 				}
@@ -442,12 +503,9 @@ public class ClientHandler implements Runnable {
 				break;
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + operation.toLowerCase());
+				
 			}
 			break;
-
-		
-		
-
 		case "chat": 
 			try {
 				String message = (String)this.objectInStream.readObject();
@@ -464,6 +522,7 @@ public class ClientHandler implements Runnable {
 
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + endPoint.toLowerCase());
+			
 		}
 	}
 	
@@ -479,16 +538,17 @@ public class ClientHandler implements Runnable {
 				this.objectOutStream.writeObject("error");
 				this.objectOutStream.writeObject(e);
 			} catch (IOException e1) {
-				e1.printStackTrace();
+				LOGGER.error(e);
 			}
 		} catch (Exception exc) {
 			CustomizedException e = new CustomizedException(exc.getMessage());
+			LOGGER.error(exc);
 			try {
 				this.objectOutStream.writeObject("error");
 				this.objectOutStream.writeObject(e);
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				LOGGER.error(e1);
+				
 			}
 		}
 		

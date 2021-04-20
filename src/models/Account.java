@@ -1,5 +1,7 @@
 package models;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,7 +17,12 @@ import utils.PaymentStatus;
 
 @Entity
 @Table(name = "Accounts") // reference to the accounts table in the database
-public class Account {
+public class Account implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // Automatically increments ID number based on previous record.
