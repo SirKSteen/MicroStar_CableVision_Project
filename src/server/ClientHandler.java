@@ -182,6 +182,7 @@ public class ClientHandler implements Runnable {
 					Complaint complaintUpdate = this.complaintController.updateComplaints(complaintId);
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(complaintUpdate);
+					System.out.println(complaintUpdate);
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
 				}
@@ -255,7 +256,7 @@ public class ClientHandler implements Runnable {
 				break;	
 			case "getallresolvedcablecomplaints": 
 				try {
-					ArrayList<Complaint> returnComplaintList = this.complaintController.getAllSevereComplaints();
+					ArrayList<Complaint> returnComplaintList = this.complaintController.getAllResolvedCableComplaints();
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(returnComplaintList);
 				} catch (Exception e) {
@@ -264,7 +265,7 @@ public class ClientHandler implements Runnable {
 				break;
 			case "getallresolvedbroadbandcomplaints": 
 				try {
-					ArrayList<Complaint> returnComplaintList = this.complaintController.getAllSevereComplaints();
+					ArrayList<Complaint> returnComplaintList = this.complaintController.getAllResolvedBroadbandComplaints();
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(returnComplaintList);
 				} catch (Exception e) {
@@ -273,7 +274,7 @@ public class ClientHandler implements Runnable {
 				break;
 			case "getalloutstandingcablecomplaints": 
 				try {
-					ArrayList<Complaint> returnComplaintList = this.complaintController.getAllSevereComplaints();
+					ArrayList<Complaint> returnComplaintList = this.complaintController.getAllOutstandingCableComplaints();
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(returnComplaintList);
 				} catch (Exception e) {
@@ -282,7 +283,7 @@ public class ClientHandler implements Runnable {
 				break;
 			case "getalloutstandingbroadbandcomplaints": 
 				try {
-					ArrayList<Complaint> returnComplaintList = this.complaintController.getAllSevereComplaints();
+					ArrayList<Complaint> returnComplaintList = this.complaintController.getAllOutstandingBroadbandComplaints();
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(returnComplaintList);
 				} catch (Exception e) {

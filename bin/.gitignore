@@ -1,2 +1,4 @@
-/controllers/
-/driver/
+./bin/
+./logs/
+./.classpath
+/bin/

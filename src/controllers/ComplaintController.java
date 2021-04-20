@@ -467,7 +467,7 @@ public class ComplaintController {
 				
 				
 				// Method to  READ all Resolved Cable complaints 
-						public ArrayList<Complaint> getAllResolvedComplaints() throws CustomizedException {
+						public ArrayList<Complaint> getAllResolvedCableComplaints() throws CustomizedException {
 								ArrayList<Complaint> complaintsList = new ArrayList<>();
 								
 								try {
@@ -480,7 +480,11 @@ public class ComplaintController {
 								// create sql query
 								this.sqlQuery = "SELECT * FROM micro_star.complaints "
 										+ "WHERE complaint_status="+"'" + ComplaintStatus.RESOLVED + "'"
-										+ "AND complaint_type"+"'" + ComplaintType.CABLE + "'";
+										+ "AND complaint_type="+"'" + ComplaintType.CABLE + "'";
+								/*
+								"SELECT * FROM micro_star.complaints "
+								+ "WHERE complaint_category="+"'" + ComplaintCategory.SEVERE + "'";
+								*/
 								
 								// execute sql query on statement and a ResultSet is returned
 								ResultSet rs = this.statement.executeQuery(this.sqlQuery);
@@ -575,7 +579,7 @@ public class ComplaintController {
 							// create sql query
 							this.sqlQuery = "SELECT * FROM micro_star.complaints "
 									+ "WHERE complaint_status="+"'" + ComplaintStatus.RESOLVED + "'"
-									+ "AND complaint_type"+"'" + ComplaintType.BROADBAND + "'";
+									+ "AND complaint_type="+"'" + ComplaintType.BROADBAND + "'";
 							
 							// execute sql query on statement and a ResultSet is returned
 							ResultSet rs = this.statement.executeQuery(this.sqlQuery);
@@ -673,7 +677,7 @@ public class ComplaintController {
 							// create sql query
 							this.sqlQuery = "SELECT * FROM micro_star.complaints "
 									+ "WHERE complaint_status="+"'" + ComplaintStatus.OUTSTANDING + "'"
-									+ "AND complaint_type"+"'" + ComplaintType.CABLE + "'";
+									+ "AND complaint_type="+"'" + ComplaintType.CABLE + "'";
 							
 							// execute sql query on statement and a ResultSet is returned
 							ResultSet rs = this.statement.executeQuery(this.sqlQuery);
@@ -774,7 +778,7 @@ public class ComplaintController {
 							// create sql query
 							this.sqlQuery = "SELECT * FROM micro_star.complaints "
 									+ "WHERE complaint_status="+"'" + ComplaintStatus.OUTSTANDING + "'"
-									+ "AND complaint_type"+"'" + ComplaintType.BROADBAND + "'";
+									+ "AND complaint_type="+"'" + ComplaintType.BROADBAND + "'";
 							
 							// execute sql query on statement and a ResultSet is returned
 							ResultSet rs = this.statement.executeQuery(this.sqlQuery);
@@ -1057,7 +1061,8 @@ public class ComplaintController {
 		/*Method to UPDATE a complaint*/
 		public Complaint updateComplaints(Complaint updatedComplaint) throws CustomizedException {
 		Complaint complaint = null;
-		
+		System.out.println("Entering update server side \n");
+		System.out.println(updatedComplaint);
 		try {
 		this.sessionFactory = HibernateConnectorSessionFactory.getHibernateSessionFactory();
 		this.session = this.sessionFactory.openSession();
@@ -1065,14 +1070,14 @@ public class ComplaintController {
 		//gets the Stock object from the database. i.e it tries to retrieve the complaint
 		//with the matching ID and create an object from the values
 		complaint = (Complaint)this.session.get(Complaint.class,
-		updatedComplaint.getComplaintID());
-		// 	complaint.setCustID(updatedComplaint.getCustID());
-		// 	complaint.setEmpID(updatedComplaint.getEmpID());
-		//	complaint.setCategory(updatedComplaint.getCategory());
-		//	complaint.setComplaint(updatedComplaint.getComplaint());
-		// 	complaint.setComplaintDate(updatedComplaint.getComplaintDate());
-		//	complaint.setComplaintType(updatedComplaint.getComplaintType());
-		complaint.setComplaintStatus(updatedComplaint.getComplaintStatus());
+			updatedComplaint.getComplaintID());
+//		 	complaint.setCustID(updatedComplaint.getCustID());
+//		 	complaint.setEmpID(updatedComplaint.getEmpID());
+			complaint.setCategory(updatedComplaint.getCategory());
+			complaint.setComplaint(updatedComplaint.getComplaint());
+		 	complaint.setComplaintDate(updatedComplaint.getComplaintDate());
+			complaint.setComplaintType(updatedComplaint.getComplaintType());
+			complaint.setComplaintStatus(updatedComplaint.getComplaintStatus());
 		
 		// complete transaction
 		this.transaction.commit();
