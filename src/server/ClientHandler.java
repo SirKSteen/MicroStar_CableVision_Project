@@ -278,6 +278,24 @@ public class ClientHandler implements Runnable {
 					throw new CustomizedException(e.getMessage());
 				}
 				break;
+			case "getallbroadbandcomplaints": 
+				try {
+					ArrayList<Complaint> returnComplaintList = this.complaintController.getAllBroadbandComplaints();
+					this.objectOutStream.writeObject("success");
+					this.objectOutStream.writeObject(returnComplaintList);
+				} catch (Exception e) {
+					throw new CustomizedException(e.getMessage());
+				}
+				break;
+			case "getallcablecomplaints": 
+				try {
+					ArrayList<Complaint> returnComplaintList = this.complaintController.getAllCableComplaints();
+					this.objectOutStream.writeObject("success");
+					this.objectOutStream.writeObject(returnComplaintList);
+				} catch (Exception e) {
+					throw new CustomizedException(e.getMessage());
+				}
+				break;
 			case "getallusercomplaints": 
 				try {
 					int userId = (int)this.objectInStream.readObject();
@@ -287,7 +305,17 @@ public class ClientHandler implements Runnable {
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
 				}
-				break;	
+				break;
+			case "getalltechnicianassignedcomplaints": 
+				try {
+					int techId = (int)this.objectInStream.readObject();
+					ArrayList<Complaint> returnComplaintList = this.complaintController.getComplaintsPerTechnician(techId);
+					this.objectOutStream.writeObject("success");
+					this.objectOutStream.writeObject(returnComplaintList);
+				} catch (Exception e) {
+					throw new CustomizedException(e.getMessage());
+				}
+				break;
 			case "getallresolvedcablecomplaints": 
 				try {
 					ArrayList<Complaint> returnComplaintList = this.complaintController.getAllResolvedCableComplaints();
