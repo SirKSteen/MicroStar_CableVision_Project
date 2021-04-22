@@ -224,7 +224,8 @@ public class UserController {
 				String email = rs.getString("email");
 				String role = rs.getString("user_role");
 				String password = rs.getString("password");
-
+				String contactNum = rs.getString("contact_number");
+				
 				// create user objects using data retrieved from columns.
 				user = new User();
 
@@ -233,6 +234,7 @@ public class UserController {
 				user.setLastName(lastName);
 				user.setEmail(email);
 				user.setPassword(password);
+				user.setContactNum(contactNum);
 				switch (role.toLowerCase()) {
 				case "customer":
 					user.setRole(Role.CUSTOMER);
@@ -294,8 +296,9 @@ public class UserController {
 			user.setFirstName(updatedUser.getFirstName());
 			user.setLastName(updatedUser.getLastName());
 			user.setEmail(updatedUser.getEmail());
-			user.setPassword(updatedUser.getPassword());
 			user.setRole(updatedUser.getRole());
+			user.setPassword(updatedUser.getPassword());
+			user.setContactNum(updatedUser.getContactNum());
 
 			// complete transaction
 			this.transaction.commit();

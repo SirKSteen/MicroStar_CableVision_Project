@@ -27,31 +27,29 @@ import utils.Role;
 public class ResponseController {
 
 	// hibernate session config
-	private SessionFactory sessionFactory;
-	private Transaction transaction;
-	private Session session;
-
-	 private UserController userController;
-	 
-	// traditional connection config
-	private Connection connect;
-	private Statement statement;
-	private String sqlQuery;
-
-	public ResponseController() {
-		this.sessionFactory = null;
-		this.transaction = null;
-		this.session = null;
-		this.connect = null;
-		this.statement = null;
-		this.sqlQuery = "";
-		this.statement = null;
-		this.userController = null;
+			private SessionFactory sessionFactory;
+			private Transaction transaction;
+			private Session session;
+			private UserController userController;
+			// traditional connection vars
+			private Connection connect;
+			private Statement statement;
+			private String sqlQuery;
+			
+			public ResponseController() {
+			this.sessionFactory = null;
+			this.transaction = null;
+			this.session = null;
+			this.connect = null;
+			this.statement = null;
+			this.sqlQuery = "";
+			this.statement = null;
+			this.userController = null;
 	}
 
 	public int addResponse(Response response) throws CustomizedException {
 		int responseId = -1;
-
+		System.out.println("Now in addResponse on server side");
 
 		try {
 			// add user using hibernate
@@ -65,23 +63,28 @@ public class ResponseController {
 			// can save as much objects here
 			 responseId = (int) this.session.save(response);
 
-			this.session.getTransaction().commit();
-			System.out.println("transaction complete ");
-		} catch (HibernateException e) {
-			if (transaction != null)
-				transaction.rollback();
-			this.session.getTransaction().rollback();
-			e.printStackTrace();
-			System.out.println("transaction incomplete ");
-			throw new CustomizedException(e.getMessage());
+			 this.transaction.commit();
+				System.out.println("\nTransaction successful!");
+			} catch (HibernateException e) {
+				if (this.transaction != null) {
+					this.transaction.rollback();
+					e.printStackTrace();
+					System.out.println("\nTransaction unsuccessful! ");
+				}
+			} catch (Exception exception) {
+			throw new CustomizedException(exception.getMessage());
+		} finally {
 
-		} catch (Exception exception) {
-			System.out.println(exception.getMessage());
-		} 
+			if (this.session != null) {
+				this.session.close();
+			}
+
+		}
 		
 		return responseId;
 	}
 
+	
 	public Response updateResponse(Response updateResponse) throws CustomizedException {
 		Response response  = null;
 

@@ -45,28 +45,28 @@ public class User implements Serializable {
 
 	private String email;
 
-	private String password;
-
 	@Enumerated(EnumType.STRING) // map to enumerated role in database
 	@Column(name = "user_role")
 	private Role role;
+	
+	private String password;
 
-	@Column(name = "contact_number")
+	@Column(name = "contact_num")
 	private String contactNum;
 	
 	// constructors
 
 	public User() {
-		this("", "", "", "", null,""); // initialize variables using primary constructor to promote code reuse
+		this("", "", "", null, "",""); // initialize variables using primary constructor to promote code reuse
 	}
 
 	public User(String firstName, String lastName, 
-			String email, String password, Role role, String contactNum) {
+			String email, Role role, String password, String contactNum) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.password = password;
 		this.role = role;
+		this.password = password;	
 		this.contactNum = contactNum;
 	}
 
@@ -112,6 +112,14 @@ public class User implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public Role getRole() {
+		return this.role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
 
 	public String getPassword() {
 		return this.password;
@@ -121,13 +129,7 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	public Role getRole() {
-		return this.role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
+	
 
 	public String getContactNum() {
 		return contactNum;
@@ -140,7 +142,7 @@ public class User implements Serializable {
 	@Override
 	public String toString() {
 		return "\nUser \nUser Id: " + userId + "\nfirstName: " + firstName + "\nlastName: " + lastName + "\nemail: "
-				+ email + "\npassword: " + password + "\nrole: " + role + "\n"
+				+ email + "\npassword: " + password + "\nrole: " + role + "\nnumber: "
 						+ contactNum + "\n";
 	}
 

@@ -372,13 +372,14 @@ public class ClientHandler implements Runnable {
 			//response 
 		case "response":
 			switch (operation.toLowerCase()) {
-			case "addresponse": 
+			case "createresponse": 
 				try {
-					Response responseToAdd = (Response)this.objectInStream.readObject(); 
-					int addedRespId = this.responseController.addResponse(responseToAdd);
+					System.out.println("Now inside Client Handler case: CreateResponse");
+					Response response = (Response)this.objectInStream.readObject(); 
+					int newComplaintId = this.responseController.addResponse(response);
 					this.objectOutStream.writeObject("success");
-					this.objectOutStream.writeObject(addedRespId);
-					LOGGER.info("Thank You! Response has been added successfully");
+					this.objectOutStream.writeObject(newComplaintId);
+					LOGGER.info("New response created successfully");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
 					
@@ -525,6 +526,7 @@ public class ClientHandler implements Runnable {
 					ArrayList<User> userList = this.userController.getAllTechnicians();
 					this.objectOutStream.writeObject("success");
 					this.objectOutStream.writeObject(userList);
+					LOGGER.info("Technician list has been retrieved successfully");
 				} catch (Exception e) {
 					throw new CustomizedException(e.getMessage());
 				}
